@@ -99,12 +99,12 @@ export const CharacterController = (props) => {
           Math.cos(rotationTarget.current + characterRotationTarget.current) *
           speed;
         if (speed === RUN_SPEED) {
-          setAnimation("run")
+          setAnimation("CharacterArmature|Run")
         } else {
-          setAnimation("walk")
+          setAnimation("CharacterArmature|Walk")
         }
       } else {
-        setAnimation("idle")
+        setAnimation("CharacterArmature|Idle")
       }
 
       character.current.rotation.y = lerpAngle(
@@ -146,12 +146,12 @@ export const CharacterController = (props) => {
     <RigidBody colliders={false} lockRotations ref={rb}>
       <group ref={container}>
         <group ref={cameraTarget} position-z={1} />
-        <group ref={cameraPosition} position-y={0.5} position-x={-0.05} position-z={-1.5} />
+        <group ref={cameraPosition} position-y={0.5} position-x={-0.15} position-z={-0.5} />
         <group ref={character}>
-          <Character scale={0.18} position-y={-0.25} animation={animation} />
+          <Character scale={0.37} position-y={-0.25} animation={animation} />
         </group>
       </group>
-      <CapsuleCollider args={[0.08, 0.15]} />
+      <CapsuleCollider args={[0.22, 0.15]} />
     </RigidBody>
   );
 };

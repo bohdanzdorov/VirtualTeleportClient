@@ -21,6 +21,7 @@ function App() {
   ]
 
   const [micState, setMicState] = useState(false);
+  const [users, setUsers] = useState([])
 
   const switchMicState = () => {
     setMicState(!micState)
@@ -32,10 +33,10 @@ function App() {
         <MicButton micState={micState} setMicState={setMicState} switchMicState={switchMicState}/>
         <Canvas shadows>
           <Physics allowSleep={false}>
-            <Teleport />
+            <Teleport users={users}/>
           </Physics>
         </Canvas>
-        <SocketManager micState={micState}/>
+        <SocketManager micState={micState} users={users} setUsers={setUsers}/>
       </KeyboardControls>
     </>
   )

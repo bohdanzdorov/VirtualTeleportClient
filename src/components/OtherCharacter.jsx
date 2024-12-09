@@ -29,12 +29,12 @@ export const OtherCharacter = (props) => {
             position={props.position}>
             <group ref={container}>
                 <group ref={character}>
-                    <Character scale={0.18}
+                    <Character scale={0.37}
                         animation={props.animation}
                         position-y={-0.25} />
                 </group>
             </group>
-            <CapsuleCollider args={[0.08, 0.15]} />
+            <CapsuleCollider args={[0.22, 0.15]} />
         </RigidBody>
     )
 }

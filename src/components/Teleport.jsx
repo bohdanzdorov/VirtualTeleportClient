@@ -1,57 +1,66 @@
-import React from "react"
-import { Environment } from "@react-three/drei";
+import React, { useState } from "react"
+import { Environment, Html, Plane } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 import { useAtom } from "jotai"
 import { useControls } from "leva";
-import { usersAtom, socket } from "./SocketManager"
+import { socket } from "./SocketManager"
 import { CharacterController } from "./CharacterController"
 import { Map } from "./Map";
 import { OtherCharacter } from "./OtherCharacter";
+import { useEffect, useRef } from "react";
+import { Splat } from "@react-three/drei";
+import TV from "./TV";
 
 const maps = {
-    castle_on_hills: {
-        scale: 3,
-        position: [-6, -7, 0],
+    test: {
+        scale: 1,
+        position: [0, -0.9, 0],
     },
-    animal_crossing_map: {
-        scale: 20,
-        position: [-15, -3, 10],
-    },
-    city_scene_tokyo: {
-        scale: 0.72,
-        position: [0, -1, -3.5],
-    },
-    de_dust_2_with_real_light: {
-        scale: 0.3,
-        position: [-5, -3, 13],
-    },
-    medieval_fantasy_book: {
-        scale: 0.4,
-        position: [-4, 0, -6],
+    office: {
+        scale: 1,
+        position: [-0.65, -1.25, -1],
     },
 };
 
+export const Teleport = (props) => {
 
-export const Teleport = () => {
-    const [users] = useAtom(usersAtom)
+    const usersRef = useRef(props.users);
+    const [counter, setCounter] = useState(0);
+
+    useEffect(() => {
+        usersRef.current = props.users;
+    }, [props.users]);
+
+    setTimeout(()=> {
+        setCounter(1)
+    }, 1000);
 
     const { map } = useControls("Map", {
         map: {
-            value: "animal_crossing_map",
+            value: "test",
             options: Object.keys(maps),
         },
     });
 
     return (
         <>
-            <Environment preset="sunset" />
+            <Environment preset="dawn"/>
             <Physics >
+                <TV/>
                 <Map
                     scale={maps[map].scale}
                     position={maps[map].position}
                     model={`models/${map}.glb`}
                 />
-                {users.map((user) => (
+                {
+                    counter === 1 ?
+                    <Splat
+                    src={import.meta.env.VITE_GAUSSIAN_MAP_URL}
+                    position-y={-0.3}
+                    scale={1}
+                    /> : <></>
+                }
+                {props.users.map((user) => (
                     user.id === socket.id ?
                         <CharacterController
                             key={user.id}

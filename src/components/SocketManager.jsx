@@ -2,14 +2,12 @@ import { useEffect, useRef } from "react"
 import { io } from "socket.io-client"
 import { useAtom, atom } from "jotai"
 
-export const socket = io(import.meta.env.VITE_SOCKET_URL, {
-    transports: ["websocket"],
-    withCredentials: true
-})
-export const usersAtom = atom([])
-
+// export const socket = io(import.meta.env.VITE_SOCKET_URL, {
+//     transports: ["websocket"],
+//     withCredentials: true
+// })
+export const socket = io("http://localhost:3000")
 export const SocketManager = (props) => {
-    const [users, setUsers] = useAtom(usersAtom)
     const micStateRef = useRef(props.micState); 
 
     useEffect(() => {
@@ -20,7 +18,6 @@ export const SocketManager = (props) => {
         
         function onConnect() {
             console.log("connected")
-            console.log(users.length)
 
             navigator.mediaDevices.getUserMedia({ audio: true, video: false })
                 .then((stream) => {
@@ -68,7 +65,7 @@ export const SocketManager = (props) => {
 
         function onUsers(value) {
             //console.log("Received users from server:", value);
-            setUsers(value)
+            props.setUsers(value)
         }
 
         function onAudioStream(audioData) {
@@ -95,7 +92,7 @@ export const SocketManager = (props) => {
             socket.off("users", onUsers)
             socket.off("audioStream", (audioData) => { onAudioStream(audioData) })
         }
-    }, [setUsers, props.micState])
+    }, [props.setUsers, props.micState])
 
     useEffect(()=> {
     }, [props.micState])
