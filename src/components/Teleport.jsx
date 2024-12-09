@@ -55,7 +55,7 @@ export const Teleport = (props) => {
                 {
                     counter === 1 ?
                     <Splat
-                    src={import.meta.env.VITE_GAUSSIAN_MAP_URL}
+                    src="https://huggingface.co/datasets/Tiky121/Splats/resolve/main/SmartRoom.splat?download=true"
                     position-y={-0.3}
                     scale={1}
                     /> : <></>
