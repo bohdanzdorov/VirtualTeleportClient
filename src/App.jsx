@@ -8,7 +8,7 @@ import { Teleport } from './components/Teleport'
 import { KeyboardControls } from '@react-three/drei'
 
 import { MicButton } from "./components/UI/MicButton"
-
+import {socket} from "./components/SocketManager"
 
 function App() {
   const keyBoardMap = [
@@ -23,21 +23,38 @@ function App() {
   const [micState, setMicState] = useState(false);
   const [users, setUsers] = useState([])
 
+  const [isConnected, setIsConnected] = useState(false)
+
   const switchMicState = () => {
     setMicState(!micState)
   }
 
+  const connectToRoom = () => {
+    socket.emit("roomConnect")
+    setIsConnected(true)
+  }
+
   return (
     <>
+    <p>{users.length}</p>
+    {
+      isConnected ? 
       <KeyboardControls map={keyBoardMap}>
-        <MicButton micState={micState} setMicState={setMicState} switchMicState={switchMicState}/>
-        <Canvas shadows>
-          <Physics allowSleep={false}>
-            <Teleport users={users}/>
-          </Physics>
-        </Canvas>
-        <SocketManager micState={micState} users={users} setUsers={setUsers}/>
-      </KeyboardControls>
+      <MicButton micState={micState} setMicState={setMicState} switchMicState={switchMicState}/>
+      <Canvas shadows>
+        <Physics allowSleep={false}>
+          <Teleport users={users}/>
+        </Physics>
+      </Canvas>
+      <SocketManager micState={micState} users={users} setUsers={setUsers}/>
+    </KeyboardControls>
+    :
+      <div>
+        <input type="button" onClick={connectToRoom} value={"Connect"}/>
+      </div>
+     
+    }
+   
     </>
   )
 }

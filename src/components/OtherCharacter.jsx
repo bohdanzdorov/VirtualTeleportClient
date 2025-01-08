@@ -29,7 +29,7 @@ export const OtherCharacter = (props) => {
             position={props.position}>
             <group ref={container}>
                 <group ref={character}>
-                    <Character scale={0.37}
+                    <Character scale={0.3}
                         animation={props.animation}
                         position-y={-0.25} />
                 </group>

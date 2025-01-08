@@ -22,9 +22,9 @@ export const Map = ({ model, ...props }) => {
   }, [actions]);
 
   return (
-    <group>
+    <group >
         <RigidBody type="fixed" colliders="trimesh">
-            <primitive object={scene} {...props} ref={group} />
+            <primitive object={scene} {...props} ref={group}/>
         </RigidBody>
     </group>
   );

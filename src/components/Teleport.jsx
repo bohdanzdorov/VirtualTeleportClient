@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { Environment, Html, Plane } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
-import { useAtom } from "jotai"
 import { useControls } from "leva";
 import { socket } from "./SocketManager"
 import { CharacterController } from "./CharacterController"
@@ -31,7 +30,7 @@ export const Teleport = (props) => {
         usersRef.current = props.users;
     }, [props.users]);
 
-    setTimeout(()=> {
+    setTimeout(() => {
         setCounter(1)
     }, 1000);
 
@@ -44,36 +43,39 @@ export const Teleport = (props) => {
 
     return (
         <>
-            <Environment preset="dawn"/>
+            <Environment preset="dawn" />
             <Physics >
-                <TV/>
+                <TV position={[0.52, -0.3, 0.9]} rotation={[0, 4, 0]} scale={0.15} url={import.meta.env.VITE_TV_URL} />
                 <Map
                     scale={maps[map].scale}
                     position={maps[map].position}
                     model={`models/${map}.glb`}
+
                 />
-                {
+                {/* {
                     counter === 1 ?
-                    <Splat
-                    src="https://huggingface.co/datasets/Tiky121/Splats/resolve/main/SmartRoom.splat?download=true"
-                    position-y={-0.3}
-                    scale={1}
-                    /> : <></>
+                        <Splat
+                            src="https://huggingface.co/datasets/Tiky121/Splats/resolve/main/B405.splat?download=true"
+                            position-y={-0.3}
+                            scale={1}
+                        /> : <></>
+                } */}
+
+                {
+                
+                        props.users.map((user) => (
+                            user.id === socket.id ?
+                                <CharacterController key={user.id}/> 
+                                :
+                                <OtherCharacter key={user.id}
+                                    position={user.position}
+                                    animation={user.animation}
+                                    rotation={user.rotation}
+                                    linvel={user.linvel}
+                                    containerRotation={user.containerRotation} />
+                        ))
                 }
-                {props.users.map((user) => (
-                    user.id === socket.id ?
-                        <CharacterController
-                            key={user.id}
-                            isLocal={true}
-                            users={user}
-                        /> :
-                        <OtherCharacter key={user.id} 
-                        position={user.position} 
-                        animation={user.animation}
-                        rotation={user.rotation}
-                        linvel={user.linvel}
-                        containerRotation={user.containerRotation}/>
-                ))}
+
             </Physics>
         </>
     )

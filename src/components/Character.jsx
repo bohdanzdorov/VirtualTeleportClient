@@ -16,7 +16,6 @@ export function Character({ animation, ...props }) {
   const { nodes } = useGraph(clone);
   const { actions } = useAnimations(animations, group);
   useEffect(() => {
-    console.log(actions)
     actions[animation]?.reset().fadeIn(0.24).play();
     return () => actions?.[animation]?.fadeOut(0.24);
   }, [animation]);
