@@ -52,14 +52,14 @@ export const Teleport = (props) => {
                     model={`models/${map}.glb`}
 
                 />
-                {/* {
+                {
                     counter === 1 ?
                         <Splat
                             src="https://huggingface.co/datasets/Tiky121/Splats/resolve/main/B405.splat?download=true"
                             position-y={-0.3}
                             scale={1}
                         /> : <></>
-                } */}
+                }
 
                 {
                 
