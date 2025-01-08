@@ -62,7 +62,6 @@ export const Teleport = (props) => {
                 }
 
                 {
-                
                         props.users.map((user) => (
                             user.id === socket.id ?
                                 <CharacterController key={user.id}/> 

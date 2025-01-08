@@ -3,12 +3,13 @@ import "./App.css"
 import { useState } from "react"
 import { Physics } from '@react-three/cannon'
 import { Canvas } from '@react-three/fiber'
-import { SocketManager } from './components/SocketManager'
-import { Teleport } from './components/Teleport'
+import { SocketManager } from './components/environment/SocketManager'
+import { Teleport } from './components/environment/Teleport'
 import { KeyboardControls } from '@react-three/drei'
 
-import { MicButton } from "./components/UI/MicButton"
-import {socket} from "./components/SocketManager"
+import { MicButton } from "./components/environment/UI/MicButton"
+import {socket} from "./components/environment/SocketManager"
+import { MainMenuPage } from "./components/pages/MainMenuPage"
 
 function App() {
   const keyBoardMap = [
@@ -23,22 +24,21 @@ function App() {
   const [micState, setMicState] = useState(false);
   const [users, setUsers] = useState([])
 
-  const [isConnected, setIsConnected] = useState(false)
+  const [isConnectedtoRoom, setIsConnectedToRoom] = useState(false)
 
   const switchMicState = () => {
     setMicState(!micState)
   }
 
-  const connectToRoom = () => {
+  const onRoomConnect = () => {
     socket.emit("roomConnect")
-    setIsConnected(true)
+    setIsConnectedToRoom(true)
   }
 
   return (
     <>
-    <p>{users.length}</p>
     {
-      isConnected ? 
+      isConnectedtoRoom ? 
       <KeyboardControls map={keyBoardMap}>
       <MicButton micState={micState} setMicState={setMicState} switchMicState={switchMicState}/>
       <Canvas shadows>
@@ -49,10 +49,7 @@ function App() {
       <SocketManager micState={micState} users={users} setUsers={setUsers}/>
     </KeyboardControls>
     :
-      <div>
-        <input type="button" onClick={connectToRoom} value={"Connect"}/>
-      </div>
-     
+      <MainMenuPage onRoomConnect={onRoomConnect}/>
     }
    
     </>

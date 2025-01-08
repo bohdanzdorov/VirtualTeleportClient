@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import micOff from '../../assets/icons/mic-off.png';
-import micOn from '../../assets/icons/mic-on.png';
+import micOff from '../../../assets/icons/mic-off.png';
+import micOn from '../../../assets/icons/mic-on.png';
 
 export function MicButton(props) {
 

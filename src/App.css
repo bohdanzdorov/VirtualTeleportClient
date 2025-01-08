@@ -10,4 +10,24 @@
     border: black solid 3px;
 }
 
+.mainDiv{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
 
+.characterEditorDiv{
+    display: flex;
+    flex-wrap: wrap;
+    height: 50%
+}
+
+.editorBox{
+    display: flex;
+    align-items: center;
+    gap: 2%
+}
