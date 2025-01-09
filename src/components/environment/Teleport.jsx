@@ -64,14 +64,19 @@ export const Teleport = (props) => {
                 {
                         props.users.map((user) => (
                             user.id === socket.id ?
-                                <CharacterController key={user.id}/> 
+                                <CharacterController key={user.id} name={user.name} hairColor={user.hairColor} suitColor={user.suitColor} trousersColor={user.trousersColor}/> 
                                 :
                                 <OtherCharacter key={user.id}
+                                    name={user.name} 
+                                    hairColor={user.hairColor} 
+                                    suitColor={user.suitColor} 
+                                    trousersColor={user.trousersColor}
                                     position={user.position}
                                     animation={user.animation}
                                     rotation={user.rotation}
                                     linvel={user.linvel}
-                                    containerRotation={user.containerRotation} />
+                                    containerRotation={user.containerRotation}
+                                 />
                         ))
                 }
 

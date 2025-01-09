@@ -31,7 +31,11 @@ export const OtherCharacter = (props) => {
                 <group ref={character}>
                     <Character scale={0.3}
                         animation={props.animation}
-                        position-y={-0.25} />
+                        position-y={-0.25} 
+                        hairColor={props.hairColor} 
+                        suitColor={props.suitColor} 
+                        trousersColor={props.trousersColor}
+                        />
                 </group>
             </group>
             <CapsuleCollider args={[0.22, 0.15]} />

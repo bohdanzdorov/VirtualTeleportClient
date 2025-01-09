@@ -8,7 +8,6 @@ import { Teleport } from './components/environment/Teleport'
 import { KeyboardControls } from '@react-three/drei'
 
 import { MicButton } from "./components/environment/UI/MicButton"
-import {socket} from "./components/environment/SocketManager"
 import { MainMenuPage } from "./components/pages/MainMenuPage"
 
 function App() {
@@ -30,11 +29,6 @@ function App() {
     setMicState(!micState)
   }
 
-  const onRoomConnect = () => {
-    socket.emit("roomConnect")
-    setIsConnectedToRoom(true)
-  }
-
   return (
     <>
     {
@@ -49,7 +43,7 @@ function App() {
       <SocketManager micState={micState} users={users} setUsers={setUsers}/>
     </KeyboardControls>
     :
-      <MainMenuPage onRoomConnect={onRoomConnect}/>
+      <MainMenuPage setIsConnectedToRoom={setIsConnectedToRoom}/>
     }
    
     </>

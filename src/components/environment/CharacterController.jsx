@@ -148,7 +148,10 @@ export const CharacterController = (props) => {
         <group ref={cameraTarget} position-z={1} />
         <group ref={cameraPosition} position-y={0.35} position-x={-0.12} position-z={-0.4} />
         <group ref={character}>
-          <Character scale={0.30} position-y={-0.25} animation={animation} />
+          <Character scale={0.30} position-y={-0.25} animation={animation} 
+                        hairColor={props.hairColor} 
+                        suitColor={props.suitColor} 
+                        trousersColor={props.trousersColor}/>
         </group>
       </group>
       <CapsuleCollider args={[0.22, 0.15]} />

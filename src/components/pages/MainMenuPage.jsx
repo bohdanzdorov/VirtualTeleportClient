@@ -3,13 +3,14 @@ import { Character } from "../environment/Character"
 import { PerspectiveCamera, OrbitControls } from "@react-three/drei";
 import { useRef, useEffect, useState } from "react";
 import { Environment, Html, Plane } from "@react-three/drei";
+import {socket} from "../environment/SocketManager"
 
 export const MainMenuPage = (props) => {
 
     const canvasContainerRef = useRef();
-    const [hairColor, setHairColor] = useState("brown")
-    const [suitColor, setSuitColor] = useState("black")
-    const [trousersColor, setTrousersColor] = useState("black")
+    const [hairColor, setHairColor] = useState("#553211")
+    const [suitColor, setSuitColor] = useState("#000000")
+    const [trousersColor, setTrousersColor] = useState("#000000")
 
     const handleTrousersColorChange = (event) => setTrousersColor(event.target.value);
     const handleHairColorChange = (event) => setHairColor(event.target.value);
@@ -29,6 +30,17 @@ export const MainMenuPage = (props) => {
 
         return () => window.removeEventListener("resize", updateCanvasSize);
     }, []);
+
+    
+    const onRoomConnect = () => {
+        socket.emit("roomConnect", {
+            name: "name",
+            hairColor: hairColor,
+            suitColor: suitColor,
+            trousersColor: trousersColor
+        })
+        props.setIsConnectedToRoom(true)
+    }
     
     return (
         <div className="mainDiv">
@@ -77,7 +89,7 @@ export const MainMenuPage = (props) => {
                     </Canvas>
                 </div>
             </div>
-            <input type="button" onClick={props.onRoomConnect} value={"Connect"}/>
+            <input type="button" onClick={onRoomConnect} value={"Connect"}/>
         </div>
     )
 }
