@@ -31,11 +31,11 @@ export const OtherCharacter = (props) => {
             position={props.position}>
             <group ref={container}>
                 <Text
-                    position={[0, 0.3, 0]} // Adjust to position above the character's head
+                    position={[0, 0.3, 0]} 
                     fontSize={0.03}
                     color="black"
-                    anchorX="center" // Align text horizontally
-                    anchorY="bottom" // Align text vertically
+                    anchorX="center"
+                    anchorY="bottom"
                 >
                     {props.name}
                 </Text>

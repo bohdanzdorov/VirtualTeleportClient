@@ -58,7 +58,7 @@ export const Teleport = (props) => {
                     model={`models/${map}.glb`}
 
                 />
-                {/* {
+                {
                     counter === 1 ?
                         <Splat
                             src="https://huggingface.co/datasets/Tiky121/Splats/resolve/main/B405.splat?download=true"
@@ -66,7 +66,7 @@ export const Teleport = (props) => {
                             scale={1}
                         /> : <></>
                         
-                } */}
+                }
 
                 {
                     props.users.map((user) => (
