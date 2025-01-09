@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { Environment, Html, Plane } from "@react-three/drei";
+import { Suspense } from "react";
 import { Physics } from "@react-three/rapier";
 import { useControls } from "leva";
 import { socket } from "./SocketManager"
@@ -9,6 +10,7 @@ import { OtherCharacter } from "./OtherCharacter";
 import { useEffect, useRef } from "react";
 import { Splat } from "@react-three/drei";
 import TV from "./TV";
+
 
 const maps = {
     test: {
@@ -45,7 +47,9 @@ export const Teleport = (props) => {
         <>
             <Environment preset="dawn" />
             <Physics >
-                <TV position={[0.52, -0.3, 0.9]} rotation={[0, 4, 0]} scale={0.15} url={import.meta.env.VITE_TV_URL} />
+                <Suspense fallback={null}>
+                <TV position={[0.55, -0.25, 0.8]} rotation={[0, 4, 0]} scale={0.035} url={import.meta.env.VITE_TV_URL} />
+                </Suspense>
                 <Map
                     scale={maps[map].scale}
                     position={maps[map].position}
