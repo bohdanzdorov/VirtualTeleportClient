@@ -1,10 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { useLoader, useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
-import html2canvas from 'html2canvas';
+import React from 'react'
 import { Html } from '@react-three/drei';
-export default function WebpageTexture({ position, rotation, scale, url }) {
-
+export default function TV({ position, rotation, scale, url }) {
 
   return (
     <Html style={{ userSelect: 'none' }} castShadow receiveShadow occlude="blending" transform position={position} rotation={rotation} scale={scale}>

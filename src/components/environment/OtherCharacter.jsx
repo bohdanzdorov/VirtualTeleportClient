@@ -1,8 +1,10 @@
 import { useRef } from "react"
-import { Character } from "./Character";
 import { useFrame } from "@react-three/fiber";
 import { RigidBody, CapsuleCollider } from "@react-three/rapier";
 import * as THREE from "three"
+import { Man } from "./Man";
+import { Woman } from "./Woman";
+import { Text } from "@react-three/drei";
 
 export const OtherCharacter = (props) => {
 
@@ -28,14 +30,35 @@ export const OtherCharacter = (props) => {
             ref={rb}
             position={props.position}>
             <group ref={container}>
+                <Text
+                    position={[0, 0.3, 0]} // Adjust to position above the character's head
+                    fontSize={0.03}
+                    color="black"
+                    anchorX="center" // Align text horizontally
+                    anchorY="bottom" // Align text vertically
+                >
+                    {props.name}
+                </Text>
                 <group ref={character}>
-                    <Character scale={0.3}
-                        animation={props.animation}
-                        position-y={-0.25} 
-                        hairColor={props.hairColor} 
-                        suitColor={props.suitColor} 
-                        trousersColor={props.trousersColor}
-                        />
+                    {
+                        props.gender === "male" ?
+                            <Man
+                                scale={0.3}
+                                animation={props.animation}
+                                position-y={-0.25}
+                                name={props.name}
+                                hairColor={props.hairColor}
+                                suitColor={props.suitColor}
+                                trousersColor={props.trousersColor} />
+                            : <Woman
+                                scale={0.3}
+                                animation={props.animation}
+                                position-y={-0.25}
+                                name={props.name}
+                                hairColor={props.hairColor}
+                                suitColor={props.suitColor}
+                                trousersColor={props.trousersColor} />
+                    }
                 </group>
             </group>
             <CapsuleCollider args={[0.22, 0.15]} />

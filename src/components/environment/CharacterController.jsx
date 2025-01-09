@@ -5,8 +5,9 @@ import { CapsuleCollider, RigidBody } from "@react-three/rapier";
 import { useControls } from "leva";
 import { MathUtils, Vector3 } from "three";
 import { degToRad } from "three/src/math/MathUtils.js";
-import { Character } from "./Character";
 import { socket } from "./SocketManager"
+import { Woman } from "./Woman";
+import { Man } from "./Man";
 
 //helping function
 const normalizeAngle = (angle) => {
@@ -148,10 +149,20 @@ export const CharacterController = (props) => {
         <group ref={cameraTarget} position-z={1} />
         <group ref={cameraPosition} position-y={0.35} position-x={-0.12} position-z={-0.4} />
         <group ref={character}>
-          <Character scale={0.30} position-y={-0.25} animation={animation} 
-                        hairColor={props.hairColor} 
-                        suitColor={props.suitColor} 
-                        trousersColor={props.trousersColor}/>
+
+          
+          {
+            props.gender === "male" ?
+              <Man scale={0.30} position-y={-0.25} animation={animation}
+                hairColor={props.hairColor}
+                suitColor={props.suitColor}
+                trousersColor={props.trousersColor} />
+              :
+              <Woman scale={0.30} position-y={-0.25} animation={animation}
+                hairColor={props.hairColor}
+                suitColor={props.suitColor}
+                trousersColor={props.trousersColor} />
+          }
         </group>
       </group>
       <CapsuleCollider args={[0.22, 0.15]} />

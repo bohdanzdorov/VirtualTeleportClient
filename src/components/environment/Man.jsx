@@ -7,7 +7,7 @@ import { useAnimations, useGLTF } from "@react-three/drei";
 import { useGraph } from "@react-three/fiber";
 import { SkeletonUtils } from "three-stdlib";
 
-export function Character({ animation, ...props }) {
+export function Man({ animation, ...props }) {
   const group = useRef();
   const { scene, materials, animations } = useGLTF("/models/man.glb");
   // Skinned meshes cannot be re-used in threejs without cloning them
