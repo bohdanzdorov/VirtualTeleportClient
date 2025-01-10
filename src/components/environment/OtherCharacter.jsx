@@ -43,7 +43,7 @@ export const OtherCharacter = (props) => {
                     {
                         props.gender === "male" ?
                             <Man
-                                scale={0.3}
+                                scale={0.27}
                                 animation={props.animation}
                                 position-y={-0.25}
                                 name={props.name}
@@ -51,7 +51,7 @@ export const OtherCharacter = (props) => {
                                 suitColor={props.suitColor}
                                 trousersColor={props.trousersColor} />
                             : <Woman
-                                scale={0.3}
+                                scale={0.27}
                                 animation={props.animation}
                                 position-y={-0.25}
                                 name={props.name}
@@ -61,7 +61,7 @@ export const OtherCharacter = (props) => {
                     }
                 </group>
             </group>
-            <CapsuleCollider args={[0.22, 0.15]} />
+            <CapsuleCollider args={[0.21, 0.07]} />
         </RigidBody>
     )
 }

@@ -11,7 +11,6 @@ import { useEffect, useRef } from "react";
 import { Splat } from "@react-three/drei";
 import TV from "./TV";
 
-
 const maps = {
     test: {
         scale: 1,
@@ -21,6 +20,10 @@ const maps = {
         scale: 1,
         position: [-0.65, -1.25, -1],
     },
+    b406: {
+        scale: 1,
+        position: [0, -0.8, 0]
+    }
 };
 
 export const Teleport = (props) => {
@@ -38,35 +41,29 @@ export const Teleport = (props) => {
 
     const { map } = useControls("Map", {
         map: {
-            value: "test",
+            value: "b406",
             options: Object.keys(maps),
-        },
+        }
     });
 
     return (
         <>
             <Environment preset="dawn" />
-            {/* Name Tag */}
-
             <Physics >
                 <Suspense fallback={null}>
-                    <TV position={[0.55, -0.25, 0.8]} rotation={[0, 4, 0]} scale={0.035} url={props.tvLink} />
+                    <TV position={[0.1, -0.25, 0.93]} rotation={[0, 3.1, 0]} scale={0.035} url={props.tvLink} />
                 </Suspense>
                 <Map
                     scale={maps[map].scale}
                     position={maps[map].position}
                     model={`models/${map}.glb`}
-
                 />
-                {
-                    counter === 1 ?
-                        <Splat
-                            src="https://huggingface.co/datasets/Tiky121/Splats/resolve/main/B405.splat?download=true"
-                            position-y={-0.3}
-                            scale={1}
-                        /> : <></>
-                        
-                }
+                <Splat
+                    src="https://huggingface.co/datasets/Tiky121/Splats/resolve/main/B405.splat?download=true"
+                    position-y={-0.3}
+                    scale={1}
+                    rotation={[0,5.45,0]}
+                /> : <></>
                 {
                     props.users.map((user) => (
                         user.id === socket.id ?

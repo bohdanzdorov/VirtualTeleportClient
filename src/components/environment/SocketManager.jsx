@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react"
 import { io } from "socket.io-client"
+import { TvLinkInput } from "./UI/TvLinkInput";
 
 export const socket = io(import.meta.env.VITE_SOCKET_URL, {
     transports: ["websocket"],
@@ -25,7 +26,7 @@ export const SocketManager = (props) => {
 
                     madiaRecorder.addEventListener("dataavailable", function (event) {
                         console.log(micStateRef.current); // Access the latest micState from the ref
-                        if (micStateRef.current) { // Step 3: Use the ref's value
+                        if (micStateRef.current) {
                             audioChunks.push(event.data);
                         }
                     });
@@ -80,10 +81,17 @@ export const SocketManager = (props) => {
             audio.play();
         }
 
+        function onTvLinkChange(tvlinkInput){
+            console.log(tvlinkInput)
+            props.setTvLink(tvlinkInput.tvLink)
+        }
+
         socket.on("connect", onConnect)
         socket.on('audioStream', (audioData) => { onAudioStream(audioData) });
         socket.on("disconnect", onDisconnect)
         socket.on("users", onUsers)
+        socket.on("tvLink", (tvLinkInput)=>{onTvLinkChange(tvLinkInput)})
+
 
         return () => {
             socket.off("connect", onConnect)

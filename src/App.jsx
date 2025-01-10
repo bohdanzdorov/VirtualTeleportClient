@@ -28,22 +28,18 @@ function App() {
   const [isConnectedtoRoom, setIsConnectedToRoom] = useState(false)
   const [isMovementAllowed, setIsMovementAllowed] = useState(true)
 
-  const switchMicState = () => {
-    setMicState(!micState)
-  }
-
   return (
     <>
       {
         isConnectedtoRoom ?
           <KeyboardControls map={keyBoardMap}>
-            <EnvironmentUI micState={micState} setMicState={setMicState} switchMicState={switchMicState} tvLink={tvLink} setTvLink={setTvLink} setIsMovementAllowed={setIsMovementAllowed}/>
+            <EnvironmentUI micState={micState} setMicState={setMicState} tvLink={tvLink} setTvLink={setTvLink} setIsMovementAllowed={setIsMovementAllowed}/>
             <Canvas shadows>
               <Physics allowSleep={false}>
                 <Teleport users={users} tvLink={tvLink} isMovementAllowed={isMovementAllowed} />
               </Physics>
             </Canvas>
-            <SocketManager micState={micState} users={users} setUsers={setUsers} />
+            <SocketManager micState={micState} users={users} setUsers={setUsers} setTvLink={setTvLink}/>
           </KeyboardControls>
           :
           <MainMenuPage setIsConnectedToRoom={setIsConnectedToRoom} />

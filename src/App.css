@@ -1,3 +1,7 @@
+.environmentUI {
+    z-index: 100000000;
+}
+
 #mic-button {
     position: absolute;
     aspect-ratio: 1/1;
@@ -5,7 +9,6 @@
     padding-bottom: 0;
     top: 80%;
     left: 88%;
-    z-index: 2;
     background-color: rgba(0, 25, 51, 0.75);
     border: black solid 3px;
 }
@@ -14,7 +17,6 @@
     position: absolute;
     top: 2%;
     left: 3%;
-    z-index: 10000000;
 }
 
 .mainDiv{

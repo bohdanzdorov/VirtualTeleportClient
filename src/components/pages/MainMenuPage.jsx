@@ -57,9 +57,9 @@ export const MainMenuPage = (props) => {
                     <div className="editorBox">
                         <h3>Gender</h3>
                         <input type="radio" id="genderChoice1" name="gender" value="male" onChange={handleGenderChange} checked={gender === "male"}/>
-                        <label for="genderChoice1">Male</label>
+                        <label htmlFor="genderChoice1">Male</label>
                         <input type="radio" id="genderChoice2" name="gender" value="female" onChange={handleGenderChange} checked={gender === "female"}/>
-                        <label for="genderChoice2">Female</label>
+                        <label htmlFor="genderChoice2">Female</label>
                     </div>
                     <div className="editorBox">
                         <label htmlFor="hairColorInput">Hair color</label>

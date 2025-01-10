@@ -36,12 +36,12 @@ export const CharacterController = (props) => {
   const { WALK_SPEED, RUN_SPEED, ROTATION_SPEED } = useControls(
     "Character Control",
     {
-      WALK_SPEED: { value: 0.8, min: 0.1, max: 4, step: 0.1 },
-      RUN_SPEED: { value: 1.6, min: 0.2, max: 12, step: 0.1 },
+      WALK_SPEED: { value: 0.45, min: 0.1, max: 4, step: 0.1 },
+      RUN_SPEED: { value: 0.55, min: 0.2, max: 12, step: 0.1 },
       ROTATION_SPEED: {
-        value: degToRad(1.5),
+        value: degToRad(6),
         min: degToRad(0.1),
-        max: degToRad(5),
+        max: degToRad(10),
         step: degToRad(0.1),
       },
     }
@@ -153,19 +153,19 @@ export const CharacterController = (props) => {
           
           {
             props.gender === "male" ?
-              <Man scale={0.30} position-y={-0.25} animation={animation}
+              <Man scale={0.27} position-y={-0.25} animation={animation}
                 hairColor={props.hairColor}
                 suitColor={props.suitColor}
                 trousersColor={props.trousersColor} />
               :
-              <Woman scale={0.30} position-y={-0.25} animation={animation}
+              <Woman scale={0.27} position-y={-0.25} animation={animation}
                 hairColor={props.hairColor}
                 suitColor={props.suitColor}
                 trousersColor={props.trousersColor} />
           }
         </group>
       </group>
-      <CapsuleCollider args={[0.22, 0.15]} />
+      <CapsuleCollider args={[0.21, 0.07]} />
     </RigidBody>
   );
 };
