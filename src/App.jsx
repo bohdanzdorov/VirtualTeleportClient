@@ -7,8 +7,8 @@ import { SocketManager } from './components/environment/SocketManager'
 import { Teleport } from './components/environment/Teleport'
 import { KeyboardControls } from '@react-three/drei'
 
-import { MicButton } from "./components/environment/UI/MicButton"
 import { MainMenuPage } from "./components/pages/MainMenuPage"
+import { EnvironmentUI } from "./components/environment/UI/EnvironmentUI"
 
 function App() {
   const keyBoardMap = [
@@ -17,13 +17,16 @@ function App() {
     { name: "left", keys: ["ArrowLeft", "KeyA"] },
     { name: "right", keys: ["ArrowRight", "KeyD"] },
     { name: "run", keys: ["Shift"] },
-    { name: "micAction", keys: ["KeyE"]},
+    { name: "micAction", keys: ["KeyE"] },
   ]
 
   const [micState, setMicState] = useState(false);
+  const [tvLink, setTvLink] = useState("https://www.youtube.com/embed/yGzqD-g2gts")
+
   const [users, setUsers] = useState([])
 
   const [isConnectedtoRoom, setIsConnectedToRoom] = useState(false)
+  const [isMovementAllowed, setIsMovementAllowed] = useState(true)
 
   const switchMicState = () => {
     setMicState(!micState)
@@ -31,21 +34,20 @@ function App() {
 
   return (
     <>
-    {
-      isConnectedtoRoom ? 
-      <KeyboardControls map={keyBoardMap}>
-      <MicButton micState={micState} setMicState={setMicState} switchMicState={switchMicState}/>
-      <Canvas shadows>
-        <Physics allowSleep={false}>
-          <Teleport users={users}/>
-        </Physics>
-      </Canvas>
-      <SocketManager micState={micState} users={users} setUsers={setUsers}/>
-    </KeyboardControls>
-    :
-      <MainMenuPage setIsConnectedToRoom={setIsConnectedToRoom}/>
-    }
-   
+      {
+        isConnectedtoRoom ?
+          <KeyboardControls map={keyBoardMap}>
+            <EnvironmentUI micState={micState} setMicState={setMicState} switchMicState={switchMicState} tvLink={tvLink} setTvLink={setTvLink} setIsMovementAllowed={setIsMovementAllowed}/>
+            <Canvas shadows>
+              <Physics allowSleep={false}>
+                <Teleport users={users} tvLink={tvLink} isMovementAllowed={isMovementAllowed} />
+              </Physics>
+            </Canvas>
+            <SocketManager micState={micState} users={users} setUsers={setUsers} />
+          </KeyboardControls>
+          :
+          <MainMenuPage setIsConnectedToRoom={setIsConnectedToRoom} />
+      }
     </>
   )
 }

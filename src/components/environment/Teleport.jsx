@@ -50,7 +50,7 @@ export const Teleport = (props) => {
 
             <Physics >
                 <Suspense fallback={null}>
-                    <TV position={[0.55, -0.25, 0.8]} rotation={[0, 4, 0]} scale={0.035} url={import.meta.env.VITE_TV_URL} />
+                    <TV position={[0.55, -0.25, 0.8]} rotation={[0, 4, 0]} scale={0.035} url={props.tvLink} />
                 </Suspense>
                 <Map
                     scale={maps[map].scale}
@@ -67,11 +67,10 @@ export const Teleport = (props) => {
                         /> : <></>
                         
                 }
-
                 {
                     props.users.map((user) => (
                         user.id === socket.id ?
-                            <CharacterController key={user.id} name={user.name} gender={user.gender} hairColor={user.hairColor} suitColor={user.suitColor} trousersColor={user.trousersColor} />
+                            <CharacterController key={user.id} isMovementAllowed={props.isMovementAllowed} name={user.name} gender={user.gender} hairColor={user.hairColor} suitColor={user.suitColor} trousersColor={user.trousersColor} />
                             :
                             <OtherCharacter key={user.id}
                                 name={user.name}

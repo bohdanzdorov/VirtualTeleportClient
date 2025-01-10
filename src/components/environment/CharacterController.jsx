@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useKeyboardControls } from "@react-three/drei";
+import { OrbitControls, useKeyboardControls } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { CapsuleCollider, RigidBody } from "@react-three/rapier";
 import { useControls } from "leva";
@@ -63,7 +63,7 @@ export const CharacterController = (props) => {
 
 
   useFrame(({ camera }) => {
-    if (rb.current) {
+    if (rb.current && props.isMovementAllowed) {
       const vel = rb.current.linvel();
 
       const movement = {

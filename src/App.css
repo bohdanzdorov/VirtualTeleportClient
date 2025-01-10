@@ -10,6 +10,13 @@
     border: black solid 3px;
 }
 
+.tvLinkInput {
+    position: absolute;
+    top: 2%;
+    left: 3%;
+    z-index: 10000000;
+}
+
 .mainDiv{
     width: 100%;
     height: 100%;

@@ -14,10 +14,10 @@ export function Woman({ animation, ...props }) {
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene])
   const { nodes } = useGraph(clone)
   const { actions } = useAnimations(animations, group)
-    useEffect(() => {
-      actions[animation]?.reset().fadeIn(0.24).play();
-      return () => actions?.[animation]?.fadeOut(0.24);
-    }, [animation]);
+  useEffect(() => {
+    actions[animation]?.reset().fadeIn(0.24).play();
+    return () => actions?.[animation]?.fadeOut(0.24);
+  }, [animation]);
   return (
     <group ref={group} {...props} dispose={null}>
       <group name="Root_Scene">
@@ -33,9 +33,7 @@ export function Woman({ animation, ...props }) {
           </group>
           <group name="Casual_Feet" rotation={[-Math.PI / 2, 0, 0]} scale={100}>
             <skinnedMesh name="Casual_Feet_1" geometry={nodes.Casual_Feet_1.geometry} material={materials.Skin} skeleton={nodes.Casual_Feet_1.skeleton} />
-            <skinnedMesh name="Casual_Feet_2" geometry={nodes.Casual_Feet_2.geometry} material={materials.Grey} skeleton={nodes.Casual_Feet_2.skeleton} >
-              <meshStandardMaterial color={props.trousersColor} />
-            </skinnedMesh>
+            <skinnedMesh name="Casual_Feet_2" geometry={nodes.Casual_Feet_2.geometry} material={materials.Grey} skeleton={nodes.Casual_Feet_2.skeleton} />
           </group>
           <group name="Casual_Head" rotation={[-Math.PI / 2, 0, 0]} scale={100}>
             <skinnedMesh name="Casual_Head_1" geometry={nodes.Casual_Head_1.geometry} material={materials.Skin} skeleton={nodes.Casual_Head_1.skeleton} />
@@ -45,10 +43,12 @@ export function Woman({ animation, ...props }) {
             <skinnedMesh name="Casual_Head_3" geometry={nodes.Casual_Head_3.geometry} material={materials.Hair_Brown} skeleton={nodes.Casual_Head_3.skeleton} />
             <skinnedMesh name="Casual_Head_4" geometry={nodes.Casual_Head_4.geometry} material={materials.Brown} skeleton={nodes.Casual_Head_4.skeleton} />
           </group>
-          <skinnedMesh name="Casual_Legs" geometry={nodes.Casual_Legs.geometry} material={materials.Orange} skeleton={nodes.Casual_Legs.skeleton} rotation={[-Math.PI / 2, 0, 0]} scale={100} />
+          <skinnedMesh name="Casual_Legs" geometry={nodes.Casual_Legs.geometry} material={materials.Orange} skeleton={nodes.Casual_Legs.skeleton} rotation={[-Math.PI / 2, 0, 0]} scale={100} >
+            <meshStandardMaterial color={props.trousersColor} />
+          </skinnedMesh>
         </group>
       </group>
-    </group>
+    </group >
   )
 }
 

@@ -20,7 +20,7 @@ export function MicButton(props) {
     }, [props.setMicState]);
 
     return (
-        <div onClick={handleMicButtonClick} style={{ aspectRatio: 1 / 1 }} id="mic-button">
+        <div onClick={handleMicButtonClick} style={{ aspectRatio: 1 / 1, zIndex: 10000000 }} id="mic-button">
             <img src={props.micState ? micOn : micOff} alt="Mic Status" />
         </div>
     );
