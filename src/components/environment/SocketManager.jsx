@@ -18,45 +18,47 @@ export const SocketManager = (props) => {
         
         function onConnect() {
             console.log("connected")
+        }
 
+        function onAudioConnect() {
             navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-                .then((stream) => {
-                    var madiaRecorder = new MediaRecorder(stream);
-                    var audioChunks = [];
+            .then((stream) => {
+                var madiaRecorder = new MediaRecorder(stream);
+                var audioChunks = [];
 
-                    madiaRecorder.addEventListener("dataavailable", function (event) {
-                        console.log(micStateRef.current); // Access the latest micState from the ref
-                        if (micStateRef.current) {
-                            audioChunks.push(event.data);
-                        }
-                    });
+                madiaRecorder.addEventListener("dataavailable", function (event) {
+                    // console.log(micStateRef.current); // Access the latest micState from the ref
+                    if (micStateRef.current) {
+                        audioChunks.push(event.data);
+                    }
+                });
 
-                    madiaRecorder.addEventListener("stop", function () {
-                        //console.log("Data available")
-                        var audioBlob = new Blob(audioChunks);
-                        audioChunks = [];
-                        var fileReader = new FileReader();
-                        fileReader.readAsDataURL(audioBlob);
-                        fileReader.onloadend = function () {
-                            var base64String = fileReader.result;
-                            socket.emit("audioStream", base64String);
-                        };
-
-                        madiaRecorder.start();
-                        setTimeout(function () {
-                            madiaRecorder.stop();
-                        }, 1000);
-                    });
+                madiaRecorder.addEventListener("stop", function () {
+                    // console.log("Data available")
+                    var audioBlob = new Blob(audioChunks);
+                    audioChunks = [];
+                    var fileReader = new FileReader();
+                    fileReader.readAsDataURL(audioBlob);
+                    fileReader.onloadend = function () {
+                        var base64String = fileReader.result;
+                        socket.emit("audioStream", base64String);
+                    };
 
                     madiaRecorder.start();
-
                     setTimeout(function () {
                         madiaRecorder.stop();
                     }, 1000);
-                })
-                .catch((error) => {
-                    console.error('Error capturing audio.', error);
                 });
+
+                madiaRecorder.start();
+
+                setTimeout(function () {
+                    madiaRecorder.stop();
+                }, 1000);
+            })
+            .catch((error) => {
+                console.error('Error capturing audio.', error);
+            });
         }
 
         function onDisconnect() {
@@ -64,12 +66,11 @@ export const SocketManager = (props) => {
         }
 
         function onUsers(value) {
-            //console.log("Received users from server:", value);
             props.setUsers(value)
         }
 
         function onAudioStream(audioData) {
-            //console.log("Audio Data playing...")
+            // console.log("Audio Data playing...")
             var newData = audioData.split(";");
             newData[0] = "data:audio/ogg;";
             newData = newData[0] + newData[1];
@@ -82,11 +83,11 @@ export const SocketManager = (props) => {
         }
 
         function onTvLinkChange(tvlinkInput){
-            console.log(tvlinkInput)
             props.setTvLink(tvlinkInput.tvLink)
         }
 
         socket.on("connect", onConnect)
+        socket.on("connectAudio", onAudioConnect)
         socket.on('audioStream', (audioData) => { onAudioStream(audioData) });
         socket.on("disconnect", onDisconnect)
         socket.on("users", onUsers)
@@ -95,9 +96,11 @@ export const SocketManager = (props) => {
 
         return () => {
             socket.off("connect", onConnect)
+            socket.off("connectAudio", onAudioConnect)
             socket.off("disconnect", onDisconnect)
             socket.off("users", onUsers)
             socket.off("audioStream", (audioData) => { onAudioStream(audioData) })
+            socket.off("tvLink", (tvLinkInput)=>{onTvLinkChange(tvLinkInput)})
         }
     }, [props.setUsers, props.micState])
 

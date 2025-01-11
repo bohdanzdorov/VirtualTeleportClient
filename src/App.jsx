@@ -22,7 +22,7 @@ function App() {
 
   const [micState, setMicState] = useState(false);
   const [tvLink, setTvLink] = useState("https://www.youtube.com/embed/yGzqD-g2gts")
-
+  const [roomMode, setRoomMode] = useState("Empty")
   const [users, setUsers] = useState([])
 
   const [isConnectedtoRoom, setIsConnectedToRoom] = useState(false)
@@ -33,13 +33,16 @@ function App() {
       {
         isConnectedtoRoom ?
           <KeyboardControls map={keyBoardMap}>
-            <EnvironmentUI micState={micState} setMicState={setMicState} tvLink={tvLink} setTvLink={setTvLink} setIsMovementAllowed={setIsMovementAllowed}/>
+            <EnvironmentUI micState={micState} setMicState={setMicState}
+              tvLink={tvLink} setTvLink={setTvLink}
+              roomMode={roomMode} setRoomMode={setRoomMode}
+              setIsMovementAllowed={setIsMovementAllowed} />
             <Canvas shadows>
               <Physics allowSleep={false}>
-                <Teleport users={users} tvLink={tvLink} isMovementAllowed={isMovementAllowed} />
+                <Teleport users={users} tvLink={tvLink} isMovementAllowed={isMovementAllowed} roomMode={roomMode} />
               </Physics>
             </Canvas>
-            <SocketManager micState={micState} users={users} setUsers={setUsers} setTvLink={setTvLink}/>
+            <SocketManager micState={micState} users={users} setUsers={setUsers} setTvLink={setTvLink} />
           </KeyboardControls>
           :
           <MainMenuPage setIsConnectedToRoom={setIsConnectedToRoom} />

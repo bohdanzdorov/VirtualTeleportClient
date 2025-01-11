@@ -51,15 +51,17 @@ export const MainMenuPage = (props) => {
     return (
         <div className="mainDiv">
             <h2>Virtual Teleport</h2>
-            <input type="text" placeholder="Name" value={name} onChange={handleNameChange}/>
-            <div className="characterEditorDiv">
-                <div className="inputBoxesDiv">
-                    <div className="editorBox">
-                        <h3>Gender</h3>
-                        <input type="radio" id="genderChoice1" name="gender" value="male" onChange={handleGenderChange} checked={gender === "male"}/>
-                        <label htmlFor="genderChoice1">Male</label>
-                        <input type="radio" id="genderChoice2" name="gender" value="female" onChange={handleGenderChange} checked={gender === "female"}/>
-                        <label htmlFor="genderChoice2">Female</label>
+            <input className={"nameField"} type="text" placeholder="Name" value={name} onChange={handleNameChange} />
+            <div className={"characterEditorDiv"}>
+                <div className={"inputBoxesDiv"}>
+                    <div className="genderBox">
+                        Gender
+                            <label htmlFor="genderChoice1">
+                            <input type="radio" id="genderChoice1" name="gender" value="male" onChange={handleGenderChange} checked={gender === "male"} />
+                            Male</label>
+                            <label htmlFor="genderChoice2">
+                            <input type="radio" id="genderChoice2" name="gender" value="female" onChange={handleGenderChange} checked={gender === "female"} />
+                            Female</label>
                     </div>
                     <div className="editorBox">
                         <label htmlFor="hairColorInput">Hair color</label>
@@ -70,7 +72,7 @@ export const MainMenuPage = (props) => {
                         <input id="suitColorInput" type="color" value={suitColor} onChange={handleSuitColorChange} />
                     </div>
                     <div className="editorBox">
-                        <label htmlFor="suitColorInput">Trousers color</label>
+                        <label htmlFor="suitColorInput">Pants color</label>
                         <input id="suitColorInput" type="color" value={trousersColor} onChange={handleTrousersColorChange} />
                     </div>
                 </div>
@@ -103,7 +105,7 @@ export const MainMenuPage = (props) => {
                     </Canvas>
                 </div>
             </div>
-            <input type="button" onClick={onRoomConnect} value={"Connect"} />
+            <input type="button" className={"menuButton"} onClick={onRoomConnect} value={"Connect"} />
         </div>
     )
 }

@@ -50,20 +50,26 @@ export const Teleport = (props) => {
         <>
             <Environment preset="dawn" />
             <Physics >
-                <Suspense fallback={null}>
-                    <TV position={[0.1, -0.25, 0.93]} rotation={[0, 3.1, 0]} scale={0.035} url={props.tvLink} />
-                </Suspense>
+                {
+                    props.roomMode === "TV" ?
+                    <TV position={[0.0, -0.24, 0.93]} rotation={[0, 3.15, 0]} scale={0.07} url={props.tvLink} />
+                    : <></>
+                }
                 <Map
                     scale={maps[map].scale}
                     position={maps[map].position}
                     model={`models/${map}.glb`}
                 />
-                <Splat
-                    src="https://huggingface.co/datasets/Tiky121/Splats/resolve/main/B405.splat?download=true"
-                    position-y={-0.3}
-                    scale={1}
-                    rotation={[0,5.45,0]}
-                /> : <></>
+                {
+                    counter === 1 ?
+                        <Splat
+                            src="https://huggingface.co/datasets/Tiky121/Splats/resolve/main/B405.splat?download=true"
+                            position-y={-0.3}
+                            scale={1}
+                            rotation={[0, 5.45, 0]}
+                        /> : <></>
+                }
+
                 {
                     props.users.map((user) => (
                         user.id === socket.id ?
