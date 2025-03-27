@@ -14,18 +14,21 @@ export const OtherCharacter = (props) => {
     const rb = useRef();
 
     useFrame(() => {
-        character.current.rotation.y = props.rotation
+        character.current.rotation.x = props.rotation[0]
+        character.current.rotation.y = props.rotation[1]
+        character.current.rotation.z = props.rotation[2]
+        
         rb.current.setTranslation(
             new THREE.Vector3(
                 props.position[0],
                 props.position[1],
                 props.position[2]))
-        rb.current.setLinvel(props.linvel, true)
-        container.current.rotation.y = props.containerRotation
     })
 
     return (
-        <RigidBody colliders={false}
+        <RigidBody
+            type="kinematicPosition"
+            colliders={false}
             lockRotations
             ref={rb}
             position={props.position}>
@@ -43,17 +46,17 @@ export const OtherCharacter = (props) => {
                     {
                         props.gender === "male" ?
                             <Man
-                                scale={0.27}
+                                scale={1}
                                 animation={props.animation}
-                                position-y={-0.25}
+                                position-y={-0.7}
                                 name={props.name}
                                 hairColor={props.hairColor}
                                 suitColor={props.suitColor}
                                 trousersColor={props.trousersColor} />
                             : <Woman
-                                scale={0.27}
+                                scale={1}
                                 animation={props.animation}
-                                position-y={-0.25}
+                                position-y={-0.7}
                                 name={props.name}
                                 hairColor={props.hairColor}
                                 suitColor={props.suitColor}

@@ -7,7 +7,7 @@ import { useAnimations, useGLTF } from "@react-three/drei";
 import { useGraph } from "@react-three/fiber";
 import { SkeletonUtils } from "three-stdlib";
 
-export function Man({ animation, ...props }) {
+export function Man({ animation, position = [0, 0, 0], ...props }) {
   const group = useRef();
   const { scene, materials, animations } = useGLTF("/models/man.glb");
   // Skinned meshes cannot be re-used in threejs without cloning them
@@ -20,14 +20,14 @@ export function Man({ animation, ...props }) {
     return () => actions?.[animation]?.fadeOut(0.24);
   }, [animation]);
   return (
-    <group ref={group} {...props} dispose={null}>
+    <group ref={group} position={position} {...props} dispose={null}>
       <group name="Root_Scene">
         <group name="RootNode">
           <group name="CharacterArmature" rotation={[-Math.PI / 2, 0, 0]} scale={100}>
             <primitive object={nodes.Root} />
           </group>
           <skinnedMesh name="Suit_Legs" geometry={nodes.Suit_Legs.geometry} material={materials.Suit} skeleton={nodes.Suit_Legs.skeleton} rotation={[-Math.PI / 2, 0, 0]} scale={100}>
-              <meshStandardMaterial color={props.trousersColor} />
+            <meshStandardMaterial color={props.trousersColor} />
           </skinnedMesh>
           <skinnedMesh name="Suit_Feet" geometry={nodes.Suit_Feet.geometry} material={materials.Black} skeleton={nodes.Suit_Feet.skeleton} rotation={[-Math.PI / 2, 0, 0]} scale={100} />
           <group name="Suit_Body" position={[0, 0.007, 0]} rotation={[-Math.PI / 2, 0, 0]} scale={100}>

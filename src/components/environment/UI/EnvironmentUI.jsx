@@ -7,6 +7,7 @@ export const EnvironmentUI = (props) => {
         <>
             <MicButton micState={props.micState} setMicState={props.setMicState}/>
             <RooomModeController roomMode={props.roomMode} setRoomMode={props.setRoomMode}/>
+            
             {
                 props.roomMode === "TV" ?
                 <TvLinkInput tvLink={props.tvLink} setTvLink={props.setTvLink}     

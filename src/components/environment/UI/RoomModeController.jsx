@@ -8,9 +8,9 @@ export const RooomModeController = (props) => {
         <div className="roomModeController  environmentUI">
             Room Mode: 
             <select value={props.roomMode} onChange={handleRoomModeChange}>
-                <option class="non" value="Empty">Empty</option>
-                <option class="non" value="TV">TV</option>
-                <option class="editable" value="Connection">Connection</option>
+                <option className="non" value="Empty">Empty</option>
+                <option className="non" value="TV">TV</option>
+                <option className="editable" value="Connection">Connection</option>
             </select>
         </div>
 

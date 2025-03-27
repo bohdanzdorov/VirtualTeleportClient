@@ -21,44 +21,44 @@ export const SocketManager = (props) => {
         }
 
         function onAudioConnect() {
-            navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-            .then((stream) => {
-                var madiaRecorder = new MediaRecorder(stream);
-                var audioChunks = [];
+            // navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+            // .then((stream) => {
+            //     var madiaRecorder = new MediaRecorder(stream);
+            //     var audioChunks = [];
 
-                madiaRecorder.addEventListener("dataavailable", function (event) {
-                    // console.log(micStateRef.current); // Access the latest micState from the ref
-                    if (micStateRef.current) {
-                        audioChunks.push(event.data);
-                    }
-                });
+            //     madiaRecorder.addEventListener("dataavailable", function (event) {
+            //         // console.log(micStateRef.current); // Access the latest micState from the ref
+            //         if (micStateRef.current) {
+            //             audioChunks.push(event.data);
+            //         }
+            //     });
 
-                madiaRecorder.addEventListener("stop", function () {
-                    // console.log("Data available")
-                    var audioBlob = new Blob(audioChunks);
-                    audioChunks = [];
-                    var fileReader = new FileReader();
-                    fileReader.readAsDataURL(audioBlob);
-                    fileReader.onloadend = function () {
-                        var base64String = fileReader.result;
-                        socket.emit("audioStream", base64String);
-                    };
+            //     madiaRecorder.addEventListener("stop", function () {
+            //         // console.log("Data available")
+            //         var audioBlob = new Blob(audioChunks);
+            //         audioChunks = [];
+            //         var fileReader = new FileReader();
+            //         fileReader.readAsDataURL(audioBlob);
+            //         fileReader.onloadend = function () {
+            //             var base64String = fileReader.result;
+            //             socket.emit("audioStream", base64String);
+            //         };
 
-                    madiaRecorder.start();
-                    setTimeout(function () {
-                        madiaRecorder.stop();
-                    }, 1000);
-                });
+            //         madiaRecorder.start();
+            //         setTimeout(function () {
+            //             madiaRecorder.stop();
+            //         }, 1000);
+            //     });
 
-                madiaRecorder.start();
+            //     madiaRecorder.start();
 
-                setTimeout(function () {
-                    madiaRecorder.stop();
-                }, 1000);
-            })
-            .catch((error) => {
-                console.error('Error capturing audio.', error);
-            });
+            //     setTimeout(function () {
+            //         madiaRecorder.stop();
+            //     }, 1000);
+            // })
+            // .catch((error) => {
+            //     console.error('Error capturing audio.', error);
+            // });
         }
 
         function onDisconnect() {
@@ -72,14 +72,17 @@ export const SocketManager = (props) => {
         function onAudioStream(audioData) {
             // console.log("Audio Data playing...")
             var newData = audioData.split(";");
-            newData[0] = "data:audio/ogg;";
-            newData = newData[0] + newData[1];
-
-            var audio = new Audio(newData);
-            if (!audio || document.hidden) {
-                return;
+            if(newData) {
+                newData[0] = "data:audio/ogg;";
+                newData = newData[0] + newData[1];
+    
+                var audio = new Audio(newData);
+                if (!audio || document.hidden) {
+                    return;
+                }
+                audio.play();
             }
-            audio.play();
+           
         }
 
         function onTvLinkChange(tvlinkInput){

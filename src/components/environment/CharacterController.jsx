@@ -148,9 +148,7 @@ export const CharacterController = (props) => {
       <group ref={container}>
         <group ref={cameraTarget} position-z={1} />
         <group ref={cameraPosition} position-y={0.35} position-x={-0.12} position-z={-0.4} />
-        <group ref={character}>
-
-          
+        <group ref={character}>   
           {
             props.gender === "male" ?
               <Man scale={0.27} position-y={-0.25} animation={animation}

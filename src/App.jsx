@@ -36,7 +36,9 @@ function App() {
             <EnvironmentUI micState={micState} setMicState={setMicState}
               tvLink={tvLink} setTvLink={setTvLink}
               roomMode={roomMode} setRoomMode={setRoomMode}
-              setIsMovementAllowed={setIsMovementAllowed} />
+              setIsMovementAllowed={setIsMovementAllowed} 
+              users={users}/>
+              
             <Canvas shadows>
               <Physics allowSleep={false}>
                 <Teleport users={users} tvLink={tvLink} isMovementAllowed={isMovementAllowed} roomMode={roomMode} />
