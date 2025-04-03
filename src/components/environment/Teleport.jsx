@@ -67,12 +67,8 @@ export const Teleport = (props) => {
         <>
             <Environment preset="dawn" />
             <Physics debug={false}>
+
                 <Suspense>
-                    <Map
-                        scale={maps[map].scale}
-                        position={maps[map].position}
-                        model={`models/${map}.glb`}
-                    />
                     {
                         props.roomMode === "Connection" ?
                             <>
@@ -81,22 +77,29 @@ export const Teleport = (props) => {
                                     rotation={[0, 3.15, 0]}
                                     scale={1.6}
                                     stream={webcamStream}
-                                    isActive={activeTV === "left"}
-                                    onSelect={() => setActiveTV("left")}
+                                    isActive={activeTV === 1}
+                                    onSelect={() => setActiveTV(1)}
                                 />
                                 <WebCamTV
                                     position={[1.18, 0.95, 3.7]}
                                     rotation={[0, 3.15, 0]}
                                     scale={1.6}
                                     stream={webcamStream}
-                                    isActive={activeTV === "right"}
-                                    onSelect={() => setActiveTV("right")}
+                                    isActive={activeTV === 2}
+                                    onSelect={() => setActiveTV(2)}
                                 />
                             </>
                             : props.roomMode === "TV" ?
                                 <TV position={[-0.8, 0.95, 3.5]} rotation={[0, 3.15, 0]} scale={0.13} url={props.tvLink} />
                                 : <></>
                     }
+                </Suspense>
+                <Suspense>
+                    <Map
+                        scale={maps[map].scale}
+                        position={maps[map].position}
+                        model={`models/${map}.glb`}
+                    />
                     {
                         props.users.map((user) => (
                             user.id === socket.id ?
