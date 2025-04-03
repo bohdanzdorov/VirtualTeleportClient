@@ -41,7 +41,7 @@ function App() {
               
             <Canvas shadows 
               dpr={Math.min(window.devicePixelRatio, 1.5)} 
-              gl={{ antialias: false, powerPreference: "high-performance" }}>
+              gl={{ antialias: false, powerPreference: "high-performance", precision: "highp" }}>
               <Physics allowSleep={false}>
                 <Teleport users={users} tvLink={tvLink} isMovementAllowed={isMovementAllowed} roomMode={roomMode} />
               </Physics>

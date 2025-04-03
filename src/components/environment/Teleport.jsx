@@ -10,7 +10,7 @@ import { useEffect, useRef } from "react";
 import { Splat } from "@react-three/drei";
 import TV from "./TV";
 import { UpdatedCharacterController } from "./UpdatedCharacterController";
-import WebCamTV from "../WebCamTV";
+import WebCamTV from "./WebCamTV";
 
 const maps = {
     test: {
@@ -49,6 +49,7 @@ export const Teleport = (props) => {
     });
 
     const [webcamStream, setWebcamStream] = useState(null);
+    const [activeTV, setActiveTV] = useState(null); // State to track selected TV
 
     useEffect(() => {
         async function getWebcam() {
@@ -62,7 +63,6 @@ export const Teleport = (props) => {
         getWebcam();
     }, []);
 
-
     return (
         <>
             <Environment preset="dawn" />
@@ -74,13 +74,28 @@ export const Teleport = (props) => {
                         model={`models/${map}.glb`}
                     />
                     {
-                        props.roomMode === "TV" ?
-
-                            <WebCamTV position={[-0.87, 0.95, 3.7]} rotation={[0, 3.15, 0]} scale={1.6} stream={webcamStream} />
-
-                            // <TV position={[-0.8, 0.95, 3.5]} rotation={[0, 3.15, 0]} scale={0.13} url={props.tvLink} />
-
-                            : <></>
+                        props.roomMode === "Connection" ?
+                            <>
+                                <WebCamTV
+                                    position={[-0.87, 0.95, 3.7]}
+                                    rotation={[0, 3.15, 0]}
+                                    scale={1.6}
+                                    stream={webcamStream}
+                                    isActive={activeTV === "left"}
+                                    onSelect={() => setActiveTV("left")}
+                                />
+                                <WebCamTV
+                                    position={[1.18, 0.95, 3.7]}
+                                    rotation={[0, 3.15, 0]}
+                                    scale={1.6}
+                                    stream={webcamStream}
+                                    isActive={activeTV === "right"}
+                                    onSelect={() => setActiveTV("right")}
+                                />
+                            </>
+                            : props.roomMode === "TV" ?
+                                <TV position={[-0.8, 0.95, 3.5]} rotation={[0, 3.15, 0]} scale={0.13} url={props.tvLink} />
+                                : <></>
                     }
                     {
                         props.users.map((user) => (
@@ -109,8 +124,9 @@ export const Teleport = (props) => {
                         position-y={0.75}
                         scale={3.75}
                         rotation={[0, 5.45, 0]}
-                        renderOrder={-1} 
+                        renderOrder={-1}
                         depthWrite={false}
+                        chunkSize={10000}
                     />
                 </Suspense>
             </Physics>
