@@ -1,17 +1,16 @@
 import React, { useState } from "react"
-import { Environment, KeyboardControls } from "@react-three/drei";
+import { Environment } from "@react-three/drei";
 import { Suspense } from "react";
 import { Physics } from "@react-three/rapier";
 import { useControls } from "leva";
 import { socket } from "./SocketManager"
-import { CharacterController } from "./CharacterController"
 import { Map } from "./Map";
 import { OtherCharacter } from "./OtherCharacter";
 import { useEffect, useRef } from "react";
 import { Splat } from "@react-three/drei";
 import TV from "./TV";
 import { UpdatedCharacterController } from "./UpdatedCharacterController";
-import { Man } from "./Man";
+import WebCamTV from "../WebCamTV";
 
 const maps = {
     test: {
@@ -49,55 +48,71 @@ export const Teleport = (props) => {
         }
     });
 
+    const [webcamStream, setWebcamStream] = useState(null);
+
+    useEffect(() => {
+        async function getWebcam() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                setWebcamStream(stream);
+            } catch (err) {
+                console.error("Error accessing webcam:", err);
+            }
+        }
+        getWebcam();
+    }, []);
+
+
     return (
         <>
             <Environment preset="dawn" />
             <Physics debug={false}>
-                {
-                    props.roomMode === "TV" ?
-                        <TV position={[0.0, -0.24, 0.93]} rotation={[0, 3.15, 0]} scale={0.07} url={props.tvLink} />
-                        : <></>
-                }
-                <Map
-                    scale={maps[map].scale}
-                    position={maps[map].position}
-                    model={`models/${map}.glb`}
-                />
+                <Suspense>
+                    <Map
+                        scale={maps[map].scale}
+                        position={maps[map].position}
+                        model={`models/${map}.glb`}
+                    />
+                    {
+                        props.roomMode === "TV" ?
 
-                {
-                        <Splat
-                            src="https://huggingface.co/datasets/Tiky121/Splats/resolve/main/B405.splat?download=true"
-                            position-y={0.75}
-                            scale={3.75}
-                            rotation={[0, 5.45, 0]}
-                            renderOrder={-1} depthWrite={false}
-                        /> 
-                }
+                            <WebCamTV position={[-0.87, 0.95, 3.7]} rotation={[0, 3.15, 0]} scale={1.6} stream={webcamStream} />
 
-                {/* <UpdatedCharacterController name={"Name"} gender={"male"} hairColor={"red"} suitColor={"red"} trousersColor={"red"} /> */}
+                            // <TV position={[-0.8, 0.95, 3.5]} rotation={[0, 3.15, 0]} scale={0.13} url={props.tvLink} />
 
-                {
-                    props.users.map((user) => (
-                        user.id === socket.id ?
-                            <UpdatedCharacterController key={user.id} name={user.name} gender={user.gender} hairColor={user.hairColor} suitColor={user.suitColor} trousersColor={user.trousersColor} />
-                            :
-                            //  <Man position={user.position}/>
-                            <OtherCharacter 
-                                key={user.id}
-                                name={user.name}
-                                gender={user.gender}
-                                hairColor={user.hairColor}
-                                suitColor={user.suitColor}
-                                trousersColor={user.trousersColor}
-                                position={user.position}
-                                animation={user.animation}
-                                rotation={user.rotation}
-                                linvel={user.linvel}
-                                containerRotation={user.containerRotation}
-                            />
-                    ))
-                } 
-
+                            : <></>
+                    }
+                    {
+                        props.users.map((user) => (
+                            user.id === socket.id ?
+                                <UpdatedCharacterController key={user.id} name={user.name} gender={user.gender} hairColor={user.hairColor} suitColor={user.suitColor} trousersColor={user.trousersColor} />
+                                :
+                                <OtherCharacter
+                                    key={user.id}
+                                    name={user.name}
+                                    gender={user.gender}
+                                    hairColor={user.hairColor}
+                                    suitColor={user.suitColor}
+                                    trousersColor={user.trousersColor}
+                                    position={user.position}
+                                    animation={user.animation}
+                                    rotation={user.rotation}
+                                    linvel={user.linvel}
+                                    containerRotation={user.containerRotation}
+                                />
+                        ))
+                    }
+                </Suspense>
+                <Suspense>
+                    <Splat
+                        src="https://huggingface.co/datasets/Tiky121/Splats/resolve/main/B405.splat?download=true"
+                        position-y={0.75}
+                        scale={3.75}
+                        rotation={[0, 5.45, 0]}
+                        renderOrder={-1} 
+                        depthWrite={false}
+                    />
+                </Suspense>
             </Physics>
         </>
     )

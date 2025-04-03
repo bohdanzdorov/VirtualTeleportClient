@@ -21,7 +21,7 @@ function App() {
   ]
 
   const [micState, setMicState] = useState(false);
-  const [tvLink, setTvLink] = useState("https://www.youtube.com/embed/yGzqD-g2gts")
+  const [tvLink, setTvLink] = useState("https://www.youtube.com/embed/oozh-69e5NU")
   const [roomMode, setRoomMode] = useState("Empty")
   const [users, setUsers] = useState([])
 
@@ -39,7 +39,9 @@ function App() {
               setIsMovementAllowed={setIsMovementAllowed} 
               users={users}/>
               
-            <Canvas shadows>
+            <Canvas shadows 
+              dpr={Math.min(window.devicePixelRatio, 1.5)} 
+              gl={{ antialias: false, powerPreference: "high-performance" }}>
               <Physics allowSleep={false}>
                 <Teleport users={users} tvLink={tvLink} isMovementAllowed={isMovementAllowed} roomMode={roomMode} />
               </Physics>

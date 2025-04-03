@@ -72,11 +72,10 @@ export const UpdatedCharacterController = (props) => {
 
         const newAnimation = curAnimation
         
-        const movementThreshold = 0.1; // Adjust as needed
+        const movementThreshold = 0.01; // Adjust as needed
         const rotationThreshold = 0.1
         const positionChanged = newPos.some((val, i) => Math.abs(val - lastPosition[i]) > movementThreshold);
         const rotationChanged = newRot.some((val, i) => Math.abs(val - lastRotation[i]) > rotationThreshold);
-        const animationChanged = newAnimation === lastAnimation ? false : true 
         
         if (positionChanged || rotationChanged) {
             socket.emit("move", {
@@ -91,7 +90,6 @@ export const UpdatedCharacterController = (props) => {
             setLastRotation(newRot);
             setLastAnimation()
         }
-        //console.log(position)
     });
 
     
@@ -114,6 +112,7 @@ export const UpdatedCharacterController = (props) => {
                     fallingGravityScale={1}
                     maxVelLimit={1}
                     scale={1}
+                    camInitDis={-2.5}
                     animated    >
                     {
                         props.gender === "male" ?
