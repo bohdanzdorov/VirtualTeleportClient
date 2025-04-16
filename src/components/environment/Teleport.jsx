@@ -12,6 +12,9 @@ import TV from "./TV";
 import { UpdatedCharacterController } from "./UpdatedCharacterController";
 import WebCamTV from "./WebCamTV";
 
+import { StreamVideoClient, StreamVideo, StreamCall } from "@stream-io/video-react-sdk";
+import { MyUILayout } from "../MyUILayout";
+
 const maps = {
     test: {
         scale: 1,
@@ -27,6 +30,21 @@ const maps = {
     }
 };
 
+const apiKey = 'mmhfdzb5evj2';
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3Byb250by5nZXRzdHJlYW0uaW8iLCJzdWIiOiJ1c2VyL1NhdGVsZV9TaGFuIiwidXNlcl9pZCI6IlNhdGVsZV9TaGFuIiwidmFsaWRpdHlfaW5fc2Vjb25kcyI6NjA0ODAwLCJpYXQiOjE3NDQ3NTExNzYsImV4cCI6MTc0NTM1NTk3Nn0.kfPr4YptQqvJ41hDMmaoMq5QWfoROTRCJDRPHHrRDuA';
+const userId = 'Satele_Shan';
+const callId = 'gYjwK2fLwVgU';
+
+// set up the user object
+const user = {
+    id: userId,
+    name: 'Oliver',
+    image: 'https://getstream.io/random_svg/?id=oliver&name=Oliver',
+};
+
+const client = new StreamVideoClient({ apiKey, user, token });
+const call = client.call('default', callId);
+call.join({ create: true });
 
 export const Teleport = (props) => {
 
@@ -41,6 +59,8 @@ export const Teleport = (props) => {
         setCounter(1)
     }, 1000);
 
+
+
     const { map } = useControls("Map", {
         map: {
             value: "b406",
@@ -48,47 +68,22 @@ export const Teleport = (props) => {
         }
     });
 
-    const [webcamStream, setWebcamStream] = useState(null);
-    const [activeTV, setActiveTV] = useState(null); // State to track selected TV
-
-    useEffect(() => {
-        async function getWebcam() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                setWebcamStream(stream);
-            } catch (err) {
-                console.error("Error accessing webcam:", err);
-            }
-        }
-        getWebcam();
-    }, []);
-
+    
     return (
         <>
             <Environment preset="dawn" />
-            <Physics debug={false}>
 
+            <Physics debug={false}>
                 <Suspense>
                     {
                         props.roomMode === "Connection" ?
-                            <>
-                                <WebCamTV
-                                    position={[-0.87, 0.95, 3.7]}
-                                    rotation={[0, 3.15, 0]}
-                                    scale={1.6}
-                                    stream={webcamStream}
-                                    isActive={activeTV === 1}
-                                    onSelect={() => setActiveTV(1)}
-                                />
-                                <WebCamTV
-                                    position={[1.18, 0.95, 3.7]}
-                                    rotation={[0, 3.15, 0]}
-                                    scale={1.6}
-                                    stream={webcamStream}
-                                    isActive={activeTV === 2}
-                                    onSelect={() => setActiveTV(2)}
-                                />
-                            </>
+
+                            <StreamVideo client={client}>
+                                <StreamCall call={call}>
+                                    <MyUILayout />
+                                </StreamCall>
+                            </StreamVideo>
+
                             : props.roomMode === "TV" ?
                                 <TV position={[-0.8, 0.95, 3.5]} rotation={[0, 3.15, 0]} scale={0.13} url={props.tvLink} />
                                 : <></>
