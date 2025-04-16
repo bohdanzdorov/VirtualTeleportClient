@@ -13,14 +13,16 @@ export const MyUILayout = () => {
     const [activeTV, setActiveTV] = useState(1);
 
     useEffect(() => {
-        if (participants[0].videoStream) {
+        if (participants[1].videoStream) {
             // const tracks = mediaStream.getVideoTracks();
             // if (tracks.length > 0) {
-                const newStream = new MediaStream(participants[0].videoStream);
+                const newStream = new MediaStream(participants[1].videoStream);
                 setVideoStream(newStream);
             // }
+        }else{
+            console.log("no videoStream")
         }
-    }, [mediaStream]);
+    }, [participants[1].videoStream]);
 
     return (
         <>
