@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Environment } from "@react-three/drei";
+import { Environment, Html, Text } from "@react-three/drei";
 import { Suspense } from "react";
 import { Physics } from "@react-three/rapier";
 import { useControls } from "leva";
@@ -11,9 +11,7 @@ import { Splat } from "@react-three/drei";
 import TV from "./TV";
 import { UpdatedCharacterController } from "./UpdatedCharacterController";
 import WebCamTV from "./WebCamTV";
-
-import { StreamVideoClient, StreamVideo, StreamCall } from "@stream-io/video-react-sdk";
-import { MyUILayout } from "../MyUILayout";
+import { createAgoraClient } from "../../hooks/useAgora";
 
 const maps = {
     test: {
@@ -30,36 +28,56 @@ const maps = {
     }
 };
 
-const apiKey = 'mmhfdzb5evj2';
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3Byb250by5nZXRzdHJlYW0uaW8iLCJzdWIiOiJ1c2VyL1NhdGVsZV9TaGFuIiwidXNlcl9pZCI6IlNhdGVsZV9TaGFuIiwidmFsaWRpdHlfaW5fc2Vjb25kcyI6NjA0ODAwLCJpYXQiOjE3NDQ3NTExNzYsImV4cCI6MTc0NTM1NTk3Nn0.kfPr4YptQqvJ41hDMmaoMq5QWfoROTRCJDRPHHrRDuA';
-const userId = 'Satele_Shan';
-const callId = 'gYjwK2fLwVgU';
-
-// set up the user object
-const user = {
-    id: userId,
-    name: 'Oliver',
-    image: 'https://getstream.io/random_svg/?id=oliver&name=Oliver',
-};
-
-const client = new StreamVideoClient({ apiKey, user, token });
-const call = client.call('default', callId);
-call.join({ create: true });
 
 export const Teleport = (props) => {
 
-    const usersRef = useRef(props.users);
-    const [counter, setCounter] = useState(0);
+    const [videoStream, setVideoStream] = useState(null);
+    const [remoteStreams, setRemoteStreams] = useState({});
 
     useEffect(() => {
-        usersRef.current = props.users;
-    }, [props.users]);
+        let client;
 
-    setTimeout(() => {
-        setCounter(1)
-    }, 1000);
+        createAgoraClient( {
+            userId: socket.id,
+            onUserPublished: (user, videoTrack) => {
+                const mediaStream = new MediaStream();
+                mediaStream.addTrack(videoTrack.getMediaStreamTrack());
+                console.log("mediastr: ", mediaStream)
+                console.log(user)
+                setRemoteStreams(prev => ({ ...prev, [user.uid]: mediaStream }));
+            },
+            onUserLeft: (user) => {
+                setRemoteStreams(prev => {
+                    const updated = { ...prev };
+                    delete updated[user.uid];
+                    return updated;
+                });
+            }
+        }).then(res => {
+            client = res.client;
+            const mediaStream = new MediaStream();
+            mediaStream.addTrack(res.localVideoTrack.getMediaStreamTrack());
+            setVideoStream(mediaStream);
+        });
+
+        return () => {
+            if (client) client.leave();
+        };
+    }, []);
 
 
+    const getVideoStreamByTV = (tvNumber) => {
+        const tvEntry = props.occupiedWebCamTVs.find(el => el.tvNumber === tvNumber);
+        if (!tvEntry) return videoStream; 
+        return remoteStreams[tvEntry.userId] || videoStream;
+    }
+
+    const selectWebCamTV = (tvNumber) => {
+        socket.emit("occupyWebCamTV", {
+            userId: socket.id,
+            tvNumber: tvNumber,
+        })
+    }
 
     const { map } = useControls("Map", {
         map: {
@@ -68,22 +86,31 @@ export const Teleport = (props) => {
         }
     });
 
-    
     return (
         <>
             <Environment preset="dawn" />
-
             <Physics debug={false}>
                 <Suspense>
                     {
                         props.roomMode === "Connection" ?
-
-                            <StreamVideo client={client}>
-                                <StreamCall call={call}>
-                                    <MyUILayout />
-                                </StreamCall>
-                            </StreamVideo>
-
+                            <>
+                                <WebCamTV
+                                    position={[-0.87, 0.95, 3.7]}
+                                    rotation={[0, 3.15, 0]}
+                                    scale={1.6}
+                                    stream={getVideoStreamByTV(1)}
+                                    isActive={props.occupiedWebCamTVs.some(el => el.tvNumber === 1)}
+                                    onSelect={() => selectWebCamTV(1)}
+                                />
+                                <WebCamTV
+                                    position={[1.18, 0.95, 3.7]}
+                                    rotation={[0, 3.15, 0]}
+                                    scale={1.6}
+                                    stream={getVideoStreamByTV(2)}
+                                    isActive={props.occupiedWebCamTVs.some(el => el.tvNumber === 2)}
+                                    onSelect={() => selectWebCamTV(2)}
+                                />
+                            </>
                             : props.roomMode === "TV" ?
                                 <TV position={[-0.8, 0.95, 3.5]} rotation={[0, 3.15, 0]} scale={0.13} url={props.tvLink} />
                                 : <></>

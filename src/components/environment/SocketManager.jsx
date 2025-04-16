@@ -69,6 +69,10 @@ export const SocketManager = (props) => {
             props.setUsers(value)
         }
 
+        function onOccupyWebCamTV(value) {
+            props.setOccupiedWebCamTvs(value)
+        }
+
         function onAudioStream(audioData) {
             // console.log("Audio Data playing...")
             var newData = audioData.split(";");
@@ -82,7 +86,6 @@ export const SocketManager = (props) => {
                 }
                 audio.play();
             }
-           
         }
 
         function onTvLinkChange(tvlinkInput){
@@ -94,6 +97,7 @@ export const SocketManager = (props) => {
         socket.on('audioStream', (audioData) => { onAudioStream(audioData) });
         socket.on("disconnect", onDisconnect)
         socket.on("users", onUsers)
+        socket.on("occupyWebCamTV", onOccupyWebCamTV)
         socket.on("tvLink", (tvLinkInput)=>{onTvLinkChange(tvLinkInput)})
 
 

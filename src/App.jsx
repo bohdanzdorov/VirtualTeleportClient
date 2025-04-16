@@ -23,7 +23,9 @@ function App() {
   const [micState, setMicState] = useState(false);
   const [tvLink, setTvLink] = useState("https://www.youtube.com/embed/oozh-69e5NU")
   const [roomMode, setRoomMode] = useState("Empty")
+  
   const [users, setUsers] = useState([])
+  const [occupiedWebCamTVs, setOccupiedWebCamTvs] = useState([])
 
   const [isConnectedtoRoom, setIsConnectedToRoom] = useState(false)
   const [isMovementAllowed, setIsMovementAllowed] = useState(true)
@@ -43,10 +45,10 @@ function App() {
               dpr={Math.min(window.devicePixelRatio, 1.5)} 
               gl={{ antialias: false, powerPreference: "high-performance", precision: "highp" }}>
               <Physics allowSleep={false}>
-                <Teleport users={users} tvLink={tvLink} isMovementAllowed={isMovementAllowed} roomMode={roomMode} />
+                <Teleport users={users} occupiedWebCamTVs={occupiedWebCamTVs} tvLink={tvLink} isMovementAllowed={isMovementAllowed} roomMode={roomMode} />
               </Physics>
             </Canvas>
-            <SocketManager micState={micState} users={users} setUsers={setUsers} setTvLink={setTvLink} />
+            <SocketManager micState={micState} users={users} setUsers={setUsers} setOccupiedWebCamTvs={setOccupiedWebCamTvs} setTvLink={setTvLink} />
           </KeyboardControls>
           :
           <MainMenuPage setIsConnectedToRoom={setIsConnectedToRoom} />
