@@ -2,7 +2,7 @@
 import AgoraRTC from "agora-rtc-sdk-ng";
 
 const APP_ID = 'b07864edb6d844bbb5ff369b094ef130';
-const TOKEN = '007eJxTYJAJbVMNzYg+f6Hy9e+OP8yXZx9pcb6zzF/0oFXG/uWVMasUGJIMzC3MTFJTksxSLExMkpKSTNPSjM0skwwsTVLTDI0NNp35n94QyMjAWRLEwAiFID4/Q1lmUUlpYk5Iak5qQX5RCQMDAFicJdg=';
+const TOKEN = '007eJxTYLjpcIDb09UzZLrlv+KHW30XB5wpfDQpZlLZzRTVhg2X+KYrMCQZmFuYmaSmJJmlWJiYJCUlmaalGZtZJhlYmqSmGRobGLaxZTQEMjIE+T1iYIRCEJ+foSyzqKQ0MSckNSe1IL+ohIEBAO83JDA=';
 const CHANNEL = 'virtualTeleport';
 
 export const createAgoraClient = async ({ userId, onUserPublished, onUserLeft }) => {
