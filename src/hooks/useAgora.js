@@ -5,7 +5,7 @@ const APP_ID = 'b07864edb6d844bbb5ff369b094ef130';
 const CHANNEL = 'virtualTeleport';
 
 const fetchToken = async (channelName, userId) => {
-    const res = await fetch(`http://localhost:3000/rtc-token?channelName=${channelName}&uid=${userId}`);
+    const res = await fetch(`${import.meta.env.VITE_SOCKET_URL}/rtc-token?channelName=${channelName}&uid=${userId}`);
     const data = await res.json();
     console.log(data)
     return data.token;
