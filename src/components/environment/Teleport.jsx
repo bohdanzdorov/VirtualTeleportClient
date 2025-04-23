@@ -42,8 +42,6 @@ export const Teleport = (props) => {
             onUserPublished: (user, videoTrack) => {
                 const mediaStream = new MediaStream();
                 mediaStream.addTrack(videoTrack.getMediaStreamTrack());
-                console.log("mediastr: ", mediaStream)
-                console.log(user)
                 setRemoteStreams(prev => ({ ...prev, [user.uid]: mediaStream }));
             },
             onUserLeft: (user) => {
