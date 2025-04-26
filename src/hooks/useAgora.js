@@ -23,19 +23,31 @@ export const createAgoraClient = async ({ userId, onUserPublished, onUserLeft })
     const localVideoTrack = await AgoraRTC.createCameraVideoTrack();
     await client.publish([localAudioTrack, localVideoTrack]);
 
+    //Subscribe to all users, that are already in the room
     client.remoteUsers.forEach(async (user) => {
         await client.subscribe(user, "video");
         console.log("TRACK; ", user.videoTrack)
         if (user.videoTrack) {
             onUserPublished(user, user.videoTrack);
         }
+        await client.subscribe(user, "audio");
+        if (user.audioTrack) {
+            user.audioTrack.play();
+        }
     });
 
+    //Subscribe to users, that enter the room after current user
     client.on("user-published", async (user, mediaType) => {
         await client.subscribe(user, mediaType);
+
         if (mediaType === "video") {
             const remoteVideoTrack = user.videoTrack;
             onUserPublished(user, remoteVideoTrack);
+        }
+
+        if (mediaType === "audio") {
+            const remoteAudioTrack = user.audioTrack;
+            remoteAudioTrack.play();
         }
     });
 
