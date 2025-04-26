@@ -5,7 +5,7 @@ import { TvLinkInput } from "./TvLinkInput"
 export const EnvironmentUI = (props) => {    
     return (
         <>
-            <MicButton micState={props.micState} setMicState={props.setMicState}/>
+            <MicButton toggleMic={props.toggleMic} micEnabled={props.micEnabled}/>
             <RooomModeController roomMode={props.roomMode} setRoomMode={props.setRoomMode}/>
             
             {

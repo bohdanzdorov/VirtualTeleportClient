@@ -4,12 +4,10 @@ import micOn from '../../../assets/icons/mic-on.png';
 
 export function MicButton(props) {
 
-    const handleMicButtonClick = () => {props.setMicState(prevState => !prevState);};
-
     useEffect(() => {
         const handleKeyPress = (e) => {
             if (e.key.toLowerCase() === "e") 
-                handleMicButtonClick()
+                props.toggleMic()
         };
 
         window.addEventListener("keydown", handleKeyPress);
@@ -17,8 +15,8 @@ export function MicButton(props) {
     }, []);
 
     return (
-        <div onClick={handleMicButtonClick}  id="mic-button" className="environmentUI">
-            <img src={props.micState ? micOn : micOff} alt="Mic Status" />
+        <div onClick={props.toggleMic}  id="mic-button" className="environmentUI">
+            <img src={props.micEnabled ? micOn : micOff} alt="Mic Status" />
         </div>
     );
 }

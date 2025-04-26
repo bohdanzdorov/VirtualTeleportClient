@@ -51,11 +51,12 @@ export const Teleport = (props) => {
                     return updated;
                 });
             }
-        }).then(res => {
+        }).then(async(res) => {
             client = res.client;
             const mediaStream = new MediaStream();
             mediaStream.addTrack(res.localVideoTrack.getMediaStreamTrack());
             setVideoStream(mediaStream);
+            props.setLocalAudioTrack(res.localAudioTrack);
         });
 
         return () => {
