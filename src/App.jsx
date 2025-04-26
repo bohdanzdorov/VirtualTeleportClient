@@ -58,7 +58,7 @@ function App() {
                 <Teleport users={users} occupiedWebCamTVs={occupiedWebCamTVs} tvLink={tvLink} isMovementAllowed={isMovementAllowed} roomMode={roomMode} setLocalAudioTrack={setLocalAudioTrack}/>
               </Physics>
             </Canvas>
-            <SocketManager micState={micState} users={users} setUsers={setUsers} setOccupiedWebCamTvs={setOccupiedWebCamTvs} setTvLink={setTvLink} />
+            <SocketManager users={users} setUsers={setUsers} setOccupiedWebCamTvs={setOccupiedWebCamTvs} setTvLink={setTvLink} />
           </KeyboardControls>
           :
           <MainMenuPage setIsConnectedToRoom={setIsConnectedToRoom} />

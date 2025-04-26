@@ -8,11 +8,6 @@ export const socket = io(import.meta.env.VITE_SOCKET_URL, {
 })
 
 export const SocketManager = (props) => {
-    const micStateRef = useRef(props.micState); 
-
-    useEffect(() => {
-        micStateRef.current = props.micState; 
-    }, [props.micState]);
 
     useEffect(() => {
         
@@ -50,8 +45,5 @@ export const SocketManager = (props) => {
             socket.off("tvLink", (tvLinkInput)=>{onTvLinkChange(tvLinkInput)})
         }
 
-    }, [props.setUsers, props.micState])
-
-    useEffect(()=> {
-    }, [props.micState])
+    }, [props.setUsers])
 }
