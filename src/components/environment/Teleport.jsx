@@ -72,6 +72,8 @@ export const Teleport = (props) => {
     }
 
     const selectWebCamTV = (tvNumber) => {
+        props.setIsFirstPersonView(true)
+
         socket.emit("occupyWebCamTV", {
             userId: socket.id,
             tvNumber: tvNumber,
@@ -124,9 +126,9 @@ export const Teleport = (props) => {
                     {
                         props.users.map((user) => (
                             user.id === socket.id ?
-                                <UpdatedCharacterController key={user.id} name={user.name} gender={user.gender} hairColor={user.hairColor} suitColor={user.suitColor} trousersColor={user.trousersColor} />
+                                <UpdatedCharacterController key={user.id} isFirstPersonView={props.isFirstPersonView} setIsFirstPersonView={props.setIsFirstPersonView} name={user.name} gender={user.gender} hairColor={user.hairColor} suitColor={user.suitColor} trousersColor={user.trousersColor} />
                                 :
-                                <OtherCharacter
+                                user.isVisible && <OtherCharacter
                                     key={user.id}
                                     name={user.name}
                                     gender={user.gender}

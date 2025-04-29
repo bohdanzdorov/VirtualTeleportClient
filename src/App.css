@@ -50,6 +50,17 @@
 .tvLinkInput:focus {
     border-color: #EDE8F5;
 }
+.leaveMonitorBtn {
+    position: absolute;
+    left: 48%;
+    top: 92%;
+    background-color: rgba(0, 25, 51, 0.75);
+    border: black solid 3px;
+    color: #EDE8F5;
+    font-size: 2rem;
+    transform: translate(-50%, -50%);
+    padding: 1%;
+}
 /*
     Colors used: 
     #3D52A0
