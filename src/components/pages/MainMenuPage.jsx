@@ -45,13 +45,14 @@ export const MainMenuPage = (props) => {
             suitColor: suitColor,
             trousersColor: trousersColor
         })
-        props.setIsConnectedToRoom(true)
+        props.setEnvironmentPage()
     }
 
     return (
         <div className="mainDiv">
             <h2>Virtual Teleport</h2>
             <input className={"nameField"} type="text" placeholder="Name" value={name} onChange={handleNameChange} />
+            <button className="monitorModeButton" onClick={props.setChooseMonitorPage}>Monitor Mode</button>
             <div className={"characterEditorDiv"}>
                 <div className={"inputBoxesDiv"}>
                     <div className="genderBox">
@@ -77,7 +78,6 @@ export const MainMenuPage = (props) => {
                     </div>
                 </div>
                 <div className="displayModelDiv" ref={canvasContainerRef}>
-
                     <Canvas
                         style={{ width: "100%", height: "100%" }}
                     >

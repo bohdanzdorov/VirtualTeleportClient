@@ -20,10 +20,12 @@ export const SocketManager = (props) => {
         }
 
         function onUsers(value) {
+            console.log("USERS: ", value)
             props.setUsers(value)
         }
 
         function onOccupyWebCamTV(value) {
+            console.log("WEBCAMS: ", value)
             props.setOccupiedWebCamTvs(value)
         }
 
