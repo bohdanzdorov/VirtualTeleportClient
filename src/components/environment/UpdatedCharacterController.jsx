@@ -1,7 +1,7 @@
 import Ecctrl, { EcctrlAnimation } from "ecctrl";
 import { useState, useRef, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
-import { KeyboardControls, FirstPersonControls } from "@react-three/drei";
+import { KeyboardControls, FirstPersonControls, DragControls } from "@react-three/drei";
 import { Man } from "./Man";
 import { Suspense } from "react";
 import { Woman } from "./Woman";
@@ -109,7 +109,7 @@ export const UpdatedCharacterController = (props) => {
             <KeyboardControls map={keyboardMap}>
                 {
                     props.isFirstPersonView ?
-                        <FirstPersonControls lookSpeed={0.05}/>
+                        <PointerLockControls />
                         // <Ecctrl
                         //     ref={ecctrlRef}
                         //     key={"FPS"}

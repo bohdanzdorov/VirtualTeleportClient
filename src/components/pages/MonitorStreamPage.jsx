@@ -2,6 +2,7 @@ import { createAgoraSpectator } from "../../hooks/useAgora";
 import { socket } from "../environment/SocketManager";
 
 import { useEffect, useRef, useState } from "react";
+import "../../styles/MonitorStreamPage.css"
 
 export const MonitorStreamPage = (props) => {
     const [remoteStreams, setRemoteStreams] = useState({});
@@ -47,10 +48,15 @@ export const MonitorStreamPage = (props) => {
     }, [remoteStreams, props.chosenNumber, props.occupiedWebCamTVs]);
 
     return (
-        <div>
-            <video controls poster=
-                "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20190710102234/download3.png" ref={videoRef} autoPlay playsInline muted style={{  height: "100vh", backgroundColor: "black" }} />
-
+        <div className="monitor-stream-container">
+            <button className="goBackButton" onClick={props.setMainPage}>Back</button>
+            <video
+                ref={videoRef}
+                autoPlay
+                playsInline
+                controls
+                poster="/MonitorWaitingPoster.png"
+            />
         </div>
     );
 };

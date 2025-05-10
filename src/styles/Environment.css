@@ -1,0 +1,69 @@
+/* 3D environment */
+.environmentUI {
+    z-index: 100000000;
+}
+
+#mic-button {
+    position: absolute;
+    aspect-ratio: 1/1;
+    padding: 1%;
+    padding-bottom: 0;
+    top: 80%;
+    left: 88%;
+    background-color: rgba(0, 25, 51, 0.75);
+    border: black solid 3px;
+}
+
+.roomModeController{
+    width: 30%;
+    position: absolute;
+    height: 7%;
+    top: 2%;
+    left: 3%;
+    padding: 1%;
+    background-color: rgba(0, 25, 51, 0.75);
+    outline: none;
+    border: black solid 2px;
+    font-size: 1.2rem;
+    color: #EDE8F5;
+}
+
+.roomModeController select {
+    margin-left: 5%;
+    background-color: rgba(0, 0, 0, 0.0);
+    border: 0;
+    border-bottom: #EDE8F5 solid 2px;
+    outline: 0;
+    font-size: 1.2rem;
+    color: #EDE8F5;
+}
+
+.tvLinkInput {
+    width: 30%;
+    height: 5%;
+    padding: 1%;
+    position: absolute;
+    top: 9%;
+    left: 3%;
+    background-color: rgba(0, 25, 51, 0.75);
+    outline: none;
+    border: black solid 2px;
+    font-size: 1.2rem;
+    color: #EDE8F5;
+}
+
+.tvLinkInput:focus {
+    border-color: #EDE8F5;
+}
+
+.leaveMonitorBtn {
+    position: absolute;
+    left: 48%;
+    top: 92%;
+    background-color: rgba(0, 25, 51, 0.75);
+    border: black solid 3px;
+    color: #EDE8F5;
+    font-size: 2rem;
+    transform: translate(-50%, -50%);
+    padding: 1%;
+}

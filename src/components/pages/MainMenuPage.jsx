@@ -1,26 +1,25 @@
 import { Canvas } from "@react-three/fiber"
-import { PerspectiveCamera, OrbitControls } from "@react-three/drei";
+import { PerspectiveCamera, OrbitControls, Environment } from "@react-three/drei";
 import { useRef, useEffect, useState } from "react";
-import { Environment } from "@react-three/drei";
 import { socket } from "../environment/SocketManager"
 import { Man } from "../environment/Man";
 import { Woman } from "../environment/Woman";
+import '../../styles/MainMenuPage.css'
 
 export const MainMenuPage = (props) => {
 
     const canvasContainerRef = useRef();
-    const [name, setName] = useState("")
-    const [gender, setGender] = useState("male")
-    const [hairColor, setHairColor] = useState("#553211")
-    const [suitColor, setSuitColor] = useState("#000000")
-    const [trousersColor, setTrousersColor] = useState("#000000")
+    const [name, setName] = useState("");
+    const [gender, setGender] = useState("male");
+    const [hairColor, setHairColor] = useState("#553211");
+    const [suitColor, setSuitColor] = useState("#000000");
+    const [trousersColor, setTrousersColor] = useState("#000000");
 
-    const handleNameChange = (event) => setName(event.target.value)
-    const handleGenderChange = (event) => setGender(event.target.value);
-    const handleTrousersColorChange = (event) => setTrousersColor(event.target.value);
-    const handleHairColorChange = (event) => setHairColor(event.target.value);
-    const handleSuitColorChange = (event) => setSuitColor(event.target.value);
-
+    const handleNameChange = (e) => setName(e.target.value);
+    const handleGenderChange = (e) => setGender(e.target.value);
+    const handleHairColorChange = (e) => setHairColor(e.target.value);
+    const handleSuitColorChange = (e) => setSuitColor(e.target.value);
+    const handleTrousersColorChange = (e) => setTrousersColor(e.target.value);
 
     const updateCanvasSize = () => {
         if (canvasContainerRef.current) {
@@ -32,80 +31,104 @@ export const MainMenuPage = (props) => {
     useEffect(() => {
         window.addEventListener("resize", updateCanvasSize);
         updateCanvasSize();
-
         return () => window.removeEventListener("resize", updateCanvasSize);
     }, []);
 
-
     const onRoomConnect = () => {
         socket.emit("roomConnect", {
-            name: name,
-            gender: gender,
-            hairColor: hairColor,
-            suitColor: suitColor,
-            trousersColor: trousersColor
-        })
-        props.setEnvironmentPage()
-    }
+            name,
+            gender,
+            hairColor,
+            suitColor,
+            trousersColor
+        });
+        props.setEnvironmentPage();
+    };
 
     return (
         <div className="mainDiv">
-            <h2>Virtual Teleport</h2>
-            <input className={"nameField"} type="text" placeholder="Name" value={name} onChange={handleNameChange} />
             <button className="monitorModeButton" onClick={props.setChooseMonitorPage}>Monitor Mode</button>
-            <div className={"characterEditorDiv"}>
-                <div className={"inputBoxesDiv"}>
+            <h2 className="title">Virtual Teleport 🛸</h2>
+
+            <input
+                className="nameField"
+                type="text"
+                placeholder="Enter your name..."
+                value={name}
+                onChange={handleNameChange}
+            />
+
+            <div className="characterEditorDiv">
+                <div className="inputBoxesDiv">
                     <div className="genderBox">
-                        Gender
-                            <label htmlFor="genderChoice1">
-                            <input type="radio" id="genderChoice1" name="gender" value="male" onChange={handleGenderChange} checked={gender === "male"} />
-                            Male</label>
-                            <label htmlFor="genderChoice2">
-                            <input type="radio" id="genderChoice2" name="gender" value="female" onChange={handleGenderChange} checked={gender === "female"} />
-                            Female</label>
+                        <div className="inputGroupLabel">Gender</div>
+                        <div className="genderOptions">
+                            <label className="genderOption">
+                                <input
+                                    type="radio"
+                                    value="male"
+                                    checked={gender === "male"}
+                                    onChange={handleGenderChange}
+                                />
+                                Male
+                            </label>
+                            <label className="genderOption">
+                                <input
+                                    type="radio"
+                                    value="female"
+                                    checked={gender === "female"}
+                                    onChange={handleGenderChange}
+                                />
+                                Female
+                            </label>
+                        </div>
                     </div>
+
                     <div className="editorBox">
-                        <label htmlFor="hairColorInput">Hair color</label>
-                        <input id="hairColorInput" type="color" value={hairColor} onChange={handleHairColorChange} />
+                        <label htmlFor="hairColor">Hair</label>
+                        <input
+                            type="color"
+                            id="hairColor"
+                            value={hairColor}
+                            onChange={handleHairColorChange}
+                        />
                     </div>
+
                     <div className="editorBox">
-                        <label htmlFor="suitColorInput">Suit color</label>
-                        <input id="suitColorInput" type="color" value={suitColor} onChange={handleSuitColorChange} />
+                        <label htmlFor="suitColor">Suit</label>
+                        <input
+                            type="color"
+                            id="suitColor"
+                            value={suitColor}
+                            onChange={handleSuitColorChange}
+                        />
                     </div>
+
                     <div className="editorBox">
-                        <label htmlFor="suitColorInput">Pants color</label>
-                        <input id="suitColorInput" type="color" value={trousersColor} onChange={handleTrousersColorChange} />
+                        <label htmlFor="pantsColor">Pants</label>
+                        <input
+                            type="color"
+                            id="pantsColor"
+                            value={trousersColor}
+                            onChange={handleTrousersColorChange}
+                        />
                     </div>
                 </div>
+
                 <div className="displayModelDiv" ref={canvasContainerRef}>
-                    <Canvas
-                        style={{ width: "100%", height: "100%" }}
-                    >
+                    <Canvas style={{ width: "100%", height: "100%" }}>
                         <Environment preset="dawn" />
-                        <PerspectiveCamera makeDefault position={[0, 0, 5]} fov={50} />
-                        <OrbitControls />
-                        {
-                            gender === "male" ?
-                                <Man
-                                    scale={1.75}
-                                    position={[0, -1.5, 0]}
-                                    animation={"idle"}
-                                    hairColor={hairColor}
-                                    suitColor={suitColor}
-                                    trousersColor={trousersColor}
-                                />
-                                :
-                                <Woman scale={1.75}
-                                    position={[0, -1.5, 0]}
-                                    animation={"idle"}
-                                    hairColor={hairColor}
-                                    suitColor={suitColor}
-                                    trousersColor={trousersColor} />
-                        }
+                        <OrbitControls minDistance={2} maxDistance={3}/>
+                        {gender === "male" ? (
+                            <Man scale={1.75} position={[0, -1.5, 0]} animation="idle" hairColor={hairColor} suitColor={suitColor} trousersColor={trousersColor} />
+                        ) : (
+                            <Woman scale={1.75} position={[0, -1.5, 0]} animation="idle" hairColor={hairColor} suitColor={suitColor} trousersColor={trousersColor} />
+                        )}
                     </Canvas>
                 </div>
             </div>
-            <input type="button" className={"menuButton"} onClick={onRoomConnect} value={"Connect"} />
+
+            <button className="menuButton" onClick={onRoomConnect}>Connect</button>
         </div>
-    )
-}
+    );
+};

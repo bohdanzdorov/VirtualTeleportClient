@@ -1,4 +1,4 @@
-import "./App.css"
+import './styles/Environment.css'
 
 import { useState } from "react"
 import { Physics } from '@react-three/cannon'
@@ -33,7 +33,6 @@ function App() {
 
   const [localAudioTrack, setLocalAudioTrack] = useState(null);
 
-
   const [tvLink, setTvLink] = useState("https://www.youtube.com/embed/oozh-69e5NU")
   const [roomMode, setRoomMode] = useState("Empty")
 
@@ -47,7 +46,6 @@ function App() {
   };
 
   const leaveMonitor = () => {
-    //TODO: Add socket on leave monitor
     socket.emit("freeWebCamTV", {
       userId: socket.id
     })
@@ -74,7 +72,6 @@ function App() {
                 roomMode={roomMode} setRoomMode={setRoomMode}
                 setIsMovementAllowed={setIsMovementAllowed}
                 users={users} />
-              <p>{JSON.stringify(occupiedWebCamTVs)}</p>
               <Canvas shadows
                 dpr={Math.min(window.devicePixelRatio, 1.5)}
                 gl={{ antialias: false, powerPreference: "high-performance", precision: "highp" }}>
@@ -84,8 +81,8 @@ function App() {
               </Canvas>
             </KeyboardControls>
             : currentPage === 2 ?
-              <ChooseMonitorPage occupiedWebCamTVs={occupiedWebCamTVs} />
-              : <></>
+              <ChooseMonitorPage occupiedWebCamTVs={occupiedWebCamTVs} setMainPage={setMainPage}/>
+            : <></>
       }
     </>
   )

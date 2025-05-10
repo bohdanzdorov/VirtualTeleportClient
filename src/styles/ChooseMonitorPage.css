@@ -1,0 +1,60 @@
+.choose-monitor-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  text-align: center;
+}
+
+.choose-monitor-container h3 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #222;
+}
+
+.monitor-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.monitor-button,
+.goBackButton {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: #1976d2;
+  color: white;
+}
+
+.monitor-button:hover,
+.goBackButton:hover {
+  background-color: #135ba1;
+}
+
+.goBackButton {
+  z-index: 9999999999;  
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: #555;
+}
+
+@media (max-width: 600px) {
+  .choose-monitor-container h3 {
+    font-size: 1.5rem;
+  }
+
+  .monitor-button,
+  .goBackButton {
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+  }
+}

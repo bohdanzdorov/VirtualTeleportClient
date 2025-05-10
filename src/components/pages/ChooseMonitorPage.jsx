@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { MonitorStreamPage } from "./MonitorStreamPage"
+import "../../styles/ChooseMonitorPage.css"
 
 export const ChooseMonitorPage = (props) => {
 
@@ -9,20 +10,24 @@ export const ChooseMonitorPage = (props) => {
         setChosenNumber(monitorNumber)
     }
 
-
     return (
-        <div>
-            {
-                chosenNumber !== -1 ? 
-                <MonitorStreamPage chosenNumber={chosenNumber} occupiedWebCamTVs={props.occupiedWebCamTVs} /> 
-                :
-                <div>
-                    <button className="goBackButton">Back</button>
+        <>
+            {chosenNumber !== -1 ? (
+                <MonitorStreamPage
+                    chosenNumber={chosenNumber}
+                    occupiedWebCamTVs={props.occupiedWebCamTVs}
+                    setMainPage={props.setMainPage}
+                />
+            ) : (
+                <div className="choose-monitor-container">
+                    <button className="goBackButton" onClick={props.setMainPage}>Back</button>
                     <h3>Choose the monitor to display</h3>
-                    <button onClick={() => handleChooseMonitor(1)}>1</button>
-                    <button onClick={() => handleChooseMonitor(2)}>2</button>
+                    <div className="monitor-buttons">
+                        <button className="monitor-button" onClick={() => handleChooseMonitor(1)}>Monitor 1</button>
+                        <button className="monitor-button" onClick={() => handleChooseMonitor(2)}>Monitor 2</button>
+                    </div>
                 </div>
-            }
-        </div>
+            )}
+        </>
     )
 }
