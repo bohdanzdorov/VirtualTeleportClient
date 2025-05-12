@@ -1,10 +1,13 @@
-import { Canvas } from "@react-three/fiber"
-import { PerspectiveCamera, OrbitControls, Environment } from "@react-three/drei";
-import { useRef, useEffect, useState } from "react";
-import { socket } from "../environment/SocketManager"
-import { Man } from "../environment/Man";
-import { Woman } from "../environment/Woman";
 import '../../styles/MainMenuPage.css'
+
+import { useRef, useEffect, useState } from "react";
+import { Canvas } from "@react-three/fiber"
+import { OrbitControls, Environment } from "@react-three/drei";
+
+import { socket } from "../SocketManager"
+
+import { Man } from '../Environment/Models/Man';
+import { Woman } from '../Environment/Models/Woman';
 
 export const MainMenuPage = (props) => {
 

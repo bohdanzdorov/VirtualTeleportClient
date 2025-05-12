@@ -1,6 +1,5 @@
-import { useEffect, useRef } from "react"
+import { useEffect } from "react"
 import { io } from "socket.io-client"
-import { TvLinkInput } from "./UI/TvLinkInput";
 
 export const socket = io(import.meta.env.VITE_SOCKET_URL, {
     transports: ["websocket"],

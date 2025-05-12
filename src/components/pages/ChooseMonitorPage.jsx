@@ -1,6 +1,8 @@
-import { useState } from "react"
-import { MonitorStreamPage } from "./MonitorStreamPage"
 import "../../styles/ChooseMonitorPage.css"
+
+import { useState } from "react"
+
+import { MonitorStreamPage } from "./MonitorStreamPage"
 
 export const ChooseMonitorPage = (props) => {
 

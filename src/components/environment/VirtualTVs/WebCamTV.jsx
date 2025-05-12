@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import { useFrame } from "@react-three/fiber";
 import { Text } from "@react-three/drei";
 
 export default function WebCamTV({ position, rotation, stream, isActive, onSelect }) {
   const videoRef = useRef(document.createElement("video"));
   const textureRef = useRef();
-  const fixedHeight = 1.15; // Always this height
-  const [planeSize, setPlaneSize] = useState([2, fixedHeight]); // Initial guess
+  const fixedHeight = 1.15; 
+  const [planeSize, setPlaneSize] = useState([2, fixedHeight]); 
 
   useEffect(() => {
     const video = videoRef.current;
@@ -20,10 +20,9 @@ export default function WebCamTV({ position, rotation, stream, isActive, onSelec
       const handleLoadedMetadata = () => {
         const { videoWidth, videoHeight } = video;
         const aspect = videoWidth / videoHeight;
-        const width = fixedHeight * aspect; // Adjust width only
+        const width = fixedHeight * aspect;
         setPlaneSize([width, fixedHeight]);
 
-        // Create texture
         textureRef.current = new THREE.VideoTexture(video);
         textureRef.current.needsUpdate = true;
         video.play();

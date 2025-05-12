@@ -1,10 +1,11 @@
 import { useRef } from "react"
-import { useFrame } from "@react-three/fiber";
-import { RigidBody, CapsuleCollider } from "@react-three/rapier";
 import * as THREE from "three"
-import { Man } from "./Man";
-import { Woman } from "./Woman";
+import { useFrame } from "@react-three/fiber";
 import { Text } from "@react-three/drei";
+import { RigidBody, CapsuleCollider } from "@react-three/rapier";
+
+import { Man } from "./Models/Man";
+import { Woman } from "./Models/Woman";
 
 export const OtherCharacter = (props) => {
 

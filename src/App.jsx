@@ -3,13 +3,14 @@ import './styles/Environment.css'
 import { useState } from "react"
 import { Physics } from '@react-three/cannon'
 import { Canvas } from '@react-three/fiber'
-import { socket, SocketManager } from './components/environment/SocketManager'
-import { Teleport } from './components/environment/Teleport'
 import { KeyboardControls } from '@react-three/drei'
 
+import { socket, SocketManager } from './components/SocketManager'
+
 import { MainMenuPage } from "./components/pages/MainMenuPage"
-import { EnvironmentUI } from "./components/environment/UI/EnvironmentUI"
 import { ChooseMonitorPage } from "./components/pages/ChooseMonitorPage"
+import { EnvironmentUI } from './components/EnvironmentUI/EnvironmentUI'
+import { Teleport } from './components/Pages/Teleport'
 
 function App() {
   const keyBoardMap = [

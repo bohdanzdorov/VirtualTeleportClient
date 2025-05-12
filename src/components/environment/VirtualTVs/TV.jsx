@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Html } from "@react-three/drei";
 
 export default function TV({ position, rotation, scale, url }) {
@@ -21,7 +21,7 @@ export default function TV({ position, rotation, scale, url }) {
       position={position}
       rotation={rotation}
       scale={scale}
-      // zIndexRange={[100, 0]} // Make sure it's on top
+      zIndexRange={[100, 0]} 
     >
       <div
         onMouseEnter={() => {

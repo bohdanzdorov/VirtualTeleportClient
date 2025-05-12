@@ -1,16 +1,17 @@
-import Ecctrl, { EcctrlAnimation } from "ecctrl";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Suspense } from "react";
 import { useFrame } from "@react-three/fiber";
-import { KeyboardControls, FirstPersonControls } from "@react-three/drei";
-import { Man } from "./Man";
-import { Suspense } from "react";
-import { Woman } from "./Woman";
-import { socket } from "./SocketManager"
-import useCharacterAnimation from "../../useCharacterAnimation";
-import { PointerLockControls } from "@react-three/drei";
-import { FPS } from "./FPS";
 
-export const UpdatedCharacterController = (props) => {
+import Ecctrl, { EcctrlAnimation } from "ecctrl";
+import { KeyboardControls } from "@react-three/drei";
+
+import { socket } from "../SocketManager";
+import { useCharacterAnimation } from "../../hooks/useCharacterAnimation";
+
+import { FPS } from "./FPS";
+import { Man } from "../Environment/Models/Man";
+import { Woman } from "../Environment/Models/Woman";
+
+export const CharacterController = (props) => {
 
     const keyboardMap = [
         { name: "forward", keys: ["ArrowUp", "KeyW"] },
@@ -111,33 +112,6 @@ export const UpdatedCharacterController = (props) => {
                 {
                     props.isFirstPersonView ?
                         <FPS/>
-                        // <Ecctrl
-                        //     ref={ecctrlRef}
-                        //     key={"FPS"}
-                        //     position={position}
-                        //     camCollision={false}
-                        //     rayLength={1.5}
-                        //     floatingDis={0.3}
-                        //     springK={1.5}
-                        //     dampingC={0.1}
-                        //     autoBalance={false}
-                        //     autoBalanceSpringK={0}
-                        //     autoBalanceDampingC={0}
-                        //     slopeMaxAngle={1.2}
-                        //     slopeUpExtraForce={0}
-                        //     slopeDownExtraForce={0}
-                        //     fallingGravityScale={1}
-                        //     maxVelLimit={1}
-                        //     scale={1}
-                        //     animated
-                        //     //First person view props
-                        //     camTargetPos={{ x: 0, y: 0.5, z: 0 }}
-                        //     camInitDis={-0.01}
-                        //     camMinDis={-0.01 }
-                        //     camFollowMult={1000}
-                        //     camLerpMult={1000}
-                        //     turnVelMultiplier={1}
-                        //     turnSpeed={100}/>
                         :
                         <Ecctrl
                             ref={ecctrlRef}

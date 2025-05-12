@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const useCharacterAnimation = () => {
+export const useCharacterAnimation = () => {
   const [curAnimation, setCurAnimation] = useState("CharacterArmature|Idle");
   const keysPressed = new Set();
 
@@ -40,5 +40,3 @@ const useCharacterAnimation = () => {
 
   return curAnimation;
 };
-
-export default useCharacterAnimation;

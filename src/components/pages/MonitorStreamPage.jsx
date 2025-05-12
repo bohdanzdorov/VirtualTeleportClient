@@ -1,8 +1,9 @@
-import { createAgoraSpectator } from "../../hooks/useAgora";
-import { socket } from "../environment/SocketManager";
+import "../../styles/MonitorStreamPage.css"
 
 import { useEffect, useRef, useState } from "react";
-import "../../styles/MonitorStreamPage.css"
+
+import { createAgoraSpectator } from "../../hooks/useAgora";
+import { socket } from "../SocketManager";
 
 export const MonitorStreamPage = (props) => {
     const [remoteStreams, setRemoteStreams] = useState({});

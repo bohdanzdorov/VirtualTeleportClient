@@ -1,18 +1,16 @@
-import React, { useState } from "react"
-import { Environment, Html, Text } from "@react-three/drei";
-import { Suspense } from "react";
+import { useState, useEffect, Suspense } from "react"
+import { Environment, Splat } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
-import { useControls } from "leva";
-import { socket } from "./SocketManager"
-import { Map } from "./Map";
-import { OtherCharacter } from "./OtherCharacter";
-import { useEffect, useRef } from "react";
-import { Splat } from "@react-three/drei";
-import TV from "./TV";
-import { UpdatedCharacterController } from "./UpdatedCharacterController";
-import WebCamTV from "./WebCamTV";
+
 import { createAgoraClient } from "../../hooks/useAgora";
-import {VideoTV} from './VideoTV'
+import { socket } from "../SocketManager"
+
+import { Map } from "../Environment/Map";
+import { OtherCharacter } from "../Environment/OtherCharacter";
+import { CharacterController } from "../CharacterControllers/CharacterController";
+import TV from "../Environment/VirtualTVs/TV";
+import WebCamTV from "../Environment/VirtualTVs/WebCamTV";
+
 const maps = {
     test: {
         scale: 1,
@@ -124,7 +122,7 @@ export const Teleport = (props) => {
                     {
                         props.users.map((user) => (
                             user.id === socket.id ?
-                                <UpdatedCharacterController key={user.id} isFirstPersonView={props.isFirstPersonView} setIsFirstPersonView={props.setIsFirstPersonView} name={user.name} gender={user.gender} hairColor={user.hairColor} suitColor={user.suitColor} trousersColor={user.trousersColor} />
+                                <CharacterController key={user.id} isFirstPersonView={props.isFirstPersonView} setIsFirstPersonView={props.setIsFirstPersonView} name={user.name} gender={user.gender} hairColor={user.hairColor} suitColor={user.suitColor} trousersColor={user.trousersColor} />
                                 :
                                 user.isVisible && <OtherCharacter
                                     key={user.id}
