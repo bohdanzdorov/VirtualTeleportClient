@@ -1,24 +1,55 @@
 import "../../styles/ChooseMonitorPage.css"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 import { MonitorStreamPage } from "./MonitorStreamPage"
 
+import { createAgoraSpectator } from "../../hooks/useAgora";
+import { socket } from "../SocketManager";
+
 export const ChooseMonitorPage = (props) => {
 
+    const [remoteStreams, setRemoteStreams] = useState({});
     const [chosenNumber, setChosenNumber] = useState(-1)
+
+    const setChooseMonitorPage=()=>{setChosenNumber(-1)}
 
     const handleChooseMonitor = (monitorNumber) => {
         setChosenNumber(monitorNumber)
     }
 
+    useEffect(() => {
+        let client;
+        createAgoraSpectator({
+            userId: socket.id,
+            onUserPublished: (user, videoTrack) => {
+                const mediaStream = new MediaStream();
+                mediaStream.addTrack(videoTrack.getMediaStreamTrack());
+                setRemoteStreams(prev => ({ ...prev, [user.uid]: mediaStream }));
+            },
+            onUserLeft: (user) => {
+                setRemoteStreams(prev => {
+                    const updated = { ...prev };
+                    delete updated[user.uid];
+                    return updated;
+                });
+            }
+        });
+
+        return () => {
+            if (client) client.leave();
+        };
+    }, []);
+
     return (
         <>
             {chosenNumber !== -1 ? (
                 <MonitorStreamPage
+                    key={chosenNumber}
+                    remoteStreams={remoteStreams}
                     chosenNumber={chosenNumber}
                     occupiedWebCamTVs={props.occupiedWebCamTVs}
-                    setMainPage={props.setMainPage}
+                    setChooseMonitorPage={setChooseMonitorPage}
                 />
             ) : (
                 <div className="choose-monitor-container">
