@@ -3,36 +3,39 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { Text } from "@react-three/drei";
 
-export default function WebCamTV({ position, rotation, stream, isActive, onSelect }) {
+export const VideoTV = ({ position, rotation, scale, stream, videoUrl, isActive, onSelect }) => {
   const videoRef = useRef(document.createElement("video"));
-  const textureRef = useRef();
-  const fixedHeight = 1.15; // Always this height
-  const [planeSize, setPlaneSize] = useState([2, fixedHeight]); // Initial guess
+  const textureRef = useRef(null);
+  const materialRef = useRef();
+
+  const [isReady, setIsReady] = useState(true);
 
   useEffect(() => {
     const video = videoRef.current;
-    if (isActive && stream) {
-      video.srcObject = stream;
-      video.muted = true;
-      video.loop = true;
-      video.playsInline = true;
+    video.crossOrigin = "anonymous"; // if needed
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
 
-      const handleLoadedMetadata = () => {
-        const { videoWidth, videoHeight } = video;
-        const aspect = videoWidth / videoHeight;
-        const width = fixedHeight * aspect; // Adjust width only
-        setPlaneSize([width, fixedHeight]);
+    if (isActive) {
+      if (stream) {
+        video.srcObject = stream;
+      } else if (videoUrl) {
+        video.src = videoUrl;
+      }
 
-        // Create texture
+      video.play().then(() => {
         textureRef.current = new THREE.VideoTexture(video);
-        textureRef.current.needsUpdate = true;
-        video.play();
-      };
-
-      video.addEventListener("loadedmetadata", handleLoadedMetadata);
-      return () => video.removeEventListener("loadedmetadata", handleLoadedMetadata);
+        textureRef.current.minFilter = THREE.LinearFilter;
+        textureRef.current.magFilter = THREE.LinearFilter;
+        textureRef.current.format = THREE.RGBFormat;
+      });
     }
-  }, [stream, isActive]);
+
+    return () => {
+      video.pause();
+    };
+  }, [stream, videoUrl, isActive]);
 
   useFrame(() => {
     if (textureRef.current && isActive) {
@@ -41,13 +44,12 @@ export default function WebCamTV({ position, rotation, stream, isActive, onSelec
   });
 
   return (
-    <mesh position={position} rotation={rotation}>
-      <planeGeometry args={planeSize} />
-      {isActive && textureRef.current ? (
+    <mesh position={position} rotation={rotation} scale={scale}>
+      <planeGeometry args={[1.2, 0.7]} />
+      {isActive && isReady ? (
         <meshBasicMaterial
+          ref={materialRef}
           map={textureRef.current}
-          transparent
-          opacity={0.9}
           toneMapped={false}
         />
       ) : (

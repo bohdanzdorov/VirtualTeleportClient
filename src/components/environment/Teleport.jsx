@@ -12,7 +12,7 @@ import TV from "./TV";
 import { UpdatedCharacterController } from "./UpdatedCharacterController";
 import WebCamTV from "./WebCamTV";
 import { createAgoraClient } from "../../hooks/useAgora";
-
+import {VideoTV} from './VideoTV'
 const maps = {
     test: {
         scale: 1,
@@ -36,7 +36,7 @@ export const Teleport = (props) => {
     useEffect(() => {
         let client;
 
-        createAgoraClient( {
+        createAgoraClient({
             userId: socket.id,
             onUserPublished: (user, videoTrack) => {
                 const mediaStream = new MediaStream();
@@ -50,7 +50,7 @@ export const Teleport = (props) => {
                     return updated;
                 });
             }
-        }).then(async(res) => {
+        }).then(async (res) => {
             client = res.client;
             const mediaStream = new MediaStream();
             mediaStream.addTrack(res.localVideoTrack.getMediaStreamTrack());
@@ -66,7 +66,7 @@ export const Teleport = (props) => {
 
     const getVideoStreamByTV = (tvNumber) => {
         const tvEntry = props.occupiedWebCamTVs.find(el => el.tvNumber === tvNumber);
-        if (!tvEntry) return videoStream; 
+        if (!tvEntry) return videoStream;
         return remoteStreams[tvEntry.userId] || videoStream;
     }
 
@@ -78,12 +78,12 @@ export const Teleport = (props) => {
         })
     }
 
-    const { map } = useControls("Map", {
-        map: {
-            value: "b406",
-            options: Object.keys(maps),
-        }
-    });
+    // const { map } = useControls("Map", {
+    //     map: {
+    //         value: "b406",
+    //         options: Object.keys(maps),
+    //     }
+    // });
 
     return (
         <>
@@ -117,9 +117,9 @@ export const Teleport = (props) => {
                 </Suspense>
                 <Suspense>
                     <Map
-                        scale={maps[map].scale}
-                        position={maps[map].position}
-                        model={`models/${map}.glb`}
+                        scale={3.75}
+                        position={[0, -0.8, 0]}
+                        model={`models/b406.glb`}
                     />
                     {
                         props.users.map((user) => (
