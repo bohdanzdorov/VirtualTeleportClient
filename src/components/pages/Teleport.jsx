@@ -142,14 +142,24 @@ export const Teleport = (props) => {
                 </Suspense>
                 <Suspense>
                     <Splat
+                        src="/JARO.splat"
+                        position={[2, 0.3, 0]}
+                        scale={0.2}
+                        rotation={[0, 4.2, 0]}
+                        renderOrder={-1}
+                        depthWrite={true}
+                        chunkSize={10000}
+                    />
+                    <Splat
                         src="https://huggingface.co/datasets/Tiky121/Splats/resolve/main/B405.splat?download=true"
                         position-y={0.75}
                         scale={3.75}
                         rotation={[0, 5.45, 0]}
-                        renderOrder={-1}
-                        depthWrite={false}
+                        renderOrder={-2}
+                        depthWrite={true}
                         chunkSize={10000}
                     />
+
                 </Suspense>
             </Physics>
         </>
