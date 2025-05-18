@@ -150,7 +150,7 @@ export const Teleport = (props) => {
                         depthWrite={true}
                         chunkSize={10000}
                     />
-                    <Splat
+                    {/* <Splat
                         src="https://huggingface.co/datasets/Tiky121/Splats/resolve/main/B405.splat?download=true"
                         position-y={0.75}
                         scale={3.75}
@@ -158,8 +158,7 @@ export const Teleport = (props) => {
                         renderOrder={-2}
                         depthWrite={true}
                         chunkSize={10000}
-                    />
-
+                    /> */}
                 </Suspense>
             </Physics>
         </>
