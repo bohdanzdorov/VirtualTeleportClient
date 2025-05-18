@@ -142,7 +142,7 @@ export const Teleport = (props) => {
                 </Suspense>
                 <Suspense>
                     <Splat
-                        src="/JARO.splat"
+                        src="https://huggingface.co/datasets/BohdanZdorov/JARO/resolve/main/JARO.splat?download=true"
                         position={[2, 0.3, 0]}
                         scale={0.2}
                         rotation={[0, 4.2, 0]}
