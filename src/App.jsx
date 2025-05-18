@@ -7,8 +7,8 @@ import { KeyboardControls } from '@react-three/drei'
 
 import { socket, SocketManager } from './components/SocketManager'
 
-import { MainMenuPage } from "./components/pages/MainMenuPage"
-import { ChooseMonitorPage } from "./components/pages/ChooseMonitorPage"
+import { MainMenuPage } from "./components/Pages/MainMenuPage"
+import { ChooseMonitorPage } from "./components/Pages/ChooseMonitorPage"
 import { EnvironmentUI } from './components/EnvironmentUI/EnvironmentUI'
 import { Teleport } from './components/Pages/Teleport'
 
