@@ -75,11 +75,6 @@ export const createAgoraSpectator = async ({ userId, onUserPublished, onUserLeft
 
     await client.join(APP_ID, CHANNEL, TOKEN, userId);
 
-    // Create and publish your local video/audio tracks
-    // const localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-    // const localVideoTrack = await AgoraRTC.createCameraVideoTrack();
-    // await client.publish([localAudioTrack, localVideoTrack]);
-
     //Subscribe to all users, that are already in the room
     client.remoteUsers.forEach(async (user) => {
         await client.subscribe(user, "video");

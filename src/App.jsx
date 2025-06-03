@@ -1,10 +1,10 @@
 import './styles/Environment.css'
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Physics } from '@react-three/cannon'
 import { Canvas } from '@react-three/fiber'
 import { KeyboardControls } from '@react-three/drei'
-
+import { Stats } from '@react-three/drei'
 import { socket, SocketManager } from './components/SocketManager'
 
 import { MainMenuPage } from "./components/Pages/MainMenuPage"
@@ -53,11 +53,12 @@ function App() {
     setIsFirstPersonView(false)
   }
 
+
   const setMainPage = () => { setCurrentPage(0) }
   const setEnvironmentPage = () => { setCurrentPage(1) }
   const setChooseMonitorPage = () => {
     socket.emit("monitorModeConnect")
-    setCurrentPage(2) 
+    setCurrentPage(2)
   }
 
   return (
@@ -79,11 +80,12 @@ function App() {
                 <Physics allowSleep={false}>
                   <Teleport users={users} occupiedWebCamTVs={occupiedWebCamTVs} tvLink={tvLink} isMovementAllowed={isMovementAllowed} roomMode={roomMode} setLocalAudioTrack={setLocalAudioTrack} isFirstPersonView={isFirstPersonView} setIsFirstPersonView={setIsFirstPersonView} />
                 </Physics>
+                <Stats />
               </Canvas>
             </KeyboardControls>
             : currentPage === 2 ?
-              <ChooseMonitorPage occupiedWebCamTVs={occupiedWebCamTVs} setMainPage={setMainPage}/>
-            : <></>
+              <ChooseMonitorPage occupiedWebCamTVs={occupiedWebCamTVs} setMainPage={setMainPage} />
+              : <></>
       }
     </>
   )
