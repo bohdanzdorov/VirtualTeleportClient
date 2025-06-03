@@ -80,7 +80,6 @@ function App() {
                 <Physics allowSleep={false}>
                   <Teleport users={users} occupiedWebCamTVs={occupiedWebCamTVs} tvLink={tvLink} isMovementAllowed={isMovementAllowed} roomMode={roomMode} setLocalAudioTrack={setLocalAudioTrack} isFirstPersonView={isFirstPersonView} setIsFirstPersonView={setIsFirstPersonView} />
                 </Physics>
-                <Stats />
               </Canvas>
             </KeyboardControls>
             : currentPage === 2 ?

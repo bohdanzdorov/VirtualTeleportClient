@@ -115,9 +115,9 @@ export const Teleport = (props) => {
                 </Suspense>
                 <Suspense>
                     <Map
-                        scale={2.75}
-                        position={[-0.65, -1.25, -1]}
-                        model={`models/office.glb`}
+                        scale={3.75}
+                        position={[0, -0.8, 0]}
+                        model={`models/b406.glb`}
                     />
                     {
                         props.users.map((user) => (
@@ -140,7 +140,7 @@ export const Teleport = (props) => {
                         ))
                     }
                 </Suspense>
-                {/* <Suspense>
+                <Suspense>
                     <Splat
                         src="https://huggingface.co/datasets/BohdanZdorov/JARO/resolve/main/JARO.splat?download=true"
                         position={[2, 0.3, 0]}
@@ -159,7 +159,7 @@ export const Teleport = (props) => {
                         depthWrite={true}
                         chunkSize={10000}
                     />
-                </Suspense> */}
+                </Suspense>
             </Physics>
         </>
     )
