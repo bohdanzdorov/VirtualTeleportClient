@@ -1,10 +1,9 @@
 import './styles/Environment.css'
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Physics } from '@react-three/cannon'
 import { Canvas } from '@react-three/fiber'
 import { KeyboardControls } from '@react-three/drei'
-import { Stats } from '@react-three/drei'
 import { socket, SocketManager } from './components/SocketManager'
 
 import { MainMenuPage } from "./components/Pages/MainMenuPage"
@@ -29,7 +28,6 @@ function App() {
   //1 - environment room
   //2 - monitor selection menu
   const [currentPage, setCurrentPage] = useState(0)
-  const [isConnectedtoRoom, setIsConnectedToRoom] = useState(false)
   const [isMovementAllowed, setIsMovementAllowed] = useState(true)
 
   const [localAudioTrack, setLocalAudioTrack] = useState(null);
@@ -52,7 +50,6 @@ function App() {
     })
     setIsFirstPersonView(false)
   }
-
 
   const setMainPage = () => { setCurrentPage(0) }
   const setEnvironmentPage = () => { setCurrentPage(1) }

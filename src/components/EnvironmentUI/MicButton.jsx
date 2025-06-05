@@ -2,6 +2,9 @@ import { useEffect } from "react";
 import micOff from '../../assets/icons/mic-off.png';
 import micOn from '../../assets/icons/mic-on.png';
 
+/*
+    Button to toggle audio sending to other users
+*/
 export function MicButton(props) {
 
     useEffect(() => {

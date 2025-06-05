@@ -5,12 +5,14 @@ import { useEffect, useRef } from "react";
 export const MonitorStreamPage = (props) => {
     const videoRef = useRef();
 
+    //Choose only one video stream out of all of them
     const getVideoStreamByTV = (tvNumber) => {
         const tvEntry = props.occupiedWebCamTVs.find(el => el.tvNumber === tvNumber);
         if (!tvEntry) return null;
         return props.remoteStreams[tvEntry.userId] || null;
     }
 
+    //Update the video stream, that is displayed every time, when new info is given
     useEffect(() => {
         const stream = getVideoStreamByTV(props.chosenNumber);
         if (videoRef.current && stream instanceof MediaStream) {

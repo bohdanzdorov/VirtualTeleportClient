@@ -25,7 +25,9 @@ const maps = {
         position: [0, -0.8, 0]
     }
 };
-
+/*
+    Main component for the virtual environment
+*/
 export const Teleport = (props) => {
 
     const [videoStream, setVideoStream] = useState(null);
@@ -33,7 +35,7 @@ export const Teleport = (props) => {
 
     useEffect(() => {
         let client;
-
+        //join as an active participant
         createAgoraClient({
             userId: socket.id,
             onUserPublished: (user, videoTrack) => {
@@ -61,7 +63,7 @@ export const Teleport = (props) => {
         };
     }, []);
 
-
+    //Used to display correct video stream on the correct TV
     const getVideoStreamByTV = (tvNumber) => {
         const tvEntry = props.occupiedWebCamTVs.find(el => el.tvNumber === tvNumber);
         if (!tvEntry) return videoStream;
@@ -158,6 +160,7 @@ export const Teleport = (props) => {
                     }
                 </Suspense>
                 <Suspense>
+                    {/* Room Model */}
                     <Splat
                         src="https://huggingface.co/datasets/BohdanZdorov/JARO/resolve/main/JARO.splat?download=true"
                         position={[2, 0.3, 0]}
@@ -167,6 +170,7 @@ export const Teleport = (props) => {
                         depthWrite={true}
                         chunkSize={10000}
                     />
+                    {/* JARO Model */}
                     <Splat
                         src="https://huggingface.co/datasets/Tiky121/Splats/resolve/main/B405.splat?download=true"
                         position-y={0.75}

@@ -73,7 +73,9 @@ export const CharacterController = (props) => {
         ]
 
         const newAnimation = curAnimation
-
+        
+        //Optimization technique
+        //The user sends current properties only when it moved enough
         const movementThreshold = 0.01;
         const rotationThreshold = 0.1
         const positionChanged = newPos.some((val, i) => Math.abs(val - lastPosition[i]) > movementThreshold);

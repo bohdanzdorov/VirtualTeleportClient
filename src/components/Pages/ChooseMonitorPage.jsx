@@ -18,6 +18,7 @@ export const ChooseMonitorPage = (props) => {
         setChosenNumber(monitorNumber)
     }
 
+    //Join to the call as spectator
     useEffect(() => {
         let client;
         createAgoraSpectator({

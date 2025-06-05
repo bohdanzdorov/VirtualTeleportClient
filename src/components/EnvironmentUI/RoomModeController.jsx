@@ -1,9 +1,12 @@
+/*
+    Combo box to change room mode
+*/
 export const RooomModeController = (props) => {
 
     const handleRoomModeChange = (event) => {
-        console.log(event.target.value)
         props.setRoomMode(event.target.value)
     }
+
     return (
         <div className="roomModeController  environmentUI">
             Room Mode: 

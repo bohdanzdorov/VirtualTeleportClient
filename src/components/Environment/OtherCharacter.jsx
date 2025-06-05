@@ -7,6 +7,10 @@ import { RigidBody, CapsuleCollider } from "@react-three/rapier";
 import { Man } from "./Models/Man";
 import { Woman } from "./Models/Woman";
 
+/*
+    Component used to display real-time avatars of other users
+    Serves as a wrapper around 3D avatar model
+*/
 export const OtherCharacter = (props) => {
 
     const character = useRef();
@@ -14,6 +18,7 @@ export const OtherCharacter = (props) => {
 
     const rb = useRef();
 
+    //Every frame update the model's position and rotation
     useFrame(() => {
         character.current.rotation.x = props.rotation[0]
         character.current.rotation.y = props.rotation[1]

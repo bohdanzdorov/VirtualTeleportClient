@@ -2,7 +2,10 @@ import { PointerLockControls } from '@react-three/drei';
 import { useThree, useFrame } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-
+/*
+  The component, that add first person controls
+  It is used, when the user chooses to cast its video on the monitor
+*/
 export const FPS = () => {
   const { camera } = useThree();
   const controlsRef = useRef();

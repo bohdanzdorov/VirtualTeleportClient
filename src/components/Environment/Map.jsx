@@ -1,7 +1,9 @@
 import { useEffect, useRef } from "react";
 import { useAnimations, useGLTF } from "@react-three/drei";
 import { RigidBody } from "@react-three/rapier"
-
+/*
+  Component responsible for displaying 3D map
+*/
 export const Map = ({ model, ...props }) => {
   const { scene, animations } = useGLTF(model);
   const group = useRef();

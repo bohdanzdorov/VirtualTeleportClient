@@ -5,7 +5,9 @@ export const socket = io(import.meta.env.VITE_SOCKET_URL, {
     transports: ["websocket"],
     withCredentials: true
 })
-
+/*
+    Component, that handles all receiving data from sockets
+*/
 export const SocketManager = (props) => {
 
     useEffect(() => {
@@ -18,14 +20,17 @@ export const SocketManager = (props) => {
             console.log("disconnected")
         }
 
+        //New data about users
         function onUsers(value) {
             props.setUsers(value)
         }
 
+        //New data about Tv occupation
         function onOccupyWebCamTV(value) {
             props.setOccupiedWebCamTvs(value)
         }
 
+        //New data about TV link
         function onTvLinkChange(tvlinkInput){
             props.setTvLink(tvlinkInput.tvLink)
         }

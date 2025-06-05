@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
-
+/*
+  Helper hook, that assists in getting the users's avatar animation
+*/
 export const useCharacterAnimation = () => {
   const [curAnimation, setCurAnimation] = useState("CharacterArmature|Idle");
   const keysPressed = new Set();
