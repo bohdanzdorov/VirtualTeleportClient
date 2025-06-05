@@ -86,8 +86,6 @@ export const CharacterController = (props) => {
                 position: newPos,
                 animation: newAnimation,
                 rotation: newRot,
-                linvel: 1,
-                containerRotation: 1
             });
 
             setLastPosition(newPos);
