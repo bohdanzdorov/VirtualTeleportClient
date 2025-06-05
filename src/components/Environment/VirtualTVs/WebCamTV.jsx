@@ -3,11 +3,11 @@ import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { Text } from "@react-three/drei";
 
-export default function WebCamTV({ position, rotation, stream, isActive, onSelect }) {
+export default function WebCamTV({ position, rotation, scale, stream, isActive, onSelect }) {
   const videoRef = useRef(document.createElement("video"));
   const textureRef = useRef();
-  const fixedHeight = 1.15; 
-  const [planeSize, setPlaneSize] = useState([2, fixedHeight]); 
+  const fixedHeight = 1.15*scale; 
+  const [planeSize, setPlaneSize] = useState([2*scale, fixedHeight]); 
 
   useEffect(() => {
     const video = videoRef.current;

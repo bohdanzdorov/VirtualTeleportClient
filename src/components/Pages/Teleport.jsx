@@ -76,13 +76,6 @@ export const Teleport = (props) => {
         })
     }
 
-    // const { map } = useControls("Map", {
-    //     map: {
-    //         value: "b406",
-    //         options: Object.keys(maps),
-    //     }
-    // });
-
     return (
         <>
             <Environment preset="dawn" />
@@ -94,7 +87,7 @@ export const Teleport = (props) => {
                                 <WebCamTV
                                     position={[-0.87, 0.95, 3.7]}
                                     rotation={[0, 3.15, 0]}
-                                    scale={1.6}
+                                    scale={1}
                                     stream={getVideoStreamByTV(1)}
                                     isActive={props.occupiedWebCamTVs.some(el => el.tvNumber === 1)}
                                     onSelect={() => selectWebCamTV(1)}
@@ -102,10 +95,34 @@ export const Teleport = (props) => {
                                 <WebCamTV
                                     position={[1.18, 0.95, 3.7]}
                                     rotation={[0, 3.15, 0]}
-                                    scale={1.6}
+                                    scale={1}
                                     stream={getVideoStreamByTV(2)}
                                     isActive={props.occupiedWebCamTVs.some(el => el.tvNumber === 2)}
                                     onSelect={() => selectWebCamTV(2)}
+                                />
+                                <WebCamTV
+                                    position={[-2.55, 0.79, 1]}
+                                    rotation={[0, Math.PI / 2, 0]}
+                                    scale={0.65}
+                                    stream={getVideoStreamByTV(3)}
+                                    isActive={props.occupiedWebCamTVs.some(el => el.tvNumber === 3)}
+                                    onSelect={() => selectWebCamTV(3)}
+                                />
+                                <WebCamTV
+                                    position={[-2.55, 0.79, -0.25]}
+                                    rotation={[0, Math.PI / 2, 0]}
+                                    scale={0.65}
+                                    stream={getVideoStreamByTV(4)}
+                                    isActive={props.occupiedWebCamTVs.some(el => el.tvNumber === 4)}
+                                    onSelect={() => selectWebCamTV(4)}
+                                />
+                                <WebCamTV
+                                    position={[-2.55, 0.79, -1.5]}
+                                    rotation={[0, Math.PI / 2, 0]}
+                                    scale={0.65}
+                                    stream={getVideoStreamByTV(5)}
+                                    isActive={props.occupiedWebCamTVs.some(el => el.tvNumber === 5)}
+                                    onSelect={() => selectWebCamTV(5)}
                                 />
                             </>
                             : props.roomMode === "TV" ?
