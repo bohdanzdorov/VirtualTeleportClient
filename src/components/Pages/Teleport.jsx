@@ -153,8 +153,6 @@ export const Teleport = (props) => {
                                     position={user.position}
                                     animation={user.animation}
                                     rotation={user.rotation}
-                                    linvel={user.linvel}
-                                    containerRotation={user.containerRotation}
                                 />
                         ))
                     }
