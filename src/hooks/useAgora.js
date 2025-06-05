@@ -1,9 +1,6 @@
 // useAgora.js
 import AgoraRTC from "agora-rtc-sdk-ng";
 
-const APP_ID = '';
-const CHANNEL = '';
-
 //Get channel(room) token for the client, that wants to connect
 const fetchToken = async (channelName, userId) => {
     const res = await fetch(`${import.meta.env.VITE_SOCKET_URL}/rtc-token?channelName=${channelName}&uid=${userId}`);
@@ -52,7 +49,7 @@ export const createAgoraClient = async ({ userId, onUserPublished, onUserLeft })
 
     //If session token expires - refresh
     client.on("token-privilege-will-expire", async () => {
-        const newToken = await fetchToken(CHANNEL, userId);
+        const newToken = await fetchToken(import.meta.env.VITE_AGORA_CHANNEL, userId);
         await client.renewToken(newToken);
         console.log("Token renewed");
     });
