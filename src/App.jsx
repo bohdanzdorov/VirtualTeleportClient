@@ -65,6 +65,7 @@ function App() {
                 roomMode={roomMode} setRoomMode={setRoomMode}
                 setIsMovementAllowed={setIsMovementAllowed}
                 users={users} />
+
               <Canvas shadows
                 dpr={Math.min(window.devicePixelRatio, 1.5)}
                 gl={{ antialias: false, powerPreference: "high-performance", precision: "highp" }}>
@@ -72,6 +73,7 @@ function App() {
                   <Teleport users={users} occupiedWebCamTVs={occupiedWebCamTVs} tvLink={tvLink} isMovementAllowed={isMovementAllowed} roomMode={roomMode} setLocalAudioTrack={setLocalAudioTrack} isFirstPersonView={isFirstPersonView} setIsFirstPersonView={setIsFirstPersonView} />
                 </Physics>
               </Canvas>
+              
             </KeyboardControls>
         : <></>
       }

@@ -81,7 +81,7 @@ export const Teleport = (props) => {
     return (
         <>
             <Environment preset="dawn" />
-            <Physics debug={false}>          
+            <Physics debug={true}>          
                 <Suspense>
                     {/* <WebCamTV
                         position={[-2.55, 0.79, -1.5]}

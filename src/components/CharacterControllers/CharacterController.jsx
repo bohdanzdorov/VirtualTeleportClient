@@ -91,27 +91,14 @@ export const CharacterController = (props) => {
             setLastRotation(newRot);
         }
     });
-    
+
     return (
         <Suspense fallback={null}>
             <KeyboardControls map={keyboardMap}>
                 <Ecctrl
                     ref={ecctrlRef}
-                    key={"THRDPS"}
                     position={position}
                     camCollision={false}
-                    rayLength={1.5}
-                    floatingDis={0.3}
-                    springK={1.5}
-                    dampingC={0.1}
-                    autoBalance={false}
-                    autoBalanceSpringK={0}
-                    autoBalanceDampingC={0}
-                    slopeMaxAngle={1.2}
-                    slopeUpExtraForce={0}
-                    slopeDownExtraForce={0}
-                    fallingGravityScale={1}
-                    maxVelLimit={1}
                     scale={1}
                     animated
                     camInitDis={-2.5}
@@ -119,11 +106,11 @@ export const CharacterController = (props) => {
                     {
                         props.gender === "male" ?
                             <EcctrlAnimation ref={animationRef} characterURL={manCharacterURL} animationSet={animationSet}>
-                                <Man position={[0, -0.7, 0]} scale={1} ref={rigidBodyRef} hairColor={props.hairColor} suitColor={props.suitColor} trousersColor={props.trousersColor} />
+                                <Man position={[0, -0.65, 0]} scale={1} ref={rigidBodyRef} hairColor={props.hairColor} suitColor={props.suitColor} trousersColor={props.trousersColor} />
                             </EcctrlAnimation>
                             :
                             <EcctrlAnimation ref={animationRef} characterURL={womanCharacterURL} animationSet={animationSet}>
-                                <Woman position={[0, -0.7, 0]} scale={1} ref={rigidBodyRef} hairColor={props.hairColor} suitColor={props.suitColor} trousersColor={props.trousersColor} />
+                                <Woman position={[0, -0.65, 0]} scale={1} ref={rigidBodyRef} hairColor={props.hairColor} suitColor={props.suitColor} trousersColor={props.trousersColor} />
                             </EcctrlAnimation>
                     }
                 </Ecctrl>
