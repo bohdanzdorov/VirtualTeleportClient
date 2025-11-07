@@ -7,7 +7,6 @@ import { KeyboardControls } from "@react-three/drei";
 import { socket } from "../SocketManager";
 import { useCharacterAnimation } from "../../hooks/useCharacterAnimation";
 
-import { FPS } from "./FPS";
 import { Man } from "../Environment/Models/Man";
 import { Woman } from "../Environment/Models/Woman";
 
@@ -73,7 +72,7 @@ export const CharacterController = (props) => {
         ]
 
         const newAnimation = curAnimation
-        
+
         //Optimization technique
         //The user sends current properties only when it moved enough
         const movementThreshold = 0.01;
@@ -92,60 +91,42 @@ export const CharacterController = (props) => {
             setLastRotation(newRot);
         }
     });
-
-    useEffect(() => {
-        const handleChangePersonView = (e) => {
-            if (e.key.toLowerCase() === "1")
-                props.setIsFirstPersonView(true)
-            else if (e.key.toLowerCase() === "3") {
-                props.setIsFirstPersonView(false)
-            }
-        };
-
-        window.addEventListener("keydown", handleChangePersonView);
-        return () => window.removeEventListener("keydown", handleChangePersonView);
-    }, []);
-
+    
     return (
         <Suspense fallback={null}>
             <KeyboardControls map={keyboardMap}>
-                {
-                    props.isFirstPersonView ?
-                        <FPS/>
-                        :
-                        <Ecctrl
-                            ref={ecctrlRef}
-                            key={"THRDPS"}
-                            position={position}
-                            camCollision={false}
-                            rayLength={1.5}
-                            floatingDis={0.3}
-                            springK={1.5}
-                            dampingC={0.1}
-                            autoBalance={false}
-                            autoBalanceSpringK={0}
-                            autoBalanceDampingC={0}
-                            slopeMaxAngle={1.2}
-                            slopeUpExtraForce={0}
-                            slopeDownExtraForce={0}
-                            fallingGravityScale={1}
-                            maxVelLimit={1}
-                            scale={1}
-                            animated
-                            camInitDis={-2.5}
-                        >
-                            {
-                                props.gender === "male" ?
-                                    <EcctrlAnimation ref={animationRef} characterURL={manCharacterURL} animationSet={animationSet}>
-                                        <Man position={[0, -0.7, 0]} scale={1} ref={rigidBodyRef} hairColor={props.hairColor} suitColor={props.suitColor} trousersColor={props.trousersColor} />
-                                    </EcctrlAnimation>
-                                    :
-                                    <EcctrlAnimation ref={animationRef} characterURL={womanCharacterURL} animationSet={animationSet}>
-                                        <Woman position={[0, -0.7, 0]} scale={1} ref={rigidBodyRef} hairColor={props.hairColor} suitColor={props.suitColor} trousersColor={props.trousersColor} />
-                                    </EcctrlAnimation>
-                            }
-                        </Ecctrl>
-                }
+                <Ecctrl
+                    ref={ecctrlRef}
+                    key={"THRDPS"}
+                    position={position}
+                    camCollision={false}
+                    rayLength={1.5}
+                    floatingDis={0.3}
+                    springK={1.5}
+                    dampingC={0.1}
+                    autoBalance={false}
+                    autoBalanceSpringK={0}
+                    autoBalanceDampingC={0}
+                    slopeMaxAngle={1.2}
+                    slopeUpExtraForce={0}
+                    slopeDownExtraForce={0}
+                    fallingGravityScale={1}
+                    maxVelLimit={1}
+                    scale={1}
+                    animated
+                    camInitDis={-2.5}
+                >
+                    {
+                        props.gender === "male" ?
+                            <EcctrlAnimation ref={animationRef} characterURL={manCharacterURL} animationSet={animationSet}>
+                                <Man position={[0, -0.7, 0]} scale={1} ref={rigidBodyRef} hairColor={props.hairColor} suitColor={props.suitColor} trousersColor={props.trousersColor} />
+                            </EcctrlAnimation>
+                            :
+                            <EcctrlAnimation ref={animationRef} characterURL={womanCharacterURL} animationSet={animationSet}>
+                                <Woman position={[0, -0.7, 0]} scale={1} ref={rigidBodyRef} hairColor={props.hairColor} suitColor={props.suitColor} trousersColor={props.trousersColor} />
+                            </EcctrlAnimation>
+                    }
+                </Ecctrl>
             </KeyboardControls>
         </Suspense>
     )

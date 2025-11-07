@@ -7,7 +7,6 @@ import { KeyboardControls } from '@react-three/drei'
 import { socket, SocketManager } from './components/SocketManager'
 
 import { MainMenuPage } from "./components/Pages/MainMenuPage"
-import { ChooseMonitorPage } from "./components/Pages/ChooseMonitorPage"
 import { EnvironmentUI } from './components/EnvironmentUI/EnvironmentUI'
 import { Teleport } from './components/Pages/Teleport'
 
@@ -51,18 +50,13 @@ function App() {
     setIsFirstPersonView(false)
   }
 
-  const setMainPage = () => { setCurrentPage(0) }
   const setEnvironmentPage = () => { setCurrentPage(1) }
-  const setChooseMonitorPage = () => {
-    socket.emit("monitorModeConnect")
-    setCurrentPage(2)
-  }
 
   return (
     <>
       <SocketManager users={users} setUsers={setUsers} setOccupiedWebCamTvs={setOccupiedWebCamTvs} setTvLink={setTvLink} />
       {
-        currentPage === 0 ? <MainMenuPage setEnvironmentPage={setEnvironmentPage} setChooseMonitorPage={setChooseMonitorPage} />
+        currentPage === 0 ? <MainMenuPage setEnvironmentPage={setEnvironmentPage} />
           : currentPage === 1 ?
             <KeyboardControls map={keyBoardMap}>
               <EnvironmentUI toggleMic={toggleMic} micEnabled={micEnabled}
@@ -79,9 +73,7 @@ function App() {
                 </Physics>
               </Canvas>
             </KeyboardControls>
-            : currentPage === 2 ?
-              <ChooseMonitorPage occupiedWebCamTVs={occupiedWebCamTVs} setMainPage={setMainPage} />
-              : <></>
+        : <></>
       }
     </>
   )

@@ -50,7 +50,6 @@ export const MainMenuPage = (props) => {
 
     return (
         <div className="mainDiv">
-            <button className="monitorModeButton" onClick={props.setChooseMonitorPage}>Monitor Mode</button>
             <h2 className="title">Virtual Teleport 🛸</h2>
 
             <input

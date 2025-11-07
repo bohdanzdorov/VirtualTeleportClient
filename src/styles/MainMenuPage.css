@@ -20,25 +20,6 @@
   width: 100%;
 }
 
-/* Monitor Mode Button */
-.monitorModeButton {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  background-color: #3459e6;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.monitorModeButton:hover {
-  background-color: #2747c2;
-}
-
 /* Name Input */
 .nameField {
   width: 30%;
