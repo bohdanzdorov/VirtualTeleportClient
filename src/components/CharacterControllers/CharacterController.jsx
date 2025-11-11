@@ -49,7 +49,9 @@ export const CharacterController = (props) => {
 
     const lastPositionRef = useRef([0, 0, 0]);
     const lastRotationRef = useRef([0, 0, 0]);
-    const EMIT_INTERVAL = 100; // Send updates every 100ms (10 updates/second)
+    const lastAnimationRef = useRef("CharacterArmature|Idle");
+
+    const EMIT_INTERVAL = 0.5; // Send updates every 1ms
     const curAnimationRef = useRef("CharacterArmature|Idle");
     const characterGroupRef = useRef(null); // Cache the group reference
 
@@ -101,7 +103,7 @@ export const CharacterController = (props) => {
         }
     });
 
-    // Socket emission in separate interval (NOT in useFrame to avoid render blocking)
+    // Socket emission in separate interval
     useEffect(() => {
         const interval = setInterval(() => {
             if (!characterGroupRef.current) {
@@ -131,13 +133,14 @@ export const CharacterController = (props) => {
             const newAnimation = curAnimationRef.current
 
             //Optimization technique
-            //The user sends current properties only when it moved enough
+            //The user sends current properties only when it moved, rotated enough or changed animation
             const movementThreshold = 0.1;
             const rotationThreshold = 0.1;
             const positionChanged = newPos.some((val, i) => Math.abs(val - lastPositionRef.current[i]) > movementThreshold);
             const rotationChanged = newRot.some((val, i) => Math.abs(val - lastRotationRef.current[i]) > rotationThreshold);
+            const animationChanged = newAnimation !== lastAnimationRef.current;
 
-            if (positionChanged || rotationChanged) {
+            if (positionChanged || rotationChanged || animationChanged) {
                 socket.emit("move", {
                     position: newPos,
                     animation: newAnimation,
@@ -146,6 +149,7 @@ export const CharacterController = (props) => {
 
                 lastPositionRef.current = [...newPos];
                 lastRotationRef.current = [...newRot];
+                lastAnimationRef.current = newAnimation;
             }
         }, EMIT_INTERVAL);
 

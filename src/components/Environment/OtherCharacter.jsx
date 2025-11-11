@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useRef, useEffect } from "react"
 import * as THREE from "three"
 import { useFrame } from "@react-three/fiber";
 import { Text } from "@react-three/drei";
@@ -15,21 +15,83 @@ export const OtherCharacter = (props) => {
 
     const character = useRef();
     const container = useRef();
-
     const rb = useRef();
 
-    //Every frame update the model's position and rotation
+    // Store target and current position for interpolation
+    const targetPosRef = useRef(new THREE.Vector3(0, 0, 0));
+    const currentPosRef = useRef(new THREE.Vector3(0, 0, 0));
+    const velocityRef = useRef(new THREE.Vector3(0, 0, 0));
+    const lastPosRef = useRef(new THREE.Vector3(0, 0, 0));
+    const updateTimeRef = useRef(Date.now());
+    
+    const targetRotRef = useRef([0, 0, 0]);
+    const currentRotRef = useRef(new THREE.Euler(0, 0, 0));
+    
+    // Lerp speed - adjusted for smooth but responsive movement
+    // This will be calculated dynamically based on update frequency
+    const baseLerpSpeedRef = useRef(0.2);
+
+    // Update target position when props change
+    useEffect(() => {
+        if (!props.position || !props.rotation) return;
+
+        const now = Date.now();
+        const timeSinceUpdate = (now - updateTimeRef.current) / 1000; // seconds
+
+        // Store last position for velocity calculation
+        lastPosRef.current.copy(targetPosRef.current);
+
+        // Calculate velocity based on position change over time
+        const newPos = new THREE.Vector3(...props.position);
+        velocityRef.current = newPos.clone().sub(lastPosRef.current);
+        if (timeSinceUpdate > 0) {
+            velocityRef.current.divideScalar(timeSinceUpdate);
+        }
+
+        targetPosRef.current = newPos;
+        targetRotRef.current = props.rotation;
+        updateTimeRef.current = now;
+
+        // Adjust lerp speed based on update interval (more frequent updates = lower lerp speed)
+        if (timeSinceUpdate > 0.05) {
+            baseLerpSpeedRef.current = Math.max(0.15, Math.min(0.25, 1 / (timeSinceUpdate * 60)));
+        }
+    }, [props.position, props.rotation]);
+
+    // Initialize current position once
+    useEffect(() => {
+        if (props.position) {
+            currentPosRef.current = new THREE.Vector3(...props.position);
+        }
+    }, []);
+
+    // Every frame, interpolate towards the target position
     useFrame(() => {
-        character.current.rotation.x = props.rotation[0]
-        character.current.rotation.y = props.rotation[1]
-        character.current.rotation.z = props.rotation[2]
+        if (!character.current || !rb.current || !props.position) return;
+
+        const lerpSpeed = baseLerpSpeedRef.current;
+
+        // Interpolate position towards target with some extrapolation
+        currentPosRef.current.lerp(targetPosRef.current, lerpSpeed);
+
+        // Apply velocity prediction for smoother movement
+        currentPosRef.current.addScaledVector(velocityRef.current, 0.016); // Assume ~60fps = 16ms
+
+        // Interpolate rotation
+        const targetQuat = new THREE.Quaternion().setFromEuler(
+            new THREE.Euler(...targetRotRef.current)
+        );
+        const currentQuat = new THREE.Quaternion().setFromEuler(currentRotRef.current);
+        currentQuat.slerp(targetQuat, Math.max(0.1, lerpSpeed * 0.4));
+        currentRotRef.current.setFromQuaternion(currentQuat);
+
+        // Apply interpolated values
+        character.current.rotation.x = currentRotRef.current.x;
+        character.current.rotation.y = currentRotRef.current.y;
+        character.current.rotation.z = currentRotRef.current.z;
         
-        rb.current.setTranslation(
-            new THREE.Vector3(
-                props.position[0],
-                props.position[1],
-                props.position[2]))
-    })
+        rb.current.setTranslation(currentPosRef.current);
+    });
 
     return (
         <RigidBody
@@ -37,7 +99,7 @@ export const OtherCharacter = (props) => {
             colliders={false}
             lockRotations
             ref={rb}
-            position={props.position}>
+            position={props.position || [0, 0, 0]}>
             <group ref={container}>
                 <Text
                     position={[0, 0.3, 0]} 
@@ -72,5 +134,5 @@ export const OtherCharacter = (props) => {
             </group>
             <CapsuleCollider args={[0.21, 0.07]} />
         </RigidBody>
-    )
+    );
 }
