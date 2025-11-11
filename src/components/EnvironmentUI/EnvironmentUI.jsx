@@ -10,7 +10,7 @@ export const EnvironmentUI = (props) => {
         <>
             <MicButton toggleMic={props.toggleMic} micEnabled={props.micEnabled} />
             {/* {
-                props.isFirstPersonView && <LeaveWebCamTVButton leaveMonitor={props.leaveMonitor} />
+                <LeaveWebCamTVButton leaveMonitor={props.leaveMonitor} />
             } */}
             <TvLinkInput tvLink={props.tvLink} setTvLink={props.setTvLink} setIsMovementAllowed={props.setIsMovementAllowed} />
 

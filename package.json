@@ -23,6 +23,7 @@
     "leva": "^0.10.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-router-dom": "^7.9.5",
     "read-pkg-up": "^11.0.0",
     "socket.io-client": "^4.7.5",
     "three": "^0.171.0",

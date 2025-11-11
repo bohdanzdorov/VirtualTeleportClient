@@ -1,6 +1,7 @@
 import '../../styles/MainMenuPage.css'
 
 import { useRef, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Canvas } from "@react-three/fiber"
 import { OrbitControls, Environment } from "@react-three/drei";
 
@@ -37,6 +38,8 @@ export const MainMenuPage = (props) => {
         return () => window.removeEventListener("resize", updateCanvasSize);
     }, []);
 
+    const navigate = useNavigate();
+
     const onRoomConnect = () => {
         socket.emit("roomConnect", {
             name,
@@ -45,7 +48,7 @@ export const MainMenuPage = (props) => {
             suitColor,
             trousersColor
         });
-        props.setEnvironmentPage();
+        navigate('/teleport');
     };
 
     return (

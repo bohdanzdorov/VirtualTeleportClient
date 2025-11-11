@@ -1,32 +1,16 @@
 import './styles/Environment.css'
 
 import { useState } from "react"
-import { Physics } from '@react-three/cannon'
-import { Canvas } from '@react-three/fiber'
-import { KeyboardControls } from '@react-three/drei'
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { socket, SocketManager } from './components/SocketManager'
 
 import { MainMenuPage } from "./components/Pages/MainMenuPage"
-import { EnvironmentUI } from './components/EnvironmentUI/EnvironmentUI'
-import { Teleport } from './components/Pages/Teleport'
+import { TeleportPage } from './components/Pages/TeleportPage'
 
 function App() {
-  const keyBoardMap = [
-    { name: "forward", keys: ["ArrowUp", "KeyW"] },
-    { name: "backward", keys: ["ArrowDown", "KeyS"] },
-    { name: "left", keys: ["ArrowLeft", "KeyA"] },
-    { name: "right", keys: ["ArrowRight", "KeyD"] },
-    { name: "run", keys: ["Shift"] },
-    { name: "micAction", keys: ["KeyE"] },
-  ]
-
   const [users, setUsers] = useState([])
   const [occupiedWebCamTVs, setOccupiedWebCamTvs] = useState([])
 
-  //0 - main menu
-  //1 - environment room
-  //2 - monitor selection menu
-  const [currentPage, setCurrentPage] = useState(0)
   const [isMovementAllowed, setIsMovementAllowed] = useState(true)
 
   const [localAudioTrack, setLocalAudioTrack] = useState(null);
@@ -50,32 +34,29 @@ function App() {
     setIsFirstPersonView(false)
   }
 
-  const setEnvironmentPage = () => { setCurrentPage(1) }
-
   return (
-    <>
+    <BrowserRouter>
       <SocketManager users={users} setUsers={setUsers} setOccupiedWebCamTvs={setOccupiedWebCamTvs} setTvLink={setTvLink} />
-      {
-        currentPage === 0 ? <MainMenuPage setEnvironmentPage={setEnvironmentPage} />
-          : currentPage === 1 ?
-            <KeyboardControls map={keyBoardMap}>
-              <EnvironmentUI toggleMic={toggleMic} micEnabled={micEnabled}
-                leaveMonitor={leaveMonitor} isFirstPersonView={isFirstPersonView}
-                tvLink={tvLink} setTvLink={setTvLink}
-                roomMode={roomMode} setRoomMode={setRoomMode}
-                setIsMovementAllowed={setIsMovementAllowed}
-                users={users} />
-
-              <Canvas shadows
-                dpr={Math.min(window.devicePixelRatio, 1.5)}
-                gl={{ antialias: false, powerPreference: "high-performance", precision: "highp" }}>
-                  <Teleport users={users} occupiedWebCamTVs={occupiedWebCamTVs} tvLink={tvLink} isMovementAllowed={isMovementAllowed} roomMode={roomMode} setLocalAudioTrack={setLocalAudioTrack} isFirstPersonView={isFirstPersonView} setIsFirstPersonView={setIsFirstPersonView} />
-              </Canvas>
-              
-            </KeyboardControls>
-        : <></>
-      }
-    </>
+      <Routes>
+        <Route path="/" element={<MainMenuPage />} />
+        <Route path="/teleport" element={<TeleportPage
+          users={users}
+          occupiedWebCamTVs={occupiedWebCamTVs}
+          tvLink={tvLink}
+          isMovementAllowed={isMovementAllowed}
+          roomMode={roomMode}
+          setLocalAudioTrack={setLocalAudioTrack}
+          isFirstPersonView={isFirstPersonView}
+          setIsFirstPersonView={setIsFirstPersonView}
+          toggleMic={toggleMic}
+          micEnabled={micEnabled}
+          leaveMonitor={leaveMonitor}
+          setTvLink={setTvLink}
+          setIsMovementAllowed={setIsMovementAllowed}
+          setRoomMode={setRoomMode}
+        />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
