@@ -69,9 +69,7 @@ function App() {
               <Canvas shadows
                 dpr={Math.min(window.devicePixelRatio, 1.5)}
                 gl={{ antialias: false, powerPreference: "high-performance", precision: "highp" }}>
-                <Physics allowSleep={false}>
                   <Teleport users={users} occupiedWebCamTVs={occupiedWebCamTVs} tvLink={tvLink} isMovementAllowed={isMovementAllowed} roomMode={roomMode} setLocalAudioTrack={setLocalAudioTrack} isFirstPersonView={isFirstPersonView} setIsFirstPersonView={setIsFirstPersonView} />
-                </Physics>
               </Canvas>
               
             </KeyboardControls>

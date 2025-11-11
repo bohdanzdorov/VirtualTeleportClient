@@ -11,6 +11,8 @@ import { CharacterController } from "../CharacterControllers/CharacterController
 import TV from "../Environment/VirtualTVs/TV";
 import WebCamTV from "../Environment/VirtualTVs/WebCamTV";
 
+
+
 const maps = {
     test: {
         scale: 1,
@@ -33,35 +35,35 @@ export const Teleport = (props) => {
     const [videoStream, setVideoStream] = useState(null);
     const [remoteStreams, setRemoteStreams] = useState({});
 
-    useEffect(() => {
-        let client;
-        //join as an active participant
-        createAgoraClient({
-            userId: socket.id,
-            onUserPublished: (user, videoTrack) => {
-                const mediaStream = new MediaStream();
-                mediaStream.addTrack(videoTrack.getMediaStreamTrack());
-                setRemoteStreams(prev => ({ ...prev, [user.uid]: mediaStream }));
-            },
-            onUserLeft: (user) => {
-                setRemoteStreams(prev => {
-                    const updated = { ...prev };
-                    delete updated[user.uid];
-                    return updated;
-                });
-            }
-        }).then(async (res) => {
-            client = res.client;
-            const mediaStream = new MediaStream();
-            mediaStream.addTrack(res.localVideoTrack.getMediaStreamTrack());
-            setVideoStream(mediaStream);
-            props.setLocalAudioTrack(res.localAudioTrack);
-        });
+    // useEffect(() => {
+    //     let client;
+    //     //join as an active participant
+    //     createAgoraClient({
+    //         userId: socket.id,
+    //         onUserPublished: (user, videoTrack) => {
+    //             const mediaStream = new MediaStream();
+    //             mediaStream.addTrack(videoTrack.getMediaStreamTrack());
+    //             setRemoteStreams(prev => ({ ...prev, [user.uid]: mediaStream }));
+    //         },
+    //         onUserLeft: (user) => {
+    //             setRemoteStreams(prev => {
+    //                 const updated = { ...prev };
+    //                 delete updated[user.uid];
+    //                 return updated;
+    //             });
+    //         }
+    //     }).then(async (res) => {
+    //         client = res.client;
+    //         const mediaStream = new MediaStream();
+    //         mediaStream.addTrack(res.localVideoTrack.getMediaStreamTrack());
+    //         setVideoStream(mediaStream);
+    //         props.setLocalAudioTrack(res.localAudioTrack);
+    //     });
 
-        return () => {
-            if (client) client.leave();
-        };
-    }, []);
+    //     return () => {
+    //         if (client) client.leave();
+    //     };
+    // }, []);
 
     //Used to display correct video stream on the correct TV
     const getVideoStreamByTV = (tvNumber) => {
@@ -81,7 +83,7 @@ export const Teleport = (props) => {
     return (
         <>
             <Environment preset="dawn" />
-            <Physics debug={true}>          
+            <Physics debug={false} allowSleep={true}>          
                 <Suspense>
                     {/* <WebCamTV
                         position={[-2.55, 0.79, -1.5]}
@@ -92,6 +94,7 @@ export const Teleport = (props) => {
                         onSelect={() => selectWebCamTV(5)}
                     /> */}
                     {/* <TV position={[3.3, 1.2, 2]} rotation={[0, 4.75, 0]} scale={0.22} url={props.tvLink} /> */}
+                    
                     <Map
                         scale={2.75}
                         position={[0, -0.8, 0]}
@@ -100,7 +103,7 @@ export const Teleport = (props) => {
                     {
                         props.users.map((user) => (
                             user.id === socket.id ?
-                                <CharacterController key={user.id} isFirstPersonView={props.isFirstPersonView} setIsFirstPersonView={props.setIsFirstPersonView} name={user.name} gender={user.gender} hairColor={user.hairColor} suitColor={user.suitColor} trousersColor={user.trousersColor} />
+                                 <CharacterController key={user.id} isFirstPersonView={props.isFirstPersonView} setIsFirstPersonView={props.setIsFirstPersonView} name={user.name} gender={user.gender} hairColor={user.hairColor} suitColor={user.suitColor} trousersColor={user.trousersColor} />
                                 :
                                 user.isVisible && <OtherCharacter
                                     key={user.id}

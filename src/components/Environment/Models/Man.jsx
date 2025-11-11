@@ -38,14 +38,14 @@ export function Man({ animation, position = [0, 0, 0], ...props }) {
             <skinnedMesh name="Suit_Body_3" geometry={nodes.Suit_Body_3.geometry} material={materials.Tie} skeleton={nodes.Suit_Body_3.skeleton} />
             <skinnedMesh name="Suit_Body_4" geometry={nodes.Suit_Body_4.geometry} material={materials.Skin} skeleton={nodes.Suit_Body_4.skeleton} />
           </group>
-          <group name="Suit_Head" rotation={[-Math.PI / 2, 0, 0]} scale={100}>
+          {/* <group name="Suit_Head" rotation={[-Math.PI / 2, 0, 0]} scale={100}>
             <skinnedMesh name="Suit_Head_1" geometry={nodes.Suit_Head_1.geometry} material={materials.Skin} skeleton={nodes.Suit_Head_1.skeleton} />
             <skinnedMesh name="Suit_Head_2" geometry={nodes.Suit_Head_2.geometry} material={materials.Hair} skeleton={nodes.Suit_Head_2.skeleton}> 
               <meshStandardMaterial color={props.hairColor} />
             </skinnedMesh>
             <skinnedMesh name="Suit_Head_3" geometry={nodes.Suit_Head_3.geometry} material={materials.Eyebrows} skeleton={nodes.Suit_Head_3.skeleton} />
             <skinnedMesh name="Suit_Head_4" geometry={nodes.Suit_Head_4.geometry} material={materials.Eye} skeleton={nodes.Suit_Head_4.skeleton} />
-          </group>
+          </group> */}
         </group>
       </group>
     </group>

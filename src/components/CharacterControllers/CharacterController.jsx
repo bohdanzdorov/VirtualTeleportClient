@@ -1,11 +1,10 @@
-import { useState, useRef, useEffect, Suspense } from "react";
+import { useState, useRef, useEffect, Suspense, useCallback } from "react";
 import { useFrame } from "@react-three/fiber";
 
 import Ecctrl, { EcctrlAnimation } from "ecctrl";
 import { KeyboardControls } from "@react-three/drei";
 
 import { socket } from "../SocketManager";
-import { useCharacterAnimation } from "../../hooks/useCharacterAnimation";
 
 import { Man } from "../Environment/Models/Man";
 import { Woman } from "../Environment/Models/Woman";
@@ -47,69 +46,140 @@ export const CharacterController = (props) => {
 
     const [position, setPosition] = useState([0, 1, 0]);
     const rigidBodyRef = useRef();
-    const ecctrlRef = useRef();
 
-    const animationRef = useRef();
-    const curAnimation = useCharacterAnimation();
+    const lastPositionRef = useRef([0, 0, 0]);
+    const lastRotationRef = useRef([0, 0, 0]);
+    const EMIT_INTERVAL = 100; // Send updates every 100ms (10 updates/second)
+    const curAnimationRef = useRef("CharacterArmature|Idle");
+    const characterGroupRef = useRef(null); // Cache the group reference
 
-    const [lastPosition, setLastPosition] = useState([0, 0, 0]);
-    const [lastRotation, setLastRotation] = useState(0);
+    // Update animation tracking without state changes
+    useEffect(() => {
+        const keysPressed = new Set();
 
+        const handleKeyDown = (event) => {
+            keysPressed.add(event.code);
 
-    useFrame(() => {
-        if (!rigidBodyRef.current || !ecctrlRef.current) return;
+            if (keysPressed.has("KeyW") || keysPressed.has("KeyA") || keysPressed.has("KeyS") || keysPressed.has("KeyD")) {
+                if (keysPressed.has("ShiftLeft") || keysPressed.has("ShiftRight")) {
+                    curAnimationRef.current = "CharacterArmature|Run";
+                } else {
+                    curAnimationRef.current = "CharacterArmature|Walk";
+                }
+            }
+        };
 
-        const newPos = [
-            rigidBodyRef.current.parent.parent.parent.position.x,
-            rigidBodyRef.current.parent.parent.parent.position.y,
-            rigidBodyRef.current.parent.parent.parent.position.z,
-        ];
+        const handleKeyUp = (event) => {
+            keysPressed.delete(event.code);
 
-        const newRot = [
-            rigidBodyRef.current.parent.parent.rotation.x,
-            rigidBodyRef.current.parent.parent.rotation.y,
-            rigidBodyRef.current.parent.parent.rotation.z
-        ]
+            if (![..."WASD"].some((key) => keysPressed.has(`Key${key}`))) {
+                curAnimationRef.current = "CharacterArmature|Idle";
+            } else if (keysPressed.has("ShiftLeft") || keysPressed.has("ShiftRight")) {
+                curAnimationRef.current = "CharacterArmature|Run";
+            } else {
+                curAnimationRef.current = "CharacterArmature|Walk";
+            }
+        };
 
-        const newAnimation = curAnimation
+        window.addEventListener("keydown", handleKeyDown);
+        window.addEventListener("keyup", handleKeyUp);
 
-        //Optimization technique
-        //The user sends current properties only when it moved enough
-        const movementThreshold = 0.01;
-        const rotationThreshold = 0.1
-        const positionChanged = newPos.some((val, i) => Math.abs(val - lastPosition[i]) > movementThreshold);
-        const rotationChanged = newRot.some((val, i) => Math.abs(val - lastRotation[i]) > rotationThreshold);
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+            window.removeEventListener("keyup", handleKeyUp);
+        };
+    }, []);
 
-        if (positionChanged || rotationChanged) {
-            socket.emit("move", {
-                position: newPos,
-                animation: newAnimation,
-                rotation: newRot,
-            });
-
-            setLastPosition(newPos);
-            setLastRotation(newRot);
+    // Set up character group reference once
+    useEffect(() => {
+        if (rigidBodyRef.current && !characterGroupRef.current) {
+            try {
+                characterGroupRef.current = rigidBodyRef.current.parent?.parent?.parent;
+            } catch (e) {
+                // Silent fail, will try again next frame
+            }
         }
     });
+
+    // Socket emission in separate interval (NOT in useFrame to avoid render blocking)
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (!characterGroupRef.current) {
+                if (rigidBodyRef.current) {
+                    try {
+                        characterGroupRef.current = rigidBodyRef.current.parent?.parent?.parent;
+                    } catch (e) {
+                        return;
+                    }
+                } else {
+                    return;
+                }
+            }
+
+            const newPos = [
+                characterGroupRef.current.position.x ?? 0,
+                characterGroupRef.current.position.y ?? 0,
+                characterGroupRef.current.position.z ?? 0,
+            ];
+
+            const newRot = [
+                characterGroupRef.current.rotation.x ?? 0,
+                characterGroupRef.current.rotation.y ?? 0,
+                characterGroupRef.current.rotation.z ?? 0
+            ];
+
+            const newAnimation = curAnimationRef.current
+
+            //Optimization technique
+            //The user sends current properties only when it moved enough
+            const movementThreshold = 0.1;
+            const rotationThreshold = 0.1;
+            const positionChanged = newPos.some((val, i) => Math.abs(val - lastPositionRef.current[i]) > movementThreshold);
+            const rotationChanged = newRot.some((val, i) => Math.abs(val - lastRotationRef.current[i]) > rotationThreshold);
+
+            if (positionChanged || rotationChanged) {
+                socket.emit("move", {
+                    position: newPos,
+                    animation: newAnimation,
+                    rotation: newRot,
+                });
+
+                lastPositionRef.current = [...newPos];
+                lastRotationRef.current = [...newRot];
+            }
+        }, EMIT_INTERVAL);
+
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <Suspense fallback={null}>
             <KeyboardControls map={keyboardMap}>
                 <Ecctrl
-                    ref={ecctrlRef}
                     position={position}
-                    camCollision={false}
-                    scale={1}
                     animated
-                    camInitDis={-2.5}
+                    floatingDis={0.3}
+                    //Camera position relative to character
+                    camTargetPos={{ x: 0, y: 0.58, z: 0.5 }}
+                    //First person view settings
+                    camCollision={false} 
+                    camInitDis={0.5} 
+                    camMinDis={0.1} 
+                    camFollowMult={20} 
+                    camLerpMult={1000} 
+                    turnVelMultiplier={1} 
+                    turnSpeed={100} 
+                    mode="CameraBasedMovement"
+                    maxVelLimit={2}
+                    accDist={0.1}
                 >
                     {
                         props.gender === "male" ?
-                            <EcctrlAnimation ref={animationRef} characterURL={manCharacterURL} animationSet={animationSet}>
+                            <EcctrlAnimation characterURL={manCharacterURL} animationSet={animationSet}>
                                 <Man position={[0, -0.65, 0]} scale={1} ref={rigidBodyRef} hairColor={props.hairColor} suitColor={props.suitColor} trousersColor={props.trousersColor} />
                             </EcctrlAnimation>
                             :
-                            <EcctrlAnimation ref={animationRef} characterURL={womanCharacterURL} animationSet={animationSet}>
+                            <EcctrlAnimation characterURL={womanCharacterURL} animationSet={animationSet}>
                                 <Woman position={[0, -0.65, 0]} scale={1} ref={rigidBodyRef} hairColor={props.hairColor} suitColor={props.suitColor} trousersColor={props.trousersColor} />
                             </EcctrlAnimation>
                     }
