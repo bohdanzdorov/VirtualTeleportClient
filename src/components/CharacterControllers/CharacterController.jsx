@@ -4,7 +4,8 @@ import { useFrame } from "@react-three/fiber";
 import Ecctrl, { EcctrlAnimation } from "ecctrl";
 import { KeyboardControls } from "@react-three/drei";
 
-import { socket } from "../SocketManager";
+import { useCharacterKeyboard } from "../../hooks/useCharacterKeyboard";
+import { useCharacterSync } from "../../hooks/useCharacterSync";
 
 import { Man } from "../Environment/Models/Man";
 import { Woman } from "../Environment/Models/Woman";
@@ -24,7 +25,6 @@ export const CharacterController = (props) => {
         { name: "action3", keys: ["3"] },
         { name: "action4", keys: ["KeyF"] },
     ];
-
 
     const animationSet = {
         idle: "CharacterArmature|Idle",
@@ -47,114 +47,12 @@ export const CharacterController = (props) => {
     const [position, setPosition] = useState([0, 1, 0]);
     const rigidBodyRef = useRef();
 
-    const lastPositionRef = useRef([0, 0, 0]);
-    const lastRotationRef = useRef([0, 0, 0]);
-    const lastAnimationRef = useRef("CharacterArmature|Idle");
-
-    const EMIT_INTERVAL = 0.5; // Send updates every 1ms
-    const curAnimationRef = useRef("CharacterArmature|Idle");
-    const characterGroupRef = useRef(null); // Cache the group reference
-
-    // Update animation tracking without state changes
-    useEffect(() => {
-        const keysPressed = new Set();
-
-        const handleKeyDown = (event) => {
-            keysPressed.add(event.code);
-
-            if (keysPressed.has("KeyW") || keysPressed.has("KeyA") || keysPressed.has("KeyS") || keysPressed.has("KeyD")) {
-                if (keysPressed.has("ShiftLeft") || keysPressed.has("ShiftRight")) {
-                    curAnimationRef.current = "CharacterArmature|Run";
-                } else {
-                    curAnimationRef.current = "CharacterArmature|Walk";
-                }
-            }
-        };
-
-        const handleKeyUp = (event) => {
-            keysPressed.delete(event.code);
-
-            if (![..."WASD"].some((key) => keysPressed.has(`Key${key}`))) {
-                curAnimationRef.current = "CharacterArmature|Idle";
-            } else if (keysPressed.has("ShiftLeft") || keysPressed.has("ShiftRight")) {
-                curAnimationRef.current = "CharacterArmature|Run";
-            } else {
-                curAnimationRef.current = "CharacterArmature|Walk";
-            }
-        };
-
-        window.addEventListener("keydown", handleKeyDown);
-        window.addEventListener("keyup", handleKeyUp);
-
-        return () => {
-            window.removeEventListener("keydown", handleKeyDown);
-            window.removeEventListener("keyup", handleKeyUp);
-        };
-    }, []);
-
-    // Set up character group reference once
-    useEffect(() => {
-        if (rigidBodyRef.current && !characterGroupRef.current) {
-            try {
-                characterGroupRef.current = rigidBodyRef.current.parent?.parent?.parent;
-            } catch (e) {
-                // Silent fail, will try again next frame
-            }
-        }
-    });
-
-    // Socket emission in separate interval
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if (!characterGroupRef.current) {
-                if (rigidBodyRef.current) {
-                    try {
-                        characterGroupRef.current = rigidBodyRef.current.parent?.parent?.parent;
-                    } catch (e) {
-                        return;
-                    }
-                } else {
-                    return;
-                }
-            }
-
-            const newPos = [
-                characterGroupRef.current.position.x ?? 0,
-                characterGroupRef.current.position.y ?? 0,
-                characterGroupRef.current.position.z ?? 0,
-            ];
-
-            const newRot = [
-                characterGroupRef.current.rotation.x ?? 0,
-                characterGroupRef.current.rotation.y ?? 0,
-                characterGroupRef.current.rotation.z ?? 0
-            ];
-
-            const newAnimation = curAnimationRef.current
-
-            //Optimization technique
-            //The user sends current properties only when it moved, rotated enough or changed animation
-            const movementThreshold = 0.1;
-            const rotationThreshold = 0.1;
-            const positionChanged = newPos.some((val, i) => Math.abs(val - lastPositionRef.current[i]) > movementThreshold);
-            const rotationChanged = newRot.some((val, i) => Math.abs(val - lastRotationRef.current[i]) > rotationThreshold);
-            const animationChanged = newAnimation !== lastAnimationRef.current;
-
-            if (positionChanged || rotationChanged || animationChanged) {
-                socket.emit("move", {
-                    position: newPos,
-                    animation: newAnimation,
-                    rotation: newRot,
-                });
-
-                lastPositionRef.current = [...newPos];
-                lastRotationRef.current = [...newRot];
-                lastAnimationRef.current = newAnimation;
-            }
-        }, EMIT_INTERVAL);
-
-        return () => clearInterval(interval);
-    }, []);
+    const curAnimationRef = useCharacterKeyboard();
+    
+    // Use the character sync hook for socket emissions
+    const EMIT_INTERVAL = 100; // 100ms = 10 updates/second
+    const THRESHOLDS = { movement: 0.1, rotation: 0.1 };
+    useCharacterSync(rigidBodyRef, curAnimationRef, EMIT_INTERVAL, THRESHOLDS);
 
     return (
         <Suspense fallback={null}>
