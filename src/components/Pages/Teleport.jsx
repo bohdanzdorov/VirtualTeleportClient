@@ -11,8 +11,6 @@ import { CharacterController } from "../CharacterControllers/CharacterController
 import TV from "../Environment/VirtualTVs/TV";
 import WebCamTV from "../Environment/VirtualTVs/WebCamTV";
 
-
-
 const maps = {
     test: {
         scale: 1,
@@ -35,35 +33,35 @@ export const Teleport = (props) => {
     const [videoStream, setVideoStream] = useState(null);
     const [remoteStreams, setRemoteStreams] = useState({});
 
-    // useEffect(() => {
-    //     let client;
-    //     //join as an active participant
-    //     createAgoraClient({
-    //         userId: socket.id,
-    //         onUserPublished: (user, videoTrack) => {
-    //             const mediaStream = new MediaStream();
-    //             mediaStream.addTrack(videoTrack.getMediaStreamTrack());
-    //             setRemoteStreams(prev => ({ ...prev, [user.uid]: mediaStream }));
-    //         },
-    //         onUserLeft: (user) => {
-    //             setRemoteStreams(prev => {
-    //                 const updated = { ...prev };
-    //                 delete updated[user.uid];
-    //                 return updated;
-    //             });
-    //         }
-    //     }).then(async (res) => {
-    //         client = res.client;
-    //         const mediaStream = new MediaStream();
-    //         mediaStream.addTrack(res.localVideoTrack.getMediaStreamTrack());
-    //         setVideoStream(mediaStream);
-    //         props.setLocalAudioTrack(res.localAudioTrack);
-    //     });
+    useEffect(() => {
+        let client;
+        //join as an active participant
+        createAgoraClient({
+            userId: socket.id,
+            onUserPublished: (user, videoTrack) => {
+                const mediaStream = new MediaStream();
+                mediaStream.addTrack(videoTrack.getMediaStreamTrack());
+                setRemoteStreams(prev => ({ ...prev, [user.uid]: mediaStream }));
+            },
+            onUserLeft: (user) => {
+                setRemoteStreams(prev => {
+                    const updated = { ...prev };
+                    delete updated[user.uid];
+                    return updated;
+                });
+            }
+        }).then(async (res) => {
+            client = res.client;
+            const mediaStream = new MediaStream();
+            mediaStream.addTrack(res.localVideoTrack.getMediaStreamTrack());
+            setVideoStream(mediaStream);
+            props.setLocalAudioTrack(res.localAudioTrack);
+        });
 
-    //     return () => {
-    //         if (client) client.leave();
-    //     };
-    // }, []);
+        return () => {
+            if (client) client.leave();
+        };
+    }, []);
 
     //Used to display correct video stream on the correct TV
     const getVideoStreamByTV = (tvNumber) => {
