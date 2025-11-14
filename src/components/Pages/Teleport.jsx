@@ -10,6 +10,7 @@ import { OtherCharacter } from "../Environment/OtherCharacter";
 import { CharacterController } from "../CharacterControllers/CharacterController";
 import TV from "../Environment/VirtualTVs/TV";
 import WebCamTV from "../Environment/VirtualTVs/WebCamTV";
+import { Monitor } from "../Environment/Models/Monitor";
 
 const maps = {
     test: {
@@ -92,7 +93,14 @@ export const Teleport = (props) => {
                         onSelect={() => selectWebCamTV(5)}
                     /> */}
                     {/* <TV position={[3.3, 1.2, 2]} rotation={[0, 4.75, 0]} scale={0.22} url={props.tvLink} /> */}
+                    <OtherCharacter
+                        name={"Test User"}
+                        position={[-2.55, 0.3, -1.5]}
+                        rotation={[0, Math.PI / 2, 0]} 
+                        stream={videoStream}    
+                    />
                     
+                
                     <Map
                         scale={2.75}
                         position={[0, -0.8, 0]}
@@ -113,6 +121,7 @@ export const Teleport = (props) => {
                                     position={user.position}
                                     animation={user.animation}
                                     rotation={user.rotation}
+                                    stream={remoteStreams[user.id]}
                                 />
                         ))
                     }

@@ -24,10 +24,10 @@ export const OtherCharacter = (props) => {
     const velocityRef = useRef(new THREE.Vector3(0, 0, 0));
     const lastPosRef = useRef(new THREE.Vector3(0, 0, 0));
     const updateTimeRef = useRef(Date.now());
-    
+
     const targetRotRef = useRef([0, 0, 0]);
     const currentRotRef = useRef(new THREE.Euler(0, 0, 0));
-    
+
     // Lerp speed - adjusted for smooth but responsive movement
     // This will be calculated dynamically based on update frequency
     const baseLerpSpeedRef = useRef(0.2);
@@ -90,7 +90,7 @@ export const OtherCharacter = (props) => {
         character.current.rotation.x = currentRotRef.current.x;
         character.current.rotation.y = currentRotRef.current.y;
         character.current.rotation.z = currentRotRef.current.z;
-        
+
         rb.current.setTranslation(currentPosRef.current);
     });
 
@@ -103,7 +103,7 @@ export const OtherCharacter = (props) => {
             position={props.position || [0, 0, 0]}>
             <group ref={container}>
                 <Text
-                    position={[0, 0.3, 0]} 
+                    position={[0, 0.3, 0]}
                     fontSize={0.03}
                     color="black"
                     anchorX="center"
@@ -111,14 +111,15 @@ export const OtherCharacter = (props) => {
                 >
                     {props.name}
                 </Text>
-                <Monitor 
-                    position={[0.15, 0.79, 0.2]}
-                    rotation={[0, -Math.PI/2, 0]}
-                    scale={1}
-                    stream={props.stream}
-                    isActive={true}
-                />
+
                 <group ref={character}>
+                    <Monitor
+                        position={[-0.18, 0.79, 0.13]}
+                        rotation={[0, -Math.PI, 0]}
+                        scale={1}
+                        stream={props.stream}
+                        isActive={true}
+                    />
                     {
                         props.gender === "male" ?
                             <Man
