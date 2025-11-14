@@ -6,6 +6,7 @@ import { RigidBody, CapsuleCollider } from "@react-three/rapier";
 
 import { Man } from "./Models/Man";
 import { Woman } from "./Models/Woman";
+import { Monitor } from "./Models/Monitor";
 
 /*
     Component used to display real-time avatars of other users
@@ -110,6 +111,13 @@ export const OtherCharacter = (props) => {
                 >
                     {props.name}
                 </Text>
+                <Monitor 
+                    position={[0.15, 0.79, 0.2]}
+                    rotation={[0, -Math.PI/2, 0]}
+                    scale={1}
+                    stream={props.stream}
+                    isActive={true}
+                />
                 <group ref={character}>
                     {
                         props.gender === "male" ?
