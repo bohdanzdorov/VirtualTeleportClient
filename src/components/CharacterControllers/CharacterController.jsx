@@ -11,6 +11,9 @@ import { Man } from "../Environment/Models/Man";
 import { Woman } from "../Environment/Models/Woman";
 
 export const CharacterController = (props) => {
+    // Allow optional camera vertical limits (radians). Defaults chosen to reasonable FPV limits.
+    const camUpLimit = props.camUpLimit ?? 0.3; // max pitch up (radians)
+    const camLowLimit = props.camLowLimit ?? -0.1; // max pitch down (radians)
 
     const keyboardMap = [
         { name: "forward", keys: ["ArrowUp", "KeyW"] },
@@ -62,7 +65,7 @@ export const CharacterController = (props) => {
                     animated
                     floatingDis={0.3}
                     //Camera position relative to character
-                    camTargetPos={{ x: 0, y: 0.58, z: 0.5 }}
+                    camTargetPos={{ x: 0, y: 0.52, z: 0.5 }}
                     //First person view settings
                     camCollision={false} 
                     camInitDis={0.5} 
@@ -71,6 +74,9 @@ export const CharacterController = (props) => {
                     camLerpMult={1000} 
                     turnVelMultiplier={1} 
                     turnSpeed={100} 
+                    // Vertical camera rotation limits (radians)
+                    camUpLimit={0.6}
+                    camLowLimit={-0.2}
                     mode="CameraBasedMovement"
                     maxVelLimit={2}
                     accDist={0.1}
