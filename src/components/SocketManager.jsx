@@ -25,11 +25,6 @@ export const SocketManager = (props) => {
             props.setUsers(value)
         }
 
-        //New data about Tv occupation
-        function onOccupyWebCamTV(value) {
-            props.setOccupiedWebCamTvs(value)
-        }
-
         //New data about TV link
         function onTvLinkChange(tvlinkInput){
             props.setTvLink(tvlinkInput.tvLink)
@@ -38,14 +33,12 @@ export const SocketManager = (props) => {
         socket.on("connect", onConnect)
         socket.on("disconnect", onDisconnect)
         socket.on("users", onUsers)
-        socket.on("occupyWebCamTV", onOccupyWebCamTV)
         socket.on("tvLink", (tvLinkInput)=>{onTvLinkChange(tvLinkInput)})
 
         return () => {
             socket.off("connect", onConnect)
             socket.off("disconnect", onDisconnect)
             socket.off("users", onUsers)
-            socket.off("occupyWebCamTV", onOccupyWebCamTV)
             socket.off("tvLink", (tvLinkInput)=>{onTvLinkChange(tvLinkInput)})
         }
 

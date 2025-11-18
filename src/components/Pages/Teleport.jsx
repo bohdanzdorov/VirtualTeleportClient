@@ -64,21 +64,6 @@ export const Teleport = (props) => {
         };
     }, []);
 
-    //Used to display correct video stream on the correct TV
-    const getVideoStreamByTV = (tvNumber) => {
-        const tvEntry = props.occupiedWebCamTVs.find(el => el.tvNumber === tvNumber);
-        if (!tvEntry) return videoStream;
-        return remoteStreams[tvEntry.userId] || videoStream;
-    }
-
-    const selectWebCamTV = (tvNumber) => {
-        props.setIsFirstPersonView(true)
-        socket.emit("occupyWebCamTV", {
-            userId: socket.id,
-            tvNumber: tvNumber,
-        })
-    }
-
     return (
         <>
             <Environment preset="dawn" />
