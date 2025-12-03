@@ -11,9 +11,6 @@ import { Man } from "../Environment/Models/Man";
 import { Woman } from "../Environment/Models/Woman";
 
 export const CharacterController = (props) => {
-    // Allow optional camera vertical limits (radians). Defaults chosen to reasonable FPV limits.
-    const camUpLimit = props.camUpLimit ?? 0.3; // max pitch up (radians)
-    const camLowLimit = props.camLowLimit ?? -0.1; // max pitch down (radians)
 
     const keyboardMap = [
         { name: "forward", keys: ["ArrowUp", "KeyW"] },
