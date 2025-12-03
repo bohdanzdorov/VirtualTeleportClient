@@ -9,6 +9,7 @@ import { Map } from "../Environment/Map";
 import { OtherCharacter } from "../Environment/OtherCharacter";
 import { CharacterController } from "../CharacterControllers/CharacterController";
 import TV from "../Environment/VirtualTVs/TV";
+import TVSwitcher from "../Environment/VirtualTVs/TVSwitcher";
 
 const maps = {
     test: {
@@ -31,6 +32,7 @@ export const Teleport = (props) => {
 
     const [videoStream, setVideoStream] = useState(null);
     const [remoteStreams, setRemoteStreams] = useState({});
+    const [isTVVisible, setIsTVVisible] = useState(true);
 
     useEffect(() => {
         let client;
@@ -67,7 +69,16 @@ export const Teleport = (props) => {
             <Environment preset="dawn" />
             <Physics debug={false} allowSleep={true}>          
                 <Suspense>
-                    <TV position={[3.3, 1.2, 2]} rotation={[0, 4.75, 0]} scale={0.22} url={props.tvLink} />
+                    {isTVVisible && (
+                        <TV position={[3.3, 1.2, 2]} rotation={[0, 4.75, 0]} scale={0.22} url={props.tvLink} />
+                    )}
+                    <TVSwitcher
+                        position={[2.2, 0.5, 1.8]}
+                        rotation={[0, 4.75, 0]}
+                        scale={0.5}
+                        isOn={isTVVisible}
+                        onToggle={() => setIsTVVisible((prev) => !prev)}
+                    />
                     <OtherCharacter
                         name={"Test User"}
                         position={[-2.55, 0.3, -1.5]}
