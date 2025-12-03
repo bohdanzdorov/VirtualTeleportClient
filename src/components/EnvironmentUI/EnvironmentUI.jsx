@@ -1,4 +1,3 @@
-import { LeaveWebCamTVButton } from "./LeaveWebCamTVButton"
 import { MicButton } from "./MicButton"
 import { TvLinkInput } from "./TvLinkInput"
 
@@ -9,9 +8,6 @@ export const EnvironmentUI = (props) => {
     return (
         <>
             <MicButton toggleMic={props.toggleMic} micEnabled={props.micEnabled} />
-            {/* {
-                <LeaveWebCamTVButton leaveMonitor={props.leaveMonitor} />
-            } */}
             <TvLinkInput tvLink={props.tvLink} setTvLink={props.setTvLink} setIsMovementAllowed={props.setIsMovementAllowed} />
 
         </>

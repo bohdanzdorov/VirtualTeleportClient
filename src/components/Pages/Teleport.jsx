@@ -1,5 +1,5 @@
 import { useState, useEffect, Suspense } from "react"
-import { Environment, Splat } from "@react-three/drei";
+import { Environment } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 
 import { createAgoraClient } from "../../hooks/useAgora";
@@ -9,8 +9,6 @@ import { Map } from "../Environment/Map";
 import { OtherCharacter } from "../Environment/OtherCharacter";
 import { CharacterController } from "../CharacterControllers/CharacterController";
 import TV from "../Environment/VirtualTVs/TV";
-import WebCamTV from "../Environment/VirtualTVs/WebCamTV";
-import { Monitor } from "../Environment/Models/Monitor";
 
 const maps = {
     test: {
@@ -69,23 +67,13 @@ export const Teleport = (props) => {
             <Environment preset="dawn" />
             <Physics debug={false} allowSleep={true}>          
                 <Suspense>
-                    {/* <WebCamTV
-                        position={[-2.55, 0.79, -1.5]}
-                        rotation={[0, Math.PI / 2, 0]}
-                        scale={0.65}
-                        stream={getVideoStreamByTV(5)}
-                        isActive={props.occupiedWebCamTVs.some(el => el.tvNumber === 5)}
-                        onSelect={() => selectWebCamTV(5)}
-                    /> */}
-                    {/* <TV position={[3.3, 1.2, 2]} rotation={[0, 4.75, 0]} scale={0.22} url={props.tvLink} /> */}
+                    <TV position={[3.3, 1.2, 2]} rotation={[0, 4.75, 0]} scale={0.22} url={props.tvLink} />
                     <OtherCharacter
                         name={"Test User"}
                         position={[-2.55, 0.3, -1.5]}
                         rotation={[0, Math.PI / 2, 0]} 
                         stream={videoStream}    
                     />
-                    
-                
                     <Map
                         scale={2.75}
                         position={[0, -0.8, 0]}
