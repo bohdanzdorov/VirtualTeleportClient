@@ -8,7 +8,13 @@ export const EnvironmentUI = (props) => {
     return (
         <>
             <MicButton toggleMic={props.toggleMic} micEnabled={props.micEnabled} />
-            <TvLinkInput tvLink={props.tvLink} setTvLink={props.setTvLink} setIsMovementAllowed={props.setIsMovementAllowed} />
+            {props.isTVVisible && (
+                <TvLinkInput
+                    tvLink={props.tvLink}
+                    setTvLink={props.setTvLink}
+                    setIsMovementAllowed={props.setIsMovementAllowed}
+                />
+            )}
 
         </>
     )

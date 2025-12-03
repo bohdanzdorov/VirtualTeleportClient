@@ -32,7 +32,6 @@ export const Teleport = (props) => {
 
     const [videoStream, setVideoStream] = useState(null);
     const [remoteStreams, setRemoteStreams] = useState({});
-    const [isTVVisible, setIsTVVisible] = useState(true);
 
     useEffect(() => {
         let client;
@@ -69,15 +68,15 @@ export const Teleport = (props) => {
             <Environment preset="dawn" />
             <Physics debug={false} allowSleep={true}>          
                 <Suspense>
-                    {isTVVisible && (
-                        <TV position={[3.3, 1.2, 2]} rotation={[0, 4.75, 0]} scale={0.22} url={props.tvLink} />
+                    {props.isTVVisible && (
+                        <TV position={[3.3, 1.2, 2]} rotation={[0, 4.75, 0]} scale={0.2} url={props.tvLink} />
                     )}
                     <TVSwitcher
-                        position={[2.2, 0.5, 1.8]}
+                        position={[2.2, 0.01, 1.8]}
                         rotation={[0, 4.75, 0]}
                         scale={0.5}
-                        isOn={isTVVisible}
-                        onToggle={() => setIsTVVisible((prev) => !prev)}
+                        isOn={props.isTVVisible}
+                        onToggle={() => props.setIsTVVisible((prev) => !prev)}
                     />
                     <OtherCharacter
                         name={"Test User"}
