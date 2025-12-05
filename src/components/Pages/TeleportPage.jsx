@@ -1,13 +1,10 @@
-import React, { useState } from 'react'
 import { KeyboardControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
-import { Environment } from '@react-three/drei'
 
 import { EnvironmentUI } from '../EnvironmentUI/EnvironmentUI'
 import { Teleport } from './Teleport'
 
 export const TeleportPage = (props) => {
-  const [isTVVisible, setIsTVVisible] = useState(true)
   const keyBoardMap = [
     { name: "forward", keys: ["ArrowUp", "KeyW"] },
     { name: "backward", keys: ["ArrowDown", "KeyS"] },
@@ -25,7 +22,7 @@ export const TeleportPage = (props) => {
         roomMode={props.roomMode} setRoomMode={props.setRoomMode}
         setIsMovementAllowed={props.setIsMovementAllowed}
         users={props.users}
-        isTVVisible={isTVVisible} />
+        isTVVisible={props.isTVVisible} />
 
       <Canvas shadows
         dpr={Math.min(window.devicePixelRatio, 1.5)}
@@ -39,8 +36,8 @@ export const TeleportPage = (props) => {
           setLocalAudioTrack={props.setLocalAudioTrack}
           isFirstPersonView={props.isFirstPersonView}
           setIsFirstPersonView={props.setIsFirstPersonView}
-          isTVVisible={isTVVisible}
-          setIsTVVisible={setIsTVVisible}
+          isTVVisible={props.isTVVisible}
+          setIsTVVisible={props.setIsTVVisible}
         />
       </Canvas>
     </KeyboardControls>

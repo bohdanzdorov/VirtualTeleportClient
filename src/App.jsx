@@ -17,6 +17,7 @@ function App() {
 
   const [tvLink, setTvLink] = useState("https://www.youtube.com/embed/oozh-69e5NU")
   const [roomMode, setRoomMode] = useState("Empty")
+  const [isTVVisible, setIsTVVisible] = useState(true)
 
   const [micEnabled, setMicEnabled] = useState(true);
   const [isFirstPersonView, setIsFirstPersonView] = useState(false)
@@ -36,7 +37,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <SocketManager users={users} setUsers={setUsers} setOccupiedWebCamTvs={setOccupiedWebCamTvs} setTvLink={setTvLink} />
+      <SocketManager users={users} setUsers={setUsers} setOccupiedWebCamTvs={setOccupiedWebCamTvs} setTvLink={setTvLink} setIsTVVisible={setIsTVVisible} />
       <Routes>
         <Route path="/" element={<MainMenuPage />} />
         <Route path="/teleport" element={<TeleportPage
@@ -54,6 +55,8 @@ function App() {
           setTvLink={setTvLink}
           setIsMovementAllowed={setIsMovementAllowed}
           setRoomMode={setRoomMode}
+          isTVVisible={isTVVisible}
+          setIsTVVisible={setIsTVVisible}
         />} />
       </Routes>
     </BrowserRouter>

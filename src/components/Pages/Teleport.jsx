@@ -76,7 +76,11 @@ export const Teleport = (props) => {
                         rotation={[0, 4.75, 0]}
                         scale={0.5}
                         isOn={props.isTVVisible}
-                        onToggle={() => props.setIsTVVisible((prev) => !prev)}
+                        onToggle={() => {
+                            const newState = !props.isTVVisible;
+                            props.setIsTVVisible(newState);
+                            socket.emit("tvVisibility", { isTVVisible: newState });
+                        }}
                     />
                     <OtherCharacter
                         name={"Test User"}
