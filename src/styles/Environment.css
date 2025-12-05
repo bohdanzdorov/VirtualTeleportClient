@@ -6,12 +6,12 @@
 #mic-button {
     position: absolute;
     aspect-ratio: 1/1;
-    padding: 1%;
-    padding-bottom: 0;
+    padding: 20px;
     top: 80%;
     left: 88%;
-    background-color: rgba(0, 25, 51, 0.75);
-    border: black solid 3px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid #EDE8F5;
+    border-radius: 8px;
 }
 
 .roomModeController{
@@ -40,29 +40,32 @@
 
 .roomIdText{
     position: absolute;
-    top: 16px;
-    left: 16px;
+    top: 4%;
+    left: 3%;
     padding: 8px 12px;
     border-radius: 8px;
-    background: rgba(0,0,0,0.6);
+    background: rgba(28, 27, 27, 0.6);
     color: #fff;
     font-size: 14px;
     font-weight: 600;
-    pointer-events: none;
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
 }
 
 .tvLinkInput {
     width: 30%;
-    height: 5%;
-    padding: 1%;
+    height: 48px;
+    padding: 0 12px;
     position: absolute;
     top: 9%;
     left: 3%;
-    background-color: rgba(0, 25, 51, 0.75);
+    background: rgba(0, 0, 0, 0.6);
     outline: none;
-    border: black solid 2px;
-    font-size: 1.2rem;
+    border-radius: 8px;
+    font-size: 1.1rem;
     color: #EDE8F5;
+    font-weight: 600;
 }
 
 .tvLinkInput:focus {
