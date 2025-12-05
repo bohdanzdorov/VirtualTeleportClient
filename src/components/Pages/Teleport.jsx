@@ -35,9 +35,12 @@ export const Teleport = (props) => {
 
     useEffect(() => {
         let client;
-        //join as an active participant
+        setVideoStream(null);
+        setRemoteStreams({});
+        //join as an active participant in the current room
         createAgoraClient({
             userId: socket.id,
+            channelName: props.roomId,
             onUserPublished: (user, videoTrack) => {
                 const mediaStream = new MediaStream();
                 mediaStream.addTrack(videoTrack.getMediaStreamTrack());
@@ -61,7 +64,7 @@ export const Teleport = (props) => {
         return () => {
             if (client) client.leave();
         };
-    }, []);
+    }, [props.roomId, props.setLocalAudioTrack]);
 
     return (
         <>

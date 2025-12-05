@@ -8,12 +8,13 @@ const fetchToken = async (channelName, userId) => {
     return data.token;
 };
 
-export const createAgoraClient = async ({ userId, onUserPublished, onUserLeft }) => {
+export const createAgoraClient = async ({ userId, channelName, onUserPublished, onUserLeft }) => {
     const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+    const channel = channelName || import.meta.env.VITE_AGORA_CHANNEL;
 
-    const TOKEN = await fetchToken(import.meta.env.VITE_AGORA_CHANNEL, userId);
+    const TOKEN = await fetchToken(channel, userId);
 
-    await client.join(import.meta.env.VITE_AGORA_APP_ID, import.meta.env.VITE_AGORA_CHANNEL, TOKEN, userId);
+    await client.join(import.meta.env.VITE_AGORA_APP_ID, channel, TOKEN, userId);
 
     // Create and publish your local video/audio tracks
     const localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
@@ -49,7 +50,7 @@ export const createAgoraClient = async ({ userId, onUserPublished, onUserLeft })
 
     //If session token expires - refresh
     client.on("token-privilege-will-expire", async () => {
-        const newToken = await fetchToken(import.meta.env.VITE_AGORA_CHANNEL, userId);
+        const newToken = await fetchToken(channel, userId);
         await client.renewToken(newToken);
         console.log("Token renewed");
     });

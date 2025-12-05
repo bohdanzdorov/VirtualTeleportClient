@@ -18,12 +18,17 @@ export const MainMenuPage = (props) => {
     const [hairColor, setHairColor] = useState("#553211");
     const [suitColor, setSuitColor] = useState("#000000");
     const [trousersColor, setTrousersColor] = useState("#000000");
+    const [roomId, setRoomId] = useState(props.roomId || "");
 
     const handleNameChange = (e) => setName(e.target.value);
     const handleGenderChange = (e) => setGender(e.target.value);
     const handleHairColorChange = (e) => setHairColor(e.target.value);
     const handleSuitColorChange = (e) => setSuitColor(e.target.value);
     const handleTrousersColorChange = (e) => setTrousersColor(e.target.value);
+    const handleRoomIdChange = (e) => {
+        const val = (e.target.value || "").toUpperCase();
+        setRoomId(val);
+    };
 
     const updateCanvasSize = () => {
         if (canvasContainerRef.current) {
@@ -40,15 +45,34 @@ export const MainMenuPage = (props) => {
 
     const navigate = useNavigate();
 
-    const onRoomConnect = () => {
+    const onRoomConnect = (targetRoomId) => {
+        const normalizedRoomId = (targetRoomId || roomId || "").trim().toUpperCase();
         socket.emit("roomConnect", {
             name,
             gender,
             hairColor,
             suitColor,
-            trousersColor
+            trousersColor,
+            roomId: normalizedRoomId
         });
+        props.setRoomId?.(normalizedRoomId);
         navigate('/teleport');
+    };
+
+    const generateRoomId = () => Math.random().toString(36).substring(2, 8).toUpperCase();
+
+    const handleCreateRoom = () => {
+        const newRoomId = generateRoomId();
+        setRoomId(newRoomId);
+        props.setRoomId?.(newRoomId);
+        onRoomConnect(newRoomId);
+    };
+
+    const handleJoinRoom = () => {
+        const normalizedRoomId = (roomId || "").trim().toUpperCase();
+        setRoomId(normalizedRoomId);
+        props.setRoomId?.(normalizedRoomId);
+        onRoomConnect(normalizedRoomId);
     };
 
     return (
@@ -133,7 +157,23 @@ export const MainMenuPage = (props) => {
                 </div>
             </div>
 
-            <button className="menuButton" onClick={onRoomConnect}>Connect</button>
+            <div className="roomControls">
+                <div className="roomInputGroup">
+                    <label className="inputGroupLabel" htmlFor="roomId">Room ID</label>
+                    <input
+                        id="roomId"
+                        className="nameField"
+                        type="text"
+                        placeholder="Enter room ID to join..."
+                        value={roomId}
+                        onChange={handleRoomIdChange}
+                    />
+                </div>
+                <div className="roomButtons">
+                    <button className="menuButton" onClick={handleCreateRoom}>Create room</button>
+                    <button className="menuButton" onClick={handleJoinRoom}>Connect to room</button>
+                </div>
+            </div>
         </div>
     );
 };

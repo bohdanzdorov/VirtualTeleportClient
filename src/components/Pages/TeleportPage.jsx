@@ -22,7 +22,9 @@ export const TeleportPage = (props) => {
         roomMode={props.roomMode} setRoomMode={props.setRoomMode}
         setIsMovementAllowed={props.setIsMovementAllowed}
         users={props.users}
-        isTVVisible={props.isTVVisible} />
+        isTVVisible={props.isTVVisible}
+        roomId={props.roomId}
+      />
 
       <Canvas shadows
         dpr={Math.min(window.devicePixelRatio, 1.5)}
@@ -38,6 +40,7 @@ export const TeleportPage = (props) => {
           setIsFirstPersonView={props.setIsFirstPersonView}
           isTVVisible={props.isTVVisible}
           setIsTVVisible={props.setIsTVVisible}
+          roomId={props.roomId}
         />
       </Canvas>
     </KeyboardControls>

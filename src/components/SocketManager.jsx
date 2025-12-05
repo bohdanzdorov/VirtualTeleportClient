@@ -51,5 +51,5 @@ export const SocketManager = (props) => {
             socket.off("tvVisibility", (visibilityInput)=>{onTvVisibilityChange(visibilityInput)})
         }
 
-    }, [props.setUsers])
+    }, [props.setUsers, props.setTvLink, props.setIsTVVisible])
 }
