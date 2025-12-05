@@ -87,6 +87,21 @@ export const MainMenuPage = (props) => {
                 onChange={handleNameChange}
             />
 
+            <div className="roomControls">
+                <button className="menuButton roomButton" onClick={handleCreateRoom}>Create room</button>
+                <div className="roomInputGroup">
+                    <input
+                        id="roomId"
+                        className="nameField roomInput"
+                        type="text"
+                        placeholder="Room ID"
+                        value={roomId}
+                        onChange={handleRoomIdChange}
+                    />
+                </div>
+                <button className="menuButton roomButton" onClick={handleJoinRoom}>Connect to room</button>
+            </div>
+
             <div className="characterEditorDiv">
                 <div className="inputBoxesDiv">
                     <div className="genderBox">
@@ -147,7 +162,7 @@ export const MainMenuPage = (props) => {
                 <div className="displayModelDiv" ref={canvasContainerRef}>
                     <Canvas style={{ width: "100%", height: "100%" }}>
                         <Environment preset="dawn" />
-                        <OrbitControls minDistance={2} maxDistance={3}/>
+                        <OrbitControls minDistance={2} maxDistance={3} />
                         {gender === "male" ? (
                             <Man scale={1.75} position={[0, -1.5, 0]} animation="idle" hairColor={hairColor} suitColor={suitColor} trousersColor={trousersColor} />
                         ) : (
@@ -157,23 +172,7 @@ export const MainMenuPage = (props) => {
                 </div>
             </div>
 
-            <div className="roomControls">
-                <div className="roomInputGroup">
-                    <label className="inputGroupLabel" htmlFor="roomId">Room ID</label>
-                    <input
-                        id="roomId"
-                        className="nameField"
-                        type="text"
-                        placeholder="Enter room ID to join..."
-                        value={roomId}
-                        onChange={handleRoomIdChange}
-                    />
-                </div>
-                <div className="roomButtons">
-                    <button className="menuButton" onClick={handleCreateRoom}>Create room</button>
-                    <button className="menuButton" onClick={handleJoinRoom}>Connect to room</button>
-                </div>
-            </div>
+
         </div>
     );
 };
