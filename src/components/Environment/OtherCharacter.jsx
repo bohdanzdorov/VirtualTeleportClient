@@ -70,23 +70,18 @@ export const OtherCharacter = (props) => {
         if (!character.current || !rb.current || !props.position) return;
 
         // Rotation smoothing remains exponential
-        const rotLerp = 1 - Math.exp(-8 * delta);
+        const rotLerp = 1 - Math.exp(-10 * delta);
 
         const distance = currentPosRef.current.distanceTo(targetPosRef.current);
-        const snapThreshold = 2; // meters
-        const maxSpeed = 3.5; // m/s cap for catch-up movement
-        const maxStep = maxSpeed * delta;
-
-        if (distance > snapThreshold) {
-            // Large jump: snap to target to avoid visible rubber-banding
+        
+        // If the distance is very large, snap immediately
+        if (distance > 10) {
             currentPosRef.current.copy(targetPosRef.current);
-        } else if (distance > maxStep) {
-            // Move toward target but clamp per-frame distance to avoid overshoot
-            const dir = targetPosRef.current.clone().sub(currentPosRef.current).normalize();
-            currentPosRef.current.addScaledVector(dir, maxStep);
         } else {
-            // Close enough: snap to target
-            currentPosRef.current.copy(targetPosRef.current);
+            // Smoothly interpolate position
+            // Lambda of 5 gives a smooth follow. Higher values = tighter follow.
+            const posLerp = 1 - Math.exp(-5 * delta);
+            currentPosRef.current.lerp(targetPosRef.current, posLerp);
         }
 
         // Interpolate rotation
