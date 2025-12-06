@@ -65,15 +65,15 @@ export const CharacterController = (props) => {
                     camTargetPos={{ x: 0, y: 0.52, z: 0.5 }}
                     //First person view settings
                     camCollision={false} 
-                    camInitDis={0.5} 
-                    camMinDis={0.1} 
+                    camInitDis={-0.1} 
+                    camMinDis={-0.1}
                     camFollowMult={20} 
                     camLerpMult={1000} 
                     turnVelMultiplier={1} 
                     turnSpeed={100} 
                     // Vertical camera rotation limits (radians)
                     camUpLimit={0.6}
-                    camLowLimit={-0.2}
+                    camLowLimit={-0.6}
                     mode="CameraBasedMovement"
                     maxVelLimit={2}
                     accDist={0.1}
