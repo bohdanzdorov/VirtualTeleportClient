@@ -24,6 +24,8 @@ export const TeleportPage = (props) => {
         users={props.users}
         isTVVisible={props.isTVVisible}
         roomId={props.roomId}
+        toggleCam={props.toggleCam}
+        camEnabled={props.camEnabled}
       />
 
       <Canvas shadows
@@ -36,6 +38,9 @@ export const TeleportPage = (props) => {
           isMovementAllowed={props.isMovementAllowed}
           roomMode={props.roomMode}
           setLocalAudioTrack={props.setLocalAudioTrack}
+          setLocalVideoTrack={props.setLocalVideoTrack}
+             localVideoTrack={props.localVideoTrack}
+          setAgoraClient={props.setAgoraClient}
           isFirstPersonView={props.isFirstPersonView}
           setIsFirstPersonView={props.setIsFirstPersonView}
           isTVVisible={props.isTVVisible}

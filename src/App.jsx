@@ -14,6 +14,8 @@ function App() {
   const [isMovementAllowed, setIsMovementAllowed] = useState(true)
 
   const [localAudioTrack, setLocalAudioTrack] = useState(null);
+  const [localVideoTrack, setLocalVideoTrack] = useState(null);
+  const [agoraClient, setAgoraClient] = useState(null);
 
   const [tvLink, setTvLink] = useState("https://www.youtube.com/embed/oozh-69e5NU")
   const [roomMode, setRoomMode] = useState("Empty")
@@ -27,6 +29,21 @@ function App() {
     if (!localAudioTrack) return;
     await localAudioTrack.setEnabled(!micEnabled);
     setMicEnabled(prev => !prev);
+  };
+
+  const [camEnabled, setCamEnabled] = useState(true);
+
+  const toggleCam = async () => {
+    if (!localVideoTrack || !agoraClient) return;
+    if (camEnabled) {
+        await agoraClient.unpublish([localVideoTrack]);
+        await localVideoTrack.setEnabled(false);
+        setCamEnabled(false);
+    } else {
+        await localVideoTrack.setEnabled(true);
+        await agoraClient.publish([localVideoTrack]);
+        setCamEnabled(true);
+    }
   };
 
   const leaveMonitor = () => {
@@ -48,10 +65,15 @@ function App() {
           isMovementAllowed={isMovementAllowed}
           roomMode={roomMode}
           setLocalAudioTrack={setLocalAudioTrack}
+          setLocalVideoTrack={setLocalVideoTrack}
+          localVideoTrack={localVideoTrack}
+          setAgoraClient={setAgoraClient}
           isFirstPersonView={isFirstPersonView}
           setIsFirstPersonView={setIsFirstPersonView}
           toggleMic={toggleMic}
           micEnabled={micEnabled}
+          toggleCam={toggleCam}
+          camEnabled={camEnabled}
           leaveMonitor={leaveMonitor}
           setTvLink={setTvLink}
           setIsMovementAllowed={setIsMovementAllowed}

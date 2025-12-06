@@ -22,8 +22,10 @@ export function Monitor({ position, rotation, scale, stream, isActive }) {
 
   useEffect(() => {
     const video = videoRef.current;
-    if (isActive && stream) {
-      video.srcObject = stream;
+    const validStream = stream instanceof MediaStream ? stream : null;
+
+    if (isActive && validStream) {
+      video.srcObject = validStream;
       video.muted = true;
       video.loop = true;
       video.playsInline = true;
@@ -48,6 +50,10 @@ export function Monitor({ position, rotation, scale, stream, isActive }) {
       video.addEventListener("loadedmetadata", handleLoadedMetadata);
       return () => video.removeEventListener("loadedmetadata", handleLoadedMetadata);
     }
+
+    // If not active or no valid stream, clear texture
+    textureRef.current = null;
+    video.srcObject = null;
   }, [stream, isActive]);
 
   useFrame(() => {

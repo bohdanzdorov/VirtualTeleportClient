@@ -94,6 +94,8 @@ export const OtherCharacter = (props) => {
         rb.current.setTranslation(currentPosRef.current);
     });
 
+    const hasStream = !!props.stream;
+
     return (
         <RigidBody
             type="kinematicPosition"
@@ -113,13 +115,15 @@ export const OtherCharacter = (props) => {
                 </Text>
 
                 <group ref={character}>
-                    <Monitor
-                        position={[-0.18, 0.79, 0.13]}
-                        rotation={[0, -Math.PI, 0]}
-                        scale={1}
-                        stream={props.stream}
-                        isActive={true}
-                    />
+                    {hasStream && (
+                        <Monitor
+                            position={[-0.18, 0.79, 0.13]}
+                            rotation={[0, -Math.PI, 0]}
+                            scale={1}
+                            stream={props.stream}
+                            isActive={true}
+                        />
+                    )}
                     {
                         props.gender === "male" ?
                             <Man
@@ -129,7 +133,9 @@ export const OtherCharacter = (props) => {
                                 name={props.name}
                                 hairColor={props.hairColor}
                                 suitColor={props.suitColor}
-                                trousersColor={props.trousersColor} />
+                                trousersColor={props.trousersColor}
+                                hasStream={hasStream}
+                            />
                             : <Woman
                                 scale={1}
                                 animation={props.animation}
@@ -137,7 +143,9 @@ export const OtherCharacter = (props) => {
                                 name={props.name}
                                 hairColor={props.hairColor}
                                 suitColor={props.suitColor}
-                                trousersColor={props.trousersColor} />
+                                trousersColor={props.trousersColor}
+                                hasStream={hasStream}
+                            />
                     }
                 </group>
             </group>

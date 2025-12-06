@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense } from "react"
+import { useState, useEffect, Suspense, useRef } from "react"
 import { Environment } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 
@@ -32,6 +32,7 @@ export const Teleport = (props) => {
 
     const [videoStream, setVideoStream] = useState(null);
     const [remoteStreams, setRemoteStreams] = useState({});
+    const clientRef = useRef(null);
 
     useEffect(() => {
         let client;
@@ -52,19 +53,61 @@ export const Teleport = (props) => {
                     delete updated[user.uid];
                     return updated;
                 });
+            },
+            onUserUnpublished: (user) => {
+                setRemoteStreams(prev => {
+                    const updated = { ...prev };
+                    delete updated[user.uid];
+                    return updated;
+                });
             }
         }).then(async (res) => {
             client = res.client;
-            const mediaStream = new MediaStream();
-            mediaStream.addTrack(res.localVideoTrack.getMediaStreamTrack());
-            setVideoStream(mediaStream);
+            clientRef.current = client;
+            props.setAgoraClient?.(client);
             props.setLocalAudioTrack(res.localAudioTrack);
+            props.setLocalVideoTrack(res.localVideoTrack);
+
+            if (props.camEnabled !== false) {
+                const mediaStream = new MediaStream();
+                mediaStream.addTrack(res.localVideoTrack.getMediaStreamTrack());
+                setVideoStream(mediaStream);
+            }
         });
 
         return () => {
             if (client) client.leave();
+            clientRef.current = null;
+            props.setAgoraClient?.(null);
         };
-    }, [props.roomId, props.setLocalAudioTrack]);
+    }, [props.roomId, props.setLocalAudioTrack, props.setLocalVideoTrack, props.setAgoraClient]);
+
+    // Reflect camera enabled/disabled in local monitor stream
+    useEffect(() => {
+        if (!props.camEnabled) {
+            setVideoStream(null);
+            return;
+        }
+        if (props.localVideoTrack) {
+            const mediaStream = new MediaStream();
+            mediaStream.addTrack(props.localVideoTrack.getMediaStreamTrack());
+            setVideoStream(mediaStream);
+        }
+    }, [props.camEnabled, props.localVideoTrack]);
+
+    // Reflect camera enabled/disabled in local monitor stream
+    useEffect(() => {
+        if (!props.camEnabled) {
+            setVideoStream(null);
+            return;
+        }
+        if (props.camEnabled && props.setLocalVideoTrack) {
+            const track = props.setLocalVideoTrack ? undefined : undefined;
+        }
+        if (props.camEnabled && clientRef.current && props.setLocalVideoTrack) {
+            // no-op, handled when publishing; we keep stream in state when enabled below
+        }
+    }, [props.camEnabled]);
 
     return (
         <>
@@ -89,7 +132,7 @@ export const Teleport = (props) => {
                         name={"Test User"}
                         position={[-2.55, 0.3, -1.5]}
                         rotation={[0, Math.PI / 2, 0]} 
-                        stream={videoStream}    
+                        stream={props.localVideoTrack}    
                     />
                     <Map
                         scale={2.75}

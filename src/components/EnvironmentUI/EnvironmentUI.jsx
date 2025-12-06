@@ -1,4 +1,5 @@
 import { MicButton } from "./MicButton"
+import { CamButton } from "./CamButton"
 import { RoomIdText } from "./RoomIdText"
 import { TvLinkInput } from "./TvLinkInput"
 
@@ -8,7 +9,10 @@ import { TvLinkInput } from "./TvLinkInput"
 export const EnvironmentUI = (props) => {
     return (
         <>
-            <MicButton toggleMic={props.toggleMic} micEnabled={props.micEnabled} />
+            <div className="environmentUI communicationControllsContainer">
+                <CamButton toggleCam={props.toggleCam} camEnabled={props.camEnabled} />
+                <MicButton toggleMic={props.toggleMic} micEnabled={props.micEnabled} />
+            </div>
             {props.roomId && (
                 <RoomIdText 
                     roomId={props.roomId} 

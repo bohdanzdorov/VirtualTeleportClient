@@ -3,12 +3,29 @@
     z-index: 100000000;
 }
 
-#mic-button {
+.communicationControllsContainer {
     position: absolute;
+    top: 70%;
+    right: 2%;
+    width: 20%;
+    height: 20%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    pointer-events: auto;
+}
+
+#mic-button {
     aspect-ratio: 1/1;
     padding: 20px;
-    top: 80%;
-    left: 88%;
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid #EDE8F5;
+    border-radius: 8px;
+}
+
+#cam-button {
+    aspect-ratio: 1/1;
+    padding: 20px;
     background: rgba(0, 0, 0, 0.6);
     border: 2px solid #EDE8F5;
     border-radius: 8px;

@@ -8,7 +8,7 @@ const fetchToken = async (channelName, userId) => {
     return data.token;
 };
 
-export const createAgoraClient = async ({ userId, channelName, onUserPublished, onUserLeft }) => {
+export const createAgoraClient = async ({ userId, channelName, onUserPublished, onUserLeft, onUserUnpublished }) => {
     const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
     const channel = channelName || import.meta.env.VITE_AGORA_CHANNEL;
 
@@ -57,6 +57,15 @@ export const createAgoraClient = async ({ userId, channelName, onUserPublished, 
 
     client.on("user-left", user => {
         onUserLeft(user);
+    });
+
+    client.on("user-unpublished", (user, mediaType) => {
+        if (mediaType === "video") {
+            onUserUnpublished?.(user);
+        }
+        if (mediaType === "audio") {
+            user.audioTrack?.stop();
+        }
     });
 
     return {

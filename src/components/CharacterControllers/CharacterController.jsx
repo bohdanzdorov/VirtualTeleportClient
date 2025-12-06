@@ -81,11 +81,11 @@ export const CharacterController = (props) => {
                     {
                         props.gender === "male" ?
                             <EcctrlAnimation characterURL={manCharacterURL} animationSet={animationSet}>
-                                <Man position={[0, -0.65, 0]} scale={1} ref={rigidBodyRef} hairColor={props.hairColor} suitColor={props.suitColor} trousersColor={props.trousersColor} />
+                                <Man position={[0, -0.65, 0]} scale={1} ref={rigidBodyRef} hairColor={props.hairColor} suitColor={props.suitColor} trousersColor={props.trousersColor} hasStream={true}/>
                             </EcctrlAnimation>
                             :
                             <EcctrlAnimation characterURL={womanCharacterURL} animationSet={animationSet}>
-                                <Woman position={[0, -0.65, 0]} scale={1} ref={rigidBodyRef} hairColor={props.hairColor} suitColor={props.suitColor} trousersColor={props.trousersColor} />
+                                <Woman position={[0, -0.65, 0]} scale={1} ref={rigidBodyRef} hairColor={props.hairColor} suitColor={props.suitColor} trousersColor={props.trousersColor} hasStream={true} />
                             </EcctrlAnimation>
                     }
                 </Ecctrl>
