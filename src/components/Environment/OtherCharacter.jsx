@@ -28,8 +28,7 @@ export const OtherCharacter = (props) => {
     const targetRotRef = useRef([0, 0, 0]);
     const currentRotRef = useRef(new THREE.Euler(0, 0, 0));
 
-    // Lerp speed - adjusted for smooth but responsive movement
-    // This will be calculated dynamically based on update frequency
+    // Lerp speed - adjusted for smooth but responsive movement (kept for rotation smoothing)
     const baseLerpSpeedRef = useRef(0.2);
 
     // Update target position when props change
@@ -67,23 +66,35 @@ export const OtherCharacter = (props) => {
     }, []);
 
     // Every frame, interpolate towards the target position
-    useFrame(() => {
+    useFrame((_, delta) => {
         if (!character.current || !rb.current || !props.position) return;
 
-        const lerpSpeed = baseLerpSpeedRef.current;
+        // Rotation smoothing remains exponential
+        const rotLerp = 1 - Math.exp(-8 * delta);
 
-        // Interpolate position towards target with some extrapolation
-        currentPosRef.current.lerp(targetPosRef.current, lerpSpeed);
+        const distance = currentPosRef.current.distanceTo(targetPosRef.current);
+        const snapThreshold = 2; // meters
+        const maxSpeed = 3.5; // m/s cap for catch-up movement
+        const maxStep = maxSpeed * delta;
 
-        // Apply velocity prediction for smoother movement
-        currentPosRef.current.addScaledVector(velocityRef.current, 0.016); // Assume ~60fps = 16ms
+        if (distance > snapThreshold) {
+            // Large jump: snap to target to avoid visible rubber-banding
+            currentPosRef.current.copy(targetPosRef.current);
+        } else if (distance > maxStep) {
+            // Move toward target but clamp per-frame distance to avoid overshoot
+            const dir = targetPosRef.current.clone().sub(currentPosRef.current).normalize();
+            currentPosRef.current.addScaledVector(dir, maxStep);
+        } else {
+            // Close enough: snap to target
+            currentPosRef.current.copy(targetPosRef.current);
+        }
 
         // Interpolate rotation
         const targetQuat = new THREE.Quaternion().setFromEuler(
             new THREE.Euler(...targetRotRef.current)
         );
         const currentQuat = new THREE.Quaternion().setFromEuler(currentRotRef.current);
-        currentQuat.slerp(targetQuat, Math.max(0.1, lerpSpeed * 0.4));
+        currentQuat.slerp(targetQuat, rotLerp);
         currentRotRef.current.setFromQuaternion(currentQuat);
 
         // Apply interpolated values
