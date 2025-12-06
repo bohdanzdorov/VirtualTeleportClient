@@ -47,8 +47,17 @@ export const MainMenuPage = (props) => {
 
     const onRoomConnect = (targetRoomId) => {
         const normalizedRoomId = (targetRoomId || roomId || "").trim().toUpperCase();
+        const displayName = name.trim() || "User";
+        props.setProfile?.({
+            name: displayName,
+            gender,
+            hairColor,
+            suitColor,
+            trousersColor,
+            roomId: normalizedRoomId,
+        });
         socket.emit("roomConnect", {
-            name,
+            name: displayName,
             gender,
             hairColor,
             suitColor,
@@ -62,6 +71,10 @@ export const MainMenuPage = (props) => {
     const generateRoomId = () => Math.random().toString(36).substring(2, 8).toUpperCase();
 
     const handleCreateRoom = () => {
+        if (!name.trim()) {
+            alert("Please enter your name before creating a room.");
+            return;
+        }
         const newRoomId = generateRoomId();
         setRoomId(newRoomId);
         props.setRoomId?.(newRoomId);
@@ -69,7 +82,15 @@ export const MainMenuPage = (props) => {
     };
 
     const handleJoinRoom = () => {
+        if (!name.trim()) {
+            alert("Please enter your name before joining a room.");
+            return;
+        }
         const normalizedRoomId = (roomId || "").trim().toUpperCase();
+        if (!normalizedRoomId) {
+            alert("Please enter a valid room ID or create a new room.");
+            return;
+        }
         setRoomId(normalizedRoomId);
         props.setRoomId?.(normalizedRoomId);
         onRoomConnect(normalizedRoomId);

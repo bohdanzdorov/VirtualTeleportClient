@@ -1,7 +1,7 @@
 import './styles/Environment.css'
 
 import { useState } from "react"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import { socket, SocketManager } from './components/SocketManager'
 
 import { MainMenuPage } from "./components/Pages/MainMenuPage"
@@ -21,6 +21,7 @@ function App() {
   const [roomMode, setRoomMode] = useState("Empty")
   const [isTVVisible, setIsTVVisible] = useState(true)
   const [roomId, setRoomId] = useState("")
+  const [profile, setProfile] = useState(null)
 
   const [micEnabled, setMicEnabled] = useState(true);
   const [isFirstPersonView, setIsFirstPersonView] = useState(false)
@@ -57,8 +58,9 @@ function App() {
     <BrowserRouter>
       <SocketManager users={users} setUsers={setUsers} setOccupiedWebCamTvs={setOccupiedWebCamTvs} setTvLink={setTvLink} setIsTVVisible={setIsTVVisible} />
       <Routes>
-        <Route path="/" element={<MainMenuPage roomId={roomId} setRoomId={setRoomId} />} />
-        <Route path="/teleport" element={<TeleportPage
+        <Route path="/" element={<MainMenuPage roomId={roomId} setRoomId={setRoomId} setProfile={setProfile} />} />
+        <Route path="/teleport" element={profile ? (
+          <TeleportPage
           users={users}
           occupiedWebCamTVs={occupiedWebCamTVs}
           tvLink={tvLink}
@@ -81,7 +83,9 @@ function App() {
           isTVVisible={isTVVisible}
           setIsTVVisible={setIsTVVisible}
           roomId={roomId}
-        />} />
+        />) : (
+          <Navigate to="/" replace />
+        )} />
       </Routes>
     </BrowserRouter>
   )
