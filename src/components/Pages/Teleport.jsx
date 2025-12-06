@@ -33,21 +33,27 @@ export const Teleport = (props) => {
     const [videoStream, setVideoStream] = useState(null);
     const [remoteStreams, setRemoteStreams] = useState({});
     const clientRef = useRef(null);
+    const localAudioTrackRef = useRef(null);
+    const localVideoTrackRef = useRef(null);
 
     useEffect(() => {
         let client;
+        let cancelled = false;
+
         setVideoStream(null);
         setRemoteStreams({});
-        //join as an active participant in the current room
+
         createAgoraClient({
             userId: socket.id,
             channelName: props.roomId,
             onUserPublished: (user, videoTrack) => {
+                if (cancelled) return;
                 const mediaStream = new MediaStream();
                 mediaStream.addTrack(videoTrack.getMediaStreamTrack());
                 setRemoteStreams(prev => ({ ...prev, [user.uid]: mediaStream }));
             },
             onUserLeft: (user) => {
+                if (cancelled) return;
                 setRemoteStreams(prev => {
                     const updated = { ...prev };
                     delete updated[user.uid];
@@ -55,6 +61,7 @@ export const Teleport = (props) => {
                 });
             },
             onUserUnpublished: (user) => {
+                if (cancelled) return;
                 setRemoteStreams(prev => {
                     const updated = { ...prev };
                     delete updated[user.uid];
@@ -62,13 +69,26 @@ export const Teleport = (props) => {
                 });
             }
         }).then(async (res) => {
+            if (cancelled) {
+                await res.client.leave().catch(() => {});
+                res.localAudioTrack?.stop();
+                res.localAudioTrack?.close();
+                res.localVideoTrack?.stop();
+                res.localVideoTrack?.close();
+                return;
+            }
+
             client = res.client;
             clientRef.current = client;
             props.setAgoraClient?.(client);
-            props.setLocalAudioTrack(res.localAudioTrack);
-            props.setLocalVideoTrack(res.localVideoTrack);
 
-            if (props.camEnabled !== false) {
+            localAudioTrackRef.current = res.localAudioTrack ?? null;
+            localVideoTrackRef.current = res.localVideoTrack ?? null;
+
+            props.setLocalAudioTrack?.(res.localAudioTrack ?? null);
+            props.setLocalVideoTrack?.(res.localVideoTrack ?? null);
+
+            if (props.camEnabled !== false && res.localVideoTrack) {
                 const mediaStream = new MediaStream();
                 mediaStream.addTrack(res.localVideoTrack.getMediaStreamTrack());
                 setVideoStream(mediaStream);
@@ -76,38 +96,45 @@ export const Teleport = (props) => {
         });
 
         return () => {
-            if (client) client.leave();
+            cancelled = true;
+
+            const activeClient = clientRef.current || client;
+            if (activeClient) {
+                activeClient.leave().catch(() => {});
+            }
             clientRef.current = null;
+
+            if (localAudioTrackRef.current) {
+                localAudioTrackRef.current.stop();
+                localAudioTrackRef.current.close();
+                localAudioTrackRef.current = null;
+            }
+
+            if (localVideoTrackRef.current) {
+                localVideoTrackRef.current.stop();
+                localVideoTrackRef.current.close();
+                localVideoTrackRef.current = null;
+            }
+
+            props.setLocalAudioTrack?.(null);
+            props.setLocalVideoTrack?.(null);
             props.setAgoraClient?.(null);
+            setVideoStream(null);
+            setRemoteStreams({});
         };
     }, [props.roomId, props.setLocalAudioTrack, props.setLocalVideoTrack, props.setAgoraClient]);
 
     // Reflect camera enabled/disabled in local monitor stream
     useEffect(() => {
-        if (!props.camEnabled) {
+        if (!props.camEnabled || !props.localVideoTrack) {
             setVideoStream(null);
             return;
         }
-        if (props.localVideoTrack) {
-            const mediaStream = new MediaStream();
-            mediaStream.addTrack(props.localVideoTrack.getMediaStreamTrack());
-            setVideoStream(mediaStream);
-        }
-    }, [props.camEnabled, props.localVideoTrack]);
 
-    // Reflect camera enabled/disabled in local monitor stream
-    useEffect(() => {
-        if (!props.camEnabled) {
-            setVideoStream(null);
-            return;
-        }
-        if (props.camEnabled && props.setLocalVideoTrack) {
-            const track = props.setLocalVideoTrack ? undefined : undefined;
-        }
-        if (props.camEnabled && clientRef.current && props.setLocalVideoTrack) {
-            // no-op, handled when publishing; we keep stream in state when enabled below
-        }
-    }, [props.camEnabled]);
+        const mediaStream = new MediaStream();
+        mediaStream.addTrack(props.localVideoTrack.getMediaStreamTrack());
+        setVideoStream(mediaStream);
+    }, [props.camEnabled, props.localVideoTrack]);
 
     return (
         <>
