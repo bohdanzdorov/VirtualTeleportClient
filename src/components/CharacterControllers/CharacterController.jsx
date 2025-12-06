@@ -50,7 +50,7 @@ export const CharacterController = (props) => {
     const curAnimationRef = useCharacterKeyboard();
     
     // Use the character sync hook for socket emissions
-    const EMIT_INTERVAL = 100; // 100ms = 10 updates/second
+    const EMIT_INTERVAL = 10; // 10ms = 100 updates/second
     const THRESHOLDS = { movement: 0.1, rotation: 0.1 };
     useCharacterSync(rigidBodyRef, curAnimationRef, EMIT_INTERVAL, THRESHOLDS);
 
