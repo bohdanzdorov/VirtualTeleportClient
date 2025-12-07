@@ -88,14 +88,7 @@ export const OtherCharacter = (props) => {
             lockRotations
             ref={rb}>
             <group ref={container}>
-                <Text
-                    position={[0, 0.3, 0]}
-                    fontSize={0.03}
-                    color="black"
-                    anchorX="center"
-                    anchorY="bottom">
-                    {props.name}
-                </Text>
+
 
                 <group ref={character}>
                     {hasStream && (
@@ -107,6 +100,14 @@ export const OtherCharacter = (props) => {
                             isActive={true}
                         />
                     )}
+                    <Text
+                        position={[0, 1.15, 0]}
+                        fontSize={0.1}
+                        color="black"
+                        anchorX="center"
+                        anchorY="bottom">
+                        {props.name}
+                    </Text>
                     {props.gender === "male" ? (
                         <Man
                             scale={1}
