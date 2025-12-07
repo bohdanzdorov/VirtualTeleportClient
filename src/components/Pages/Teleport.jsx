@@ -121,6 +121,7 @@ export const Teleport = (props) => {
             props.setAgoraClient?.(null);
             setVideoStream(null);
             setRemoteStreams({});
+            socket.emit("leaveRoom");
         };
     }, [props.roomId, props.setLocalAudioTrack, props.setLocalVideoTrack, props.setAgoraClient]);
 
