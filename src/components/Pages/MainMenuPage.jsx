@@ -19,15 +19,32 @@ export const MainMenuPage = (props) => {
     const [suitColor, setSuitColor] = useState("#000000");
     const [trousersColor, setTrousersColor] = useState("#000000");
     const [roomId, setRoomId] = useState(props.roomId || "");
+    const [errorMessage, setErrorMessage] = useState("");
 
-    const handleNameChange = (e) => setName(e.target.value);
-    const handleGenderChange = (e) => setGender(e.target.value);
-    const handleHairColorChange = (e) => setHairColor(e.target.value);
-    const handleSuitColorChange = (e) => setSuitColor(e.target.value);
-    const handleTrousersColorChange = (e) => setTrousersColor(e.target.value);
+    const handleNameChange = (e) => {
+        setName(e.target.value);
+        if (errorMessage) setErrorMessage("");
+    };
+    const handleGenderChange = (e) => {
+        setGender(e.target.value);
+        if (errorMessage) setErrorMessage("");
+    };
+    const handleHairColorChange = (e) => {
+        setHairColor(e.target.value);
+        if (errorMessage) setErrorMessage("");
+    };
+    const handleSuitColorChange = (e) => {
+        setSuitColor(e.target.value);
+        if (errorMessage) setErrorMessage("");
+    };
+    const handleTrousersColorChange = (e) => {
+        setTrousersColor(e.target.value);
+        if (errorMessage) setErrorMessage("");
+    };
     const handleRoomIdChange = (e) => {
         const val = (e.target.value || "").toUpperCase();
         setRoomId(val);
+        if (errorMessage) setErrorMessage("");
     };
 
     const updateCanvasSize = () => {
@@ -45,9 +62,43 @@ export const MainMenuPage = (props) => {
 
     const navigate = useNavigate();
 
+    const validateInputs = (requireRoomId = false) => {
+        const trimmedName = name.trim();
+        if (!trimmedName) {
+            setErrorMessage("Please enter your name before continuing.");
+            return false;
+        }
+
+        if (trimmedName.length > 28) {
+            setErrorMessage("Name is too long. Please use 28 characters or fewer.");
+            return false;
+        }
+
+        if (!/^[A-Za-z0-9\s'-]+$/.test(trimmedName)) {
+            setErrorMessage("Name can include letters, numbers, spaces, apostrophes, or dashes only.");
+            return false;
+        }
+
+        if (requireRoomId) {
+            const normalized = (roomId || "").trim().toUpperCase();
+            if (!normalized) {
+                setErrorMessage("Enter a room ID or create a new room.");
+                return false;
+            }
+            if (!/^[A-Z0-9]{4,10}$/.test(normalized)) {
+                setErrorMessage("Room ID should be 4-10 characters (letters/numbers only).");
+                return false;
+            }
+        }
+
+        setErrorMessage("");
+        return true;
+    };
+
     const onRoomConnect = (targetRoomId) => {
         const normalizedRoomId = (targetRoomId || roomId || "").trim().toUpperCase();
         const displayName = name.trim() || "User";
+        setErrorMessage("");
         props.setProfile?.({
             name: displayName,
             gender,
@@ -71,10 +122,7 @@ export const MainMenuPage = (props) => {
     const generateRoomId = () => Math.random().toString(36).substring(2, 8).toUpperCase();
 
     const handleCreateRoom = () => {
-        if (!name.trim()) {
-            alert("Please enter your name before creating a room.");
-            return;
-        }
+        if (!validateInputs(false)) return;
         const newRoomId = generateRoomId();
         setRoomId(newRoomId);
         props.setRoomId?.(newRoomId);
@@ -82,15 +130,8 @@ export const MainMenuPage = (props) => {
     };
 
     const handleJoinRoom = () => {
-        if (!name.trim()) {
-            alert("Please enter your name before joining a room.");
-            return;
-        }
+        if (!validateInputs(true)) return;
         const normalizedRoomId = (roomId || "").trim().toUpperCase();
-        if (!normalizedRoomId) {
-            alert("Please enter a valid room ID or create a new room.");
-            return;
-        }
         setRoomId(normalizedRoomId);
         props.setRoomId?.(normalizedRoomId);
         onRoomConnect(normalizedRoomId);
@@ -122,6 +163,12 @@ export const MainMenuPage = (props) => {
                 </div>
                 <button className="menuButton roomButton" onClick={handleJoinRoom}>Connect to room</button>
             </div>
+
+            {errorMessage && (
+                <div className="menuError" role="alert">
+                    {errorMessage}
+                </div>
+            )}
 
             <div className="characterEditorDiv">
                 <div className="inputBoxesDiv">
