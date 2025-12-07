@@ -1,11 +1,10 @@
-import './styles/Environment.css'
-
 import { useState } from "react"
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import { socket, SocketManager } from './components/SocketManager'
 
-import { MainMenuPage } from "./components/Pages/MainMenuPage"
-import { TeleportPage } from './components/Pages/TeleportPage'
+import { MainMenuPage } from "./components/Pages/MainMenuPage/MainMenuPage"
+import { TeleportPage } from './components/Pages/TeleportPage/TeleportPage'
+import { CharacterEditorPage } from "./components/Pages/CharacterEditorPage/CharacterEditorPage"
 
 function App() {
   const [users, setUsers] = useState([])
@@ -22,6 +21,13 @@ function App() {
   const [isTVVisible, setIsTVVisible] = useState(true)
   const [roomId, setRoomId] = useState("")
   const [profile, setProfile] = useState(null)
+  const [profileDraft, setProfileDraft] = useState({
+    name: "",
+    gender: "male",
+    hairColor: "#553211",
+    suitColor: "#000000",
+    trousersColor: "#000000"
+  })
 
   const [micEnabled, setMicEnabled] = useState(true);
   const [isFirstPersonView, setIsFirstPersonView] = useState(false)
@@ -58,7 +64,27 @@ function App() {
     <BrowserRouter>
       <SocketManager users={users} setUsers={setUsers} setOccupiedWebCamTvs={setOccupiedWebCamTvs} setTvLink={setTvLink} setIsTVVisible={setIsTVVisible} />
       <Routes>
-        <Route path="/" element={<MainMenuPage roomId={roomId} setRoomId={setRoomId} setProfile={setProfile} />} />
+        <Route
+          path="/"
+          element={(
+            <MainMenuPage
+              roomId={roomId}
+              setRoomId={setRoomId}
+              setProfile={setProfile}
+              profileDraft={profileDraft}
+              setProfileDraft={setProfileDraft}
+            />
+          )}
+        />
+        <Route
+          path="/character-editor"
+          element={(
+            <CharacterEditorPage
+              profileDraft={profileDraft}
+              setProfileDraft={setProfileDraft}
+            />
+          )}
+        />
         <Route path="/teleport" element={profile ? (
           <TeleportPage
           users={users}

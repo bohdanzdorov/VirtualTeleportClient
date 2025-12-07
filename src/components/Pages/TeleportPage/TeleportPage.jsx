@@ -1,8 +1,10 @@
+import './TeleportPage.css'
+
 import { KeyboardControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 
-import { EnvironmentUI } from '../EnvironmentUI/EnvironmentUI'
-import { Teleport } from './Teleport'
+import { EnvironmentUI } from '../../EnvironmentUI/EnvironmentUI'
+import { Teleport } from '../../Environment/Teleport'
 
 export const TeleportPage = (props) => {
   const keyBoardMap = [
