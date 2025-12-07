@@ -1,5 +1,4 @@
-## Virtual Teleport Client
-
+# Virtual Teleport Client
 Virtual Teleport is a browser-based telepresence experience that mixes real-time audio/video conferencing with a shared 3D environment. The client application, built with React 19 and Vite, renders an interactive lobby where users can create or join rooms, customise their avatar, teleport into a virtual office populated by other participants and enjoy video and audio communication.
 
 ### Highlights
