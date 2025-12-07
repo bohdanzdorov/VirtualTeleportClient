@@ -156,12 +156,6 @@ export const Teleport = (props) => {
                             socket.emit("tvVisibility", { isTVVisible: newState });
                         }}
                     />
-                    <OtherCharacter
-                        name={"Test User"}
-                        position={[-2.55, 0.3, -1.5]}
-                        rotation={[0, Math.PI / 2, 0]} 
-                        stream={props.localVideoTrack}    
-                    />
                     <Map
                         scale={2.75}
                         position={[0, -0.8, 0]}
