@@ -1,6 +1,6 @@
 ## Virtual Teleport Client
 
-Virtual Teleport is a browser-based telepresence experience that mixes real-time audio/video conferencing with a shared 3D environment. The client application, built with React 19 and Vite, renders an interactive lobby where users can create or join rooms, customise their avatar, and teleport into a virtual office populated by other participants.
+Virtual Teleport is a browser-based telepresence experience that mixes real-time audio/video conferencing with a shared 3D environment. The client application, built with React 19 and Vite, renders an interactive lobby where users can create or join rooms, customise their avatar, teleport into a virtual office populated by other participants and enjoy video and audio communication.
 
 ### Highlights
 - Create or join shared rooms backed by Socket.IO signalling.
@@ -14,7 +14,6 @@ Virtual Teleport is a browser-based telepresence experience that mixes real-time
 - react-three-fiber, drei, rapier, ecctrl (3D scene, helpers, physics, character movement)
 - Socket.IO client (low-latency room state sync)
 - Agora RTC SDK (media streaming)
-- Jotai, html2canvas, Leva (state utilities and tooling)
 
 ### Project Layout
 ```
@@ -70,11 +69,6 @@ VITE_AGORA_CHANNEL=teleport              # Optional default channel name when ro
 - **Teleport experience** – `TeleportPage` wraps the scene in `KeyboardControls`, renders the map, synchronises other players, and handles Agora media tracks.
 - **Shared video panel** – `TvLinkInput` sanitises URLs (HTTPS-only, allow-list of hosts) before broadcasting them to the server and all clients.
 
-### Testing Notes
-- Resize the browser window to verify responsive layouts on both the main menu and character editor pages.
-- Use two browser windows (or devices) to confirm Socket.IO user synchronisation and shared TV behaviour.
-- Validate Agora connectivity by joining the same room from multiple sessions and checking audio/video playback.
-
 ### Deployment Checklist
 - Build the frontend (`npm run build`) and deploy the `dist/` directory behind a static host or CDN.
 - Serve over HTTPS to satisfy Agora and browser media requirements.
@@ -85,4 +79,4 @@ VITE_AGORA_CHANNEL=teleport              # Optional default channel name when ro
 - Persist room state in a database for resilience across server restarts.
 - Provide localisation support for UI strings.
 
-For backend setup and socket event details, see the companion [Virtual Teleport Server](../VirtualTeleportServer/README.md).
+For backend setup and socket event details, see the companion [Virtual Teleport Server](https://github.com/bohdanzdorov/VirtualTeleportServer.git).
